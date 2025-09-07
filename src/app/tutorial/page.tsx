@@ -114,16 +114,16 @@ export default function TutorialPage() {
                                     {step.description}
                                 </AnimatedDescription>
                             </ContentWrapper>
-                            <ButtonWrapper>
-                                <Indicator active={currentStep} />
-                                <CommonButton onClick={handleNext}>
-                                    {step.buttonText}
-                                </CommonButton>
-                            </ButtonWrapper>
                         </Slide>
                     </SwiperSlide>
                 ))}
             </StyledSwiper>
+            <ButtonWrapper>
+                <Indicator active={currentStep} />
+                <CommonButton onClick={handleNext}>
+                    {tutorialSteps[currentStep - 1]?.buttonText}
+                </CommonButton>
+            </ButtonWrapper>
         </TutorialContainer>
     );
 }
@@ -131,10 +131,14 @@ export default function TutorialPage() {
 const TutorialContainer = styled.div`
     width: 100%;
     height: 100%;
+    max-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 
     .swiper {
         width: 100%;
-        height: 100%;
+        flex: 1;
     }
 
     .swiper-slide {
