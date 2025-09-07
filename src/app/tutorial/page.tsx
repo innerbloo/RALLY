@@ -10,7 +10,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import styled from '@emotion/styled';
 
-import Indicator from '@/components/tutorial/Indicator';
+import Indicator from '@/app/components/Indicator';
 import { CommonButton } from '@/styles/button';
 
 const tutorialSteps = [
