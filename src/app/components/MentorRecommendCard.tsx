@@ -57,7 +57,6 @@ export default function MentorRecommendCard({
 }
 
 const CardContainer = styled.li`
-    width: 51.285dvw;
     display: flex;
     flex-direction: column;
     align-items: center;

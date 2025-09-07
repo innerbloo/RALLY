@@ -145,6 +145,7 @@ export default function Home() {
                         ]}
                     />
                 </DuoRecommendSection>
+
                 <MentorRecommendSection>
                     <h2>멘토 추천</h2>
                     <MentorRecommendList
@@ -162,25 +163,25 @@ export default function Home() {
                             },
                             {
                                 id: 2,
-                                profileImage: '/mentor/profile-mentor-1.png',
-                                username: '고양이 발바닥',
-                                rate: 5.0,
-                                reviews: 142,
+                                profileImage: '/mentor/profile-mentor-2.png',
+                                username: '일타강사 옵자루',
+                                rate: 4.8,
+                                reviews: 136,
                                 description:
-                                    '안녕하세요! 브론즈부터 차근차근 모든 구간에서 플레이하며 티어를 올려본 경험을 바탕으로, 작은 성취를 쌓아가는 과정의 즐거움과 꾸준함의 가치를 배웠습니다. 이러한 경험은 어떤 도전에서도 흔들리지 않고 성장할 수 있는 저의 강점이 될 것이라 믿습니다.',
-                                gameImage: '/game1.png',
-                                gameAlt: '리그오브레전드',
+                                    '오버워치라는 게임은 그 여느 FPS 게임보다도 개념적인 영역이 중요합니다. 단순히 에임이나 반사 신경만으로는 한계가 있으며, 팀 조합 이해, 맵 구조 파악, 그리고 상황별 포지셔닝이 승패를 가르는 핵심 요소가 됩니다.',
+                                gameImage: '/game4.png',
+                                gameAlt: '오버워치2',
                             },
                             {
                                 id: 3,
-                                profileImage: '/mentor/profile-mentor-1.png',
-                                username: '고양이 발바닥',
-                                rate: 5.0,
-                                reviews: 142,
+                                profileImage: '/mentor/profile-mentor-3.png',
+                                username: '정호성',
+                                rate: 4.5,
+                                reviews: 128,
                                 description:
-                                    '안녕하세요! 브론즈부터 차근차근 모든 구간에서 플레이하며 티어를 올려본 경험을 바탕으로, 작은 성취를 쌓아가는 과정의 즐거움과 꾸준함의 가치를 배웠습니다. 이러한 경험은 어떤 도전에서도 흔들리지 않고 성장할 수 있는 저의 강점이 될 것이라 믿습니다.',
-                                gameImage: '/game1.png',
-                                gameAlt: '리그오브레전드',
+                                    '초보자분들께는 기초적인 강의를 중심으로 기본기를 다질 수 있도록 돕고, 다이아~마스터 이상 레벨의 플레이어분들께는 세밀한 디테일과 고급 전략을 위주로 다뤄 실질적인 실력 향상을 이끌어내고자 합니다.',
+                                gameImage: '/game2.png',
+                                gameAlt: '전략적 팀 전투',
                             },
                         ]}
                     />
@@ -191,10 +192,9 @@ export default function Home() {
 }
 
 const HomeContainer = styled.main`
-    padding: 2rem;
-
     > section {
         margin: 0 0 4rem;
+        padding: 2rem 2rem 0;
 
         > h2 {
             font-size: 2rem;
@@ -224,4 +224,6 @@ const GameWrapper = styled.ul`
 
 const DuoRecommendSection = styled.section``;
 
-const MentorRecommendSection = styled.section``;
+const MentorRecommendSection = styled.section`
+    padding: 2rem 0 2rem 2rem !important;
+`;

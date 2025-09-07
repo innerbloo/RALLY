@@ -2,10 +2,10 @@ import { ReactNode } from 'react';
 
 import styled from '@emotion/styled';
 
-export default function Page({ children }: { children: ReactNode }) {
-    return <Inner>{children}</Inner>;
+export default function Inner({ children }: { children: ReactNode }) {
+    return <InnerContainer>{children}</InnerContainer>;
 }
 
-const Inner = styled.div`
+const InnerContainer = styled.div`
     padding: 2rem;
 `;
