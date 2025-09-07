@@ -18,19 +18,19 @@ const tutorialSteps = [
         image: '/tutorial1.png',
         title: '정교한 매칭 시스템',
         description:
-            '게임 성향과 플레이 스타일 기반으로\n잘 맞는 듀오를 추천해드려요.',
+            '게임 성향과 플레이 스타일 기반으로\n잘 맞는 듀오를 추천해드려요',
         buttonText: '다음',
     },
     {
         image: '/tutorial2.png',
         title: '멘토-멘티 연결',
-        description: '초보자와 숙련자를 연결해\n함께 성장할 수 있어요.',
+        description: '초보자와 숙련자를 연결해\n함께 성장할 수 있어요',
         buttonText: '다음',
     },
     {
         image: '/tutorial3.png',
         title: '게임별 커뮤니티',
-        description: '게임별 전용 공간에서\n전략도 소통도 자유롭게.',
+        description: '게임별 전용 공간에서\n전략도 소통도 자유롭게',
         buttonText: '시작',
     },
 ];
@@ -40,6 +40,7 @@ export default function TutorialPage() {
     const searchParams = useSearchParams();
     const [currentStep, setCurrentStep] = useState(1);
     const [animateSlide, setAnimateSlide] = useState(true);
+    const [visitedSlides, setVisitedSlides] = useState(new Set([1]));
     const swiperRef = useRef<SwiperType>(null);
 
     // URL 동기화
@@ -65,6 +66,7 @@ export default function TutorialPage() {
     const handleSlideChange = (swiper: SwiperType) => {
         const newStep = swiper.activeIndex + 1;
         setCurrentStep(newStep);
+        setVisitedSlides((prev) => new Set([...prev, newStep]));
 
         // URL 업데이트
         const url = new URL(window.location.href);
@@ -101,15 +103,27 @@ export default function TutorialPage() {
                                     width={200}
                                     height={200}
                                     alt={`튜토리얼 이미지${index + 1}`}
-                                    className={animateSlide ? 'animate' : ''}
+                                    className={
+                                        visitedSlides.has(index + 1)
+                                            ? 'animate'
+                                            : ''
+                                    }
                                 />
                                 <AnimatedTitle
-                                    className={animateSlide ? 'animate' : ''}
+                                    className={
+                                        visitedSlides.has(index + 1)
+                                            ? 'animate'
+                                            : ''
+                                    }
                                 >
                                     {step.title}
                                 </AnimatedTitle>
                                 <AnimatedDescription
-                                    className={animateSlide ? 'animate' : ''}
+                                    className={
+                                        visitedSlides.has(index + 1)
+                                            ? 'animate'
+                                            : ''
+                                    }
                                 >
                                     {step.description}
                                 </AnimatedDescription>

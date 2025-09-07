@@ -34,6 +34,7 @@ const TutorialSkip = styled.div`
     display: flex;
     justify-content: flex-end;
     margin: 0 0 4.5rem;
+    min-height: 2.4rem;
 `;
 
 const TutorialContent = styled.div`

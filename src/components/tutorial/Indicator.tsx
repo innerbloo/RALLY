@@ -24,5 +24,6 @@ const Dot = styled.div<{ isActive: boolean }>`
     height: 0.8rem;
     border-radius: ${({ isActive }) => (isActive ? '0.6rem' : '50%')};
     background-color: ${({ isActive }) => (isActive ? '#4272EC' : '#E9E9E9')};
-    transition: background-color 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
 `;
