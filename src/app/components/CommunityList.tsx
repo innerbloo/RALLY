@@ -1,0 +1,42 @@
+'use client';
+
+import 'swiper/css';
+
+import styled from '@emotion/styled';
+
+import CommunityCard from '@/app/components/CommunityCard';
+
+interface CommunityData {
+    id: number;
+    image: string;
+    username: string;
+    title: string;
+    createAt: string;
+    comment: number;
+    game: string;
+}
+
+interface CommunityListProps {
+    list: CommunityData[];
+}
+
+export default function CommunityList({ list }: CommunityListProps) {
+    return (
+        <CommunityWrapper>
+            {list.map((item) => (
+                <CommunityCard
+                    image={item.image}
+                    username={item.username}
+                    title={item.title}
+                    createAt={item.createAt}
+                    comment={item.comment}
+                    game={item.game}
+                />
+            ))}
+        </CommunityWrapper>
+    );
+}
+
+const CommunityWrapper = styled.div`
+    width: 100%;
+`;
