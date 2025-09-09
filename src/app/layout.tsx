@@ -20,12 +20,13 @@ export const metadata: Metadata = {
         'apple-mobile-web-app-title': 'RALLY',
         'theme-color': '#000000',
     },
-    viewport: {
-        width: 'device-width',
-        initialScale: 1,
-        userScalable: false,
-        viewportFit: 'cover',
-    },
+};
+
+export const viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    userScalable: false,
+    viewportFit: 'cover',
 };
 
 export default function RootLayout({

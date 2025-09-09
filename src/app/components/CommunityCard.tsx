@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
-import { ReactNode } from 'react';
 
 import styled from '@emotion/styled';
 

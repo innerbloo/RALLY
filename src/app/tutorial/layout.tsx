@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 
 import styled from '@emotion/styled';
 
-export default function Layout({ children }: { children: ReactNode }) {
+function LayoutContent({ children }: { children: ReactNode }) {
     const searchParams = useSearchParams();
     const step = searchParams.get('step');
     const isStep3 = step === '3';
@@ -18,6 +18,14 @@ export default function Layout({ children }: { children: ReactNode }) {
             </TutorialSkip>
             <TutorialContent>{children}</TutorialContent>
         </TutorialLayout>
+    );
+}
+
+export default function Layout({ children }: { children: ReactNode }) {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <LayoutContent>{children}</LayoutContent>
+        </Suspense>
     );
 }
 

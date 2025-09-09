@@ -9,9 +9,7 @@ import styled from '@emotion/styled';
 
 import CommunityList from '@/app/components/CommunityList';
 import DuoRecommendList from '@/app/components/DuoRecommendList';
-import EventList from '@/app/components/EventList';
 import MentorRecommendList from '@/app/components/MentorRecommendList';
-import OnlineUserList from '@/app/components/OnlineUserList';
 import RecommendContentList from '@/app/components/RecommendContentList';
 
 export default function Home() {
@@ -432,12 +430,6 @@ const GameWrapper = styled.ul`
 `;
 
 const DuoRecommendSection = styled.section``;
-
-const EventSection = styled.section``;
-
-const OnlineActivitySection = styled.section`
-    padding: 2rem 0 0 2rem !important;
-`;
 
 const MentorRecommendSection = styled.section`
     padding: 2rem 0 0 2rem !important;

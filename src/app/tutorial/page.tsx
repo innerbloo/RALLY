@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, Suspense } from 'react';
 import type { Swiper as SwiperType } from 'swiper';
 import 'swiper/css';
 import { Keyboard } from 'swiper/modules';
@@ -35,11 +35,10 @@ const tutorialSteps = [
     },
 ];
 
-export default function TutorialPage() {
+function TutorialContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [currentStep, setCurrentStep] = useState(1);
-    const [animateSlide, setAnimateSlide] = useState(true);
     const [visitedSlides, setVisitedSlides] = useState(new Set([1]));
     const swiperRef = useRef<SwiperType>(null);
 
@@ -75,9 +74,7 @@ export default function TutorialPage() {
     };
 
     const handleSlideChangeTransitionStart = () => {
-        // 애니메이션 리셋 후 다시 트리거
-        setAnimateSlide(false);
-        setTimeout(() => setAnimateSlide(true), 50);
+        // 애니메이션 리셋 후 다시 트리거 (미사용)
     };
 
     return (
@@ -139,6 +136,14 @@ export default function TutorialPage() {
                 </CommonButton>
             </ButtonWrapper>
         </TutorialContainer>
+    );
+}
+
+export default function TutorialPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <TutorialContent />
+        </Suspense>
     );
 }
 
