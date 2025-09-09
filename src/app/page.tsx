@@ -9,7 +9,10 @@ import styled from '@emotion/styled';
 
 import CommunityList from '@/app/components/CommunityList';
 import DuoRecommendList from '@/app/components/DuoRecommendList';
+import EventList from '@/app/components/EventList';
 import MentorRecommendList from '@/app/components/MentorRecommendList';
+import OnlineUserList from '@/app/components/OnlineUserList';
+import RecommendContentList from '@/app/components/RecommendContentList';
 
 export default function Home() {
     return (
@@ -74,6 +77,44 @@ export default function Home() {
                         </li>
                     </GameWrapper>
                 </PopularGameSection>
+
+                <EventSection>
+                    <h2>이벤트 & 공지사항</h2>
+                    <EventList
+                        events={[
+                            {
+                                id: 1,
+                                image: '/event/event1.png',
+                                title: '시즌 14 랭크 리셋 이벤트',
+                                type: '시즌 이벤트',
+                                startDate: '2025-09-10',
+                                endDate: '2025-09-30',
+                                participants: 1245,
+                                game: '리그오브레전드',
+                            },
+                            {
+                                id: 2,
+                                image: '/event/event2.png',
+                                title: '오버워치2 토너먼트 개최',
+                                type: '토너먼트',
+                                startDate: '2025-09-15',
+                                endDate: '2025-09-20',
+                                participants: 856,
+                                game: '오버워치2',
+                            },
+                            {
+                                id: 3,
+                                image: '/event/event3.png',
+                                title: '신규 유저 웰컴 이벤트',
+                                type: '신규 유저',
+                                startDate: '2025-09-01',
+                                endDate: '2025-09-30',
+                                game: '전체',
+                            },
+                        ]}
+                    />
+                </EventSection>
+
                 <DuoRecommendSection>
                     <h2>듀오 추천</h2>
                     <DuoRecommendList
@@ -146,6 +187,65 @@ export default function Home() {
                         ]}
                     />
                 </DuoRecommendSection>
+
+                <OnlineActivitySection>
+                    <h2>지금 온라인</h2>
+                    <OnlineUserList
+                        users={[
+                            {
+                                id: 1,
+                                profileImage: '/lol/profile-lol-3.png',
+                                username: '리신은내꺼',
+                                position: (
+                                    <PositionLolTop2 width={18} height={20} />
+                                ),
+                                userCode: '#KR1234',
+                                currentGame: '리그오브레전드',
+                                status: 'online' as const,
+                                rankImage: '/lol/rank-lol-platinum.webp',
+                                rankText: 'P2',
+                                tags: ['적극적인', '소통 선호', '캐리형'],
+                                gameImage: '/game1.png',
+                                gameAlt: '리그오브레전드',
+                            },
+                            {
+                                id: 2,
+                                profileImage:
+                                    '/overwatch/profile-overwatch-2.png',
+                                username: '힐러는내가',
+                                position: (
+                                    <PositionOverwatchDPS2
+                                        width={18}
+                                        height={20}
+                                    />
+                                ),
+                                userCode: '#OW5678',
+                                currentGame: '오버워치2',
+                                status: 'matching' as const,
+                                rankImage:
+                                    '/overwatch/rank-overwatch-gold.webp',
+                                rankText: 'G1',
+                                tags: ['서포터', '팀워크', '신중함'],
+                                gameImage: '/game4.png',
+                                gameAlt: '오버워치2',
+                            },
+                            {
+                                id: 3,
+                                profileImage: '/lol/profile-lol-4.png',
+                                username: '야스오장인',
+                                userCode: '#YAS999',
+                                currentGame: '리그오브레전드',
+                                status: 'in-game' as const,
+                                rankImage: '/lol/rank-lol-diamond.webp',
+                                rankText: 'D4',
+                                tags: ['메카닉', '솔로킬', '공격적인'],
+                                gameImage: '/game1.png',
+                                gameAlt: '리그오브레전드',
+                            },
+                        ]}
+                    />
+                </OnlineActivitySection>
+
                 <MentorRecommendSection>
                     <h2>멘토 추천</h2>
                     <MentorRecommendList
@@ -186,6 +286,7 @@ export default function Home() {
                         ]}
                     />
                 </MentorRecommendSection>
+
                 <CommunitySection>
                     <h2>커뮤니티 인기 글</h2>
                     <CommunityList
@@ -238,6 +339,62 @@ export default function Home() {
                         ]}
                     ></CommunityList>
                 </CommunitySection>
+
+                <RecommendContentSection>
+                    <h2>추천 컨텐츠</h2>
+                    <RecommendContentList
+                        contents={[
+                            {
+                                id: 1,
+                                image: '/content/content1.png',
+                                title: '초보자를 위한 LOL 완벽 가이드',
+                                type: 'guide' as const,
+                                difficulty: 'beginner' as const,
+                                author: '롤 마스터',
+                                createAt: '2025-09-08 10:00:00',
+                                likes: 1250,
+                                views: 15600,
+                                game: '리그오브레전드',
+                            },
+                            {
+                                id: 2,
+                                image: '/content/content2.png',
+                                title: '오버워치2 포지셔닝 완전정복',
+                                type: 'strategy' as const,
+                                difficulty: 'intermediate' as const,
+                                author: '옵치 프로',
+                                createAt: '2025-09-07 14:30:00',
+                                likes: 980,
+                                views: 12400,
+                                game: '오버워치2',
+                            },
+                            {
+                                id: 3,
+                                image: '/content/content3.png',
+                                title: '롤토체스 하이퍼롤 메타 분석',
+                                type: 'tip' as const,
+                                difficulty: 'advanced' as const,
+                                author: 'TFT 분석가',
+                                createAt: '2025-09-06 16:45:00',
+                                likes: 756,
+                                views: 9800,
+                                game: '전략적 팀 전투',
+                            },
+                            {
+                                id: 4,
+                                image: '/content/content4.png',
+                                title: '발로란트 에임 향상 꿀팁',
+                                type: 'tip' as const,
+                                difficulty: 'intermediate' as const,
+                                author: '발로 고수',
+                                createAt: '2025-09-05 11:20:00',
+                                likes: 1120,
+                                views: 14200,
+                                game: '발로란트',
+                            },
+                        ]}
+                    />
+                </RecommendContentSection>
             </HomeContainer>
         </div>
     );
@@ -276,6 +433,12 @@ const GameWrapper = styled.ul`
 
 const DuoRecommendSection = styled.section``;
 
+const EventSection = styled.section``;
+
+const OnlineActivitySection = styled.section`
+    padding: 2rem 0 0 2rem !important;
+`;
+
 const MentorRecommendSection = styled.section`
     padding: 2rem 0 0 2rem !important;
 `;
@@ -285,6 +448,15 @@ const CommunitySection = styled.section`
 
     > h2 {
         padding: 0 2rem;
-        margin: unset !important;
+        margin: 0 0 0.2rem !important;
+    }
+`;
+
+const RecommendContentSection = styled.section`
+    padding: 2rem 0 0 0 !important;
+
+    > h2 {
+        padding: 0 2rem;
+        margin: 0 0 0.2rem !important;
     }
 `;

@@ -64,6 +64,7 @@ const CommunityLeftSection = styled.div`
         align-items: center;
         gap: 0.4rem;
         padding: unset;
+        margin: 0 0 0.2rem;
 
         span {
             font-weight: 300;

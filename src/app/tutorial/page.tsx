@@ -170,6 +170,16 @@ const TutorialContainer = styled.div`
             transform: translateY(0);
         }
     }
+
+    @keyframes float {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-0.8rem);
+        }
+    }
 `;
 
 const StyledSwiper = styled(Swiper)`
@@ -220,10 +230,13 @@ const AnimatedImage = styled(Image)`
     will-change: transform, opacity;
     opacity: 0;
     transform: translateY(24px);
+    border-radius: 1.6rem;
 
     &.animate {
-        animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        animation-delay: 0.2s;
+        animation:
+            fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+            float 3s ease-in-out infinite;
+        animation-delay: 0.2s, 0.8s;
     }
 `;
 
