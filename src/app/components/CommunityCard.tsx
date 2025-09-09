@@ -1,9 +1,15 @@
 'use client';
 
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
 import { ReactNode } from 'react';
 
 import styled from '@emotion/styled';
+
+dayjs.extend(relativeTime);
+dayjs.locale('ko');
 
 interface CommunityCardProps {
     image: string;
@@ -24,30 +30,53 @@ export default function CommunityCard({
 }: CommunityCardProps) {
     return (
         <CardContainer>
-            <CommunityTopSection></CommunityTopSection>
-            <CommunityBottomSection></CommunityBottomSection>
+            <CommunityLeftSection>
+                <h2>
+                    {title} <span>[{comment}]</span>
+                </h2>
+                <p>{`${game} | ${dayjs(createAt).fromNow()} | ${username}`}</p>
+            </CommunityLeftSection>
+            <CommunityRightSection>
+                <Image
+                    src={image}
+                    width={50}
+                    height={50}
+                    alt={username}
+                ></Image>
+            </CommunityRightSection>
         </CardContainer>
     );
 }
 
 const CardContainer = styled.li`
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1.2rem 1.5rem;
-    border: 0.1rem solid #3f3f41;
-    border-radius: 1.6rem;
-    background-color: #252527;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.8rem 2rem;
+    border-bottom: 0.1rem solid #3f3f41;
 `;
 
-const CommunityTopSection = styled.div``;
+const CommunityLeftSection = styled.div`
+    h2 {
+        font-size: 1.6rem;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: unset;
 
-const DescriptionText = styled.p`
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    text-overflow: ellipsis;
+        span {
+            font-weight: 300;
+            font-size: 1.4rem;
+            color: #4272ec;
+        }
+    }
+
+    p {
+        color: #939393;
+        font-weight: 300;
+        font-size: 1.3rem;
+    }
 `;
 
-const CommunityBottomSection = styled.div``;
+const CommunityRightSection = styled.div``;

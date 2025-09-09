@@ -25,6 +25,7 @@ export default function CommunityList({ list }: CommunityListProps) {
         <CommunityWrapper>
             {list.map((item) => (
                 <CommunityCard
+                    key={item.id}
                     image={item.image}
                     username={item.username}
                     title={item.title}

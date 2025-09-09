@@ -249,7 +249,7 @@ const HomeContainer = styled.main`
         padding: 2rem 2rem 0;
 
         > h2 {
-            font-size: 2rem;
+            font-size: 2.4rem;
             font-weight: 700;
             margin: 0 0 2rem;
         }
@@ -277,13 +277,14 @@ const GameWrapper = styled.ul`
 const DuoRecommendSection = styled.section``;
 
 const MentorRecommendSection = styled.section`
-    padding: 2rem 0 2rem 2rem !important;
+    padding: 2rem 0 0 2rem !important;
 `;
 
 const CommunitySection = styled.section`
-    padding: 2rem 0 !important;
+    padding: 2rem 0 0 0 !important;
 
-    h2 {
-        padding: 2rem 0 !important;
+    > h2 {
+        padding: 0 2rem;
+        margin: unset !important;
     }
 `;
