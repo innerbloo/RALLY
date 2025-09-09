@@ -231,6 +231,8 @@ const AnimatedImage = styled(Image)`
     opacity: 0;
     transform: translateY(24px);
     border-radius: 1.6rem;
+    //filter: drop-shadow(0 0 60px rgba(66, 114, 236, 0.3));
+    //transition: filter 0.3s ease;
 
     &.animate {
         animation:
