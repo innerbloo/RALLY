@@ -23,7 +23,7 @@ function LayoutContent({ children }: { children: ReactNode }) {
 
 export default function Layout({ children }: { children: ReactNode }) {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={null}>
             <LayoutContent>{children}</LayoutContent>
         </Suspense>
     );

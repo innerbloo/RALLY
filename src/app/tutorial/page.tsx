@@ -141,7 +141,7 @@ function TutorialContent() {
 
 export default function TutorialPage() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={null}>
             <TutorialContent />
         </Suspense>
     );
