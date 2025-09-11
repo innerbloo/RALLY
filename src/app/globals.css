@@ -56,3 +56,21 @@ button {
   appearance: none;
   box-sizing: border-box;
 }
+
+/* Hide Next.js Dev Tools on Mobile */
+@media (max-width: 768px) {
+  /* Next.js 빌드 인디케이터 숨기기 */
+  div[data-nextjs-toast-wrapper] {
+    display: none !important;
+  }
+  
+  /* Next.js 개발 도구들 숨기기 */
+  nextjs-portal {
+    display: none !important;
+  }
+  
+  /* React Query DevTools 등 개발 도구 숨기기 */
+  div[data-testid*="devtools"] {
+    display: none !important;
+  }
+}

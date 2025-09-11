@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
-import { HiOutlineEye, HiOutlineHeart } from 'react-icons/hi';
+import { Eye, Heart } from 'lucide-react';
 
 import styled from '@emotion/styled';
 
@@ -88,11 +88,11 @@ export default function RecommendContentCard({
                 </ContentInfo>
                 <ContentStats>
                     <StatItem>
-                        <HiOutlineHeart size={16} />
+                        <Heart size={16} />
                         {likes.toLocaleString()}
                     </StatItem>
                     <StatItem>
-                        <HiOutlineEye size={16} />
+                        <Eye size={16} />
                         {views.toLocaleString()}
                     </StatItem>
                 </ContentStats>

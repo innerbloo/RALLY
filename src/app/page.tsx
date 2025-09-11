@@ -399,6 +399,8 @@ export default function Home() {
 }
 
 const HomeContainer = styled.main`
+    padding-bottom: 8rem;
+    
     > section {
         margin: 0 0 4rem;
         padding: 2rem 2rem 0;
