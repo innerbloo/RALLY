@@ -399,6 +399,7 @@ export default function Home() {
 }
 
 const HomeContainer = styled.main`
+    padding-top: calc(6rem + env(safe-area-inset-top));
     padding-bottom: 8rem;
     
     > section {

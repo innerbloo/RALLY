@@ -132,8 +132,10 @@ const GNBLink = styled.div<{ $active: boolean }>`
         stroke-width: ${({ $active }) => ($active ? '2.5' : '1.5')};
     }
 
-    &:hover {
-        color: ${({ $active }) => ($active ? '#3a5fd9' : '#ffffff')};
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            color: ${({ $active }) => ($active ? '#3a5fd9' : '#ffffff')};
+        }
     }
 `;
 
