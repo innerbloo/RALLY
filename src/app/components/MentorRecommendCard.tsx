@@ -61,7 +61,7 @@ const CardContainer = styled.li`
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    padding: 1.2rem 1.5rem;
+    padding: 2rem;
     border: 0.1rem solid #3f3f41;
     border-radius: 1.6rem;
     background-color: #252527;
@@ -71,6 +71,7 @@ const DuoTopSection = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 0.2rem;
 
     img {
         margin: 0 0 0.5rem;

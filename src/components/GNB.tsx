@@ -12,6 +12,7 @@ interface MenuItemType {
     path: string;
     icon: React.ComponentType<{ size?: number }>;
     activeIcon: React.ComponentType<{ size?: number }>;
+    size?: number;
 }
 
 const menuItems: MenuItemType[] = [
@@ -35,6 +36,7 @@ const menuItems: MenuItemType[] = [
         path: '/chat',
         icon: MessageCircle,
         activeIcon: MessageCircle,
+        size: 18,
     },
     {
         id: 'community',
@@ -74,7 +76,7 @@ export default function GNB() {
                             <Link href={item.path}>
                                 <GNBLink $active={active}>
                                     <IconWrapper>
-                                        <IconComponent size={20} />
+                                        <IconComponent size={item.size ?? 20} />
                                     </IconWrapper>
                                     <GNBLabel $active={active}>
                                         {item.label}
@@ -139,6 +141,12 @@ const IconWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+
+    > div {
+        width: 2rem;
+        height: 2rem;
+        text-align: center;
+    }
 `;
 
 const GNBLabel = styled.span<{ $active: boolean }>`

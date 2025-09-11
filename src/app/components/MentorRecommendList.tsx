@@ -29,7 +29,7 @@ export default function MentorRecommendList({
         <MentorWrapper>
             <StyledSwiper
                 spaceBetween={10}
-                slidesPerView={1.8}
+                slidesPerView={1.5}
                 breakpoints={{
                     768: {
                         slidesPerView: 2.5,

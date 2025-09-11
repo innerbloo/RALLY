@@ -3,8 +3,8 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import Image from 'next/image';
 import { Eye, Heart } from 'lucide-react';
+import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
@@ -84,7 +84,7 @@ export default function RecommendContentCard({
                 </ContentHeader>
                 <ContentTitle>{title}</ContentTitle>
                 <ContentInfo>
-                    {`${game} | ${author} | ${dayjs(createAt).fromNow()}`}
+                    {`${game} | ${author} • ${dayjs(createAt).fromNow()}`}
                 </ContentInfo>
                 <ContentStats>
                     <StatItem>
