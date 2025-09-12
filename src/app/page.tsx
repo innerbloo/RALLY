@@ -1,6 +1,10 @@
 'use client';
 
 import Image from 'next/image';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 import PositionLolTop2 from '/public/lol/position-lol-top2.svg';
 import PositionOverwatchDPS2 from '/public/overwatch/position-overwatch-dps2.svg';
@@ -12,68 +16,71 @@ import DuoRecommendList from '@/app/components/DuoRecommendList';
 import MentorRecommendList from '@/app/components/MentorRecommendList';
 import RecommendContentList from '@/app/components/RecommendContentList';
 
+interface Game {
+    id: number;
+    icon: string;
+    name: string;
+}
+
+const games: Game[] = [
+    { id: 1, icon: '/game1.png', name: '리그오브레전드' },
+    { id: 2, icon: '/game2.png', name: '전략적 팀 전투' },
+    { id: 3, icon: '/game3.png', name: '발로란트' },
+    { id: 4, icon: '/game4.png', name: '오버워치2' },
+    { id: 5, icon: '/game5.png', name: '배틀그라운드' },
+    { id: 6, icon: '/game-more.png', name: '더보기' },
+    { id: 7, icon: '/game1.png', name: '리그오브레전드' },
+    { id: 8, icon: '/game2.png', name: '전략적 팀 전투' },
+    { id: 9, icon: '/game3.png', name: '발로란트' },
+    { id: 10, icon: '/game4.png', name: '오버워치2' },
+    { id: 5, icon: '/game5.png', name: '배틀그라운드' },
+    { id: 6, icon: '/game-more.png', name: '더보기' },
+    { id: 7, icon: '/game1.png', name: '리그오브레전드' },
+    { id: 8, icon: '/game2.png', name: '전략적 팀 전투' },
+    { id: 9, icon: '/game3.png', name: '발로란트' },
+    { id: 10, icon: '/game4.png', name: '오버워치2' },
+];
+
+// 10개씩 그룹화 (5x2 그리드)
+const gameSlides: Game[][] = [];
+for (let i = 0; i < games.length; i += 10) {
+    gameSlides.push(games.slice(i, i + 10));
+}
+
 export default function Home() {
     return (
         <div>
             <HomeContainer>
                 <PopularGameSection>
                     <h2>인기 게임</h2>
-                    <GameWrapper>
-                        <li>
-                            <Image
-                                src={'/game1.png'}
-                                width={62}
-                                height={62}
-                                alt={'리그오브레전드'}
-                            />
-                            리그오브레전드
-                        </li>
-                        <li>
-                            <Image
-                                src={'/game2.png'}
-                                width={62}
-                                height={62}
-                                alt={'전략적 팀 전투'}
-                            />
-                            전략적 팀 전투
-                        </li>
-                        <li>
-                            <Image
-                                src={'/game3.png'}
-                                width={62}
-                                height={62}
-                                alt={'발로란트'}
-                            />
-                            발로란트
-                        </li>
-                        <li>
-                            <Image
-                                src={'/game4.png'}
-                                width={62}
-                                height={62}
-                                alt={'오버워치2'}
-                            />
-                            오버워치2
-                        </li>
-                        <li>
-                            <Image
-                                src={'/game5.png'}
-                                width={62}
-                                height={62}
-                                alt={'배틀그라운드'}
-                            />
-                            배틀그라운드
-                        </li>
-                        <li>
-                            <Image
-                                src={'/game-more.png'}
-                                width={62}
-                                height={62}
-                                alt={'더보기'}
-                            />
-                            더보기
-                        </li>
-                    </GameWrapper>
+                    <GameSwiper
+                        modules={[Pagination]}
+                        spaceBetween={20}
+                        slidesPerView={0.9}
+                        pagination={{
+                            clickable: true,
+                            bulletClass: 'game-swiper-bullet',
+                            bulletActiveClass: 'game-swiper-bullet-active',
+                        }}
+                    >
+                        {gameSlides.map((slide, slideIndex) => (
+                            <SwiperSlide key={slideIndex}>
+                                <GameSlide>
+                                    {slide.map((game) => (
+                                        <GameItem key={game.id}>
+                                            <Image
+                                                src={game.icon}
+                                                width={50}
+                                                height={50}
+                                                alt={game.name}
+                                            />
+                                            <span>{game.name}</span>
+                                        </GameItem>
+                                    ))}
+                                </GameSlide>
+                            </SwiperSlide>
+                        ))}
+                    </GameSwiper>
                 </PopularGameSection>
 
                 {/*<EventSection>*/}
@@ -401,7 +408,7 @@ export default function Home() {
 const HomeContainer = styled.main`
     padding-top: calc(6rem + env(safe-area-inset-top));
     padding-bottom: 8rem;
-    
+
     > section {
         margin: 0 0 4rem;
         padding: 2rem 2rem 0;
@@ -414,28 +421,70 @@ const HomeContainer = styled.main`
     }
 `;
 
-const PopularGameSection = styled.section``;
+const PopularGameSection = styled.section`
+    .game-swiper-bullet {
+        width: 8px;
+        height: 8px;
+        background: #939393;
+        opacity: 1;
+        border-radius: 50%;
+        margin: 0 4px;
+        transition: all 0.3s ease;
+    }
 
-const GameWrapper = styled.ul`
+    .game-swiper-bullet-active {
+        background: #4272ec;
+        transform: scale(1.2);
+    }
+
+    .swiper-pagination {
+        position: static;
+        margin-top: 1.5rem;
+    }
+`;
+
+const GameSwiper = styled(Swiper)`
+    width: 100%;
+    padding-bottom: 1rem;
+`;
+
+const GameSlide = styled.div`
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 2rem;
+    gap: 1rem;
+    padding: 0 1rem;
+`;
 
-    li {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 1.4rem;
-        font-weight: 500;
+const GameItem = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+
+    span {
+        text-align: center;
+        line-height: 1.3;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            opacity: 0.8;
+        }
     }
 `;
 
 const DuoRecommendSection = styled.section``;
 
 const MentorRecommendSection = styled.section`
-    padding: 2rem 0 0 2rem !important;
+    padding: unset !important;
+
+    > h2 {
+        padding: 0 2rem;
+    }
 `;
 
 const CommunitySection = styled.section`

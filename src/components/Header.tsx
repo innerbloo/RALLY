@@ -2,7 +2,7 @@
 
 import { Bell, ChevronDown, Search, UserPlus } from 'lucide-react';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -61,6 +61,17 @@ export default function Header() {
 
     const unreadCount = mockNotifications.filter((n) => !n.isRead).length;
 
+    // 스크롤 시 드롭다운 닫기
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsNotificationOpen(false);
+            setIsGameSelectOpen(false);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     const getStatusColor = (status: UserStatus['matchingStatus']) => {
         switch (status) {
             case 'available':
@@ -103,7 +114,10 @@ export default function Header() {
                 <ActionSection>
                     {/* 게임 선택 */}
                     <GameSelect
-                        onClick={() => setIsGameSelectOpen(!isGameSelectOpen)}
+                        onClick={() => {
+                            setIsGameSelectOpen(!isGameSelectOpen);
+                            setIsNotificationOpen(false);
+                        }}
                     >
                         <Image
                             src={
@@ -149,9 +163,10 @@ export default function Header() {
 
                     {/* 알림 */}
                     <NotificationButton
-                        onClick={() =>
-                            setIsNotificationOpen(!isNotificationOpen)
-                        }
+                        onClick={() => {
+                            setIsNotificationOpen(!isNotificationOpen);
+                            setIsGameSelectOpen(false);
+                        }}
                     >
                         <Bell size={20} />
                         {unreadCount > 0 && (
