@@ -229,7 +229,7 @@ const ButtonWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 2rem;
-    padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+    padding-bottom: 2rem;
 `;
 
 const AnimatedImage = styled(Image)`
