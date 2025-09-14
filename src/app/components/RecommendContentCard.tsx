@@ -84,7 +84,7 @@ export default function RecommendContentCard({
                 </ContentHeader>
                 <ContentTitle>{title}</ContentTitle>
                 <ContentInfo>
-                    {`${game} | ${author} • ${dayjs(createAt).fromNow()}`}
+                    {`${author} • ${dayjs(createAt).fromNow()}`}
                 </ContentInfo>
                 <ContentStats>
                     <StatItem>

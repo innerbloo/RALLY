@@ -30,10 +30,11 @@ export default function CommunityCard({
     return (
         <CardContainer>
             <CommunityLeftSection>
+                <GameTitle>{game}</GameTitle>
                 <h2>
                     {title} <span>[{comment}]</span>
                 </h2>
-                <p>{`${game} | ${dayjs(createAt).fromNow()} | ${username}`}</p>
+                <p>{`${dayjs(createAt).fromNow()} • ${username}`}</p>
             </CommunityLeftSection>
             <CommunityRightSection>
                 <Image
@@ -77,6 +78,13 @@ const CommunityLeftSection = styled.div`
         font-weight: 300;
         font-size: 1.3rem;
     }
+`;
+
+const GameTitle = styled.div`
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #939393;
+    margin-bottom: 0.4rem;
 `;
 
 const CommunityRightSection = styled.div``;
