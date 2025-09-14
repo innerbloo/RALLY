@@ -46,6 +46,9 @@ export default function RootLayout({
                 <Toaster
                     position="top-center"
                     gutter={8}
+                    containerStyle={{
+                        top: 'calc(env(safe-area-inset-top) + 20px)',
+                    }}
                     toastOptions={{
                         duration: 3000,
                         style: {
