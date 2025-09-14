@@ -199,6 +199,7 @@ const Slide = styled.div`
     flex-direction: column;
     justify-content: space-between;
     padding: 0 2rem;
+    padding-top: env(safe-area-inset-top);
 `;
 
 const ContentWrapper = styled.div`
@@ -228,7 +229,7 @@ const ButtonWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 2rem;
-    padding-bottom: 2rem;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom));
 `;
 
 const AnimatedImage = styled(Image)`
