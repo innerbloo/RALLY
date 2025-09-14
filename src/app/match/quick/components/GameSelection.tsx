@@ -1,10 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-
-import styled from '@emotion/styled';
+import toast from 'react-hot-toast';
 
 import { GameOption } from '../types/quickMatch';
+
+import styled from '@emotion/styled';
 
 interface GameSelectionProps {
     selectedGame: string | null;
@@ -45,30 +46,32 @@ const gameOptions: GameOption[] = [
     {
         id: 'lostark',
         name: '로스트아크',
-        icon: '/game6.png',
+        icon: '/game7.png',
         available: false,
     },
     {
         id: 'apex',
-        name: '에이펙스 레전드',
-        icon: '/game7.png',
+        name: 'APEX 레전드',
+        icon: '/game8.png',
         available: false,
     },
     {
         id: 'fortnite',
         name: '포트나이트',
-        icon: '/game8.png',
+        icon: '/game6.png',
         available: false,
     },
 ];
 
-export default function GameSelection({ selectedGame, onGameSelect }: GameSelectionProps) {
+export default function GameSelection({
+    selectedGame,
+    onGameSelect,
+}: GameSelectionProps) {
+    const toastId = 'game-unavailable';
     return (
         <GameSelectionContainer>
-            <Description>
-                듀오 매칭을 원하는 게임을 선택해주세요
-            </Description>
-            
+            <Description>듀오 매칭을 원하는 게임을 선택해주세요</Description>
+
             <GameGrid>
                 {gameOptions.map((game) => (
                     <GameCard
@@ -77,7 +80,36 @@ export default function GameSelection({ selectedGame, onGameSelect }: GameSelect
                         $available={game.available}
                         onClick={() => {
                             if (game.available) {
-                                onGameSelect(game.id as 'lol' | 'tft' | 'overwatch');
+                                onGameSelect(
+                                    game.id as 'lol' | 'tft' | 'overwatch',
+                                );
+
+                                setTimeout(() => {
+                                    const footer =
+                                        document.querySelector('footer');
+                                    if (footer) {
+                                        const headerHeight = 140;
+                                        const footerTop =
+                                            footer.getBoundingClientRect().top +
+                                            window.scrollY;
+                                        const targetScroll = Math.max(
+                                            0,
+                                            footerTop -
+                                                window.innerHeight +
+                                                footer.offsetHeight +
+                                                headerHeight,
+                                        );
+
+                                        window.scrollTo({
+                                            top: targetScroll,
+                                            behavior: 'smooth',
+                                        });
+                                    }
+                                }, 100);
+                            } else {
+                                toast('아직 서비스 준비중인 게임입니다!', {
+                                    id: toastId,
+                                });
                             }
                         }}
                     >
@@ -93,18 +125,15 @@ export default function GameSelection({ selectedGame, onGameSelect }: GameSelect
                         <GameName $available={game.available}>
                             {game.name}
                         </GameName>
-                        {!game.available && (
-                            <UnavailableLabel>준비중</UnavailableLabel>
-                        )}
+                        {/*{!game.available && (*/}
+                        {/*    <UnavailableLabel>준비중</UnavailableLabel>*/}
+                        {/*)}*/}
                         {selectedGame === game.id && (
-                            <SelectedIndicator>
-                                ✓
-                            </SelectedIndicator>
+                            <SelectedIndicator>✓</SelectedIndicator>
                         )}
                     </GameCard>
                 ))}
             </GameGrid>
-
         </GameSelectionContainer>
     );
 }
@@ -149,11 +178,12 @@ const GameCard = styled.button<{ $active: boolean; $available: boolean }>`
         if ($active) return 'rgba(66, 114, 236, 0.2)';
         return '#252527';
     }};
-    border: 0.2rem solid ${({ $active, $available }) => {
-        if (!$available) return '#3f3f41';
-        if ($active) return '#4272ec';
-        return '#3f3f41';
-    }};
+    border: 0.2rem solid
+        ${({ $active, $available }) => {
+            if (!$available) return '#3f3f41';
+            if ($active) return '#4272ec';
+            return '#3f3f41';
+        }};
     border-radius: 1.6rem;
     cursor: ${({ $available }) => ($available ? 'pointer' : 'not-allowed')};
     transition: all 0.2s ease;
@@ -232,4 +262,3 @@ const SelectedIndicator = styled.div`
     color: #ffffff;
     font-weight: bold;
 `;
-

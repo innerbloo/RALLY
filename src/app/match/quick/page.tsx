@@ -1,18 +1,20 @@
 'use client';
 
-import { useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+
+import GameSelection from './components/GameSelection';
+import LoadingSpinner from './components/LoadingSpinner';
+import MicrophoneSelection from './components/MicrophoneSelection';
+import PositionSelection from './components/PositionSelection';
+import StyleSelection from './components/StyleSelection';
+import TierSelection from './components/TierSelection';
+import { QuickMatchData, QuickMatchStep } from './types/quickMatch';
 
 import styled from '@emotion/styled';
 
-import { QuickMatchData, QuickMatchStep } from './types/quickMatch';
-import GameSelection from './components/GameSelection';
-import PositionSelection from './components/PositionSelection';
-import TierSelection from './components/TierSelection';
-import MicrophoneSelection from './components/MicrophoneSelection';
-import StyleSelection from './components/StyleSelection';
-import LoadingSpinner from './components/LoadingSpinner';
+import { useQuickMatch } from '@/contexts/QuickMatchContext';
 
 const initialData: QuickMatchData = {
     game: null,
@@ -31,11 +33,20 @@ export default function QuickMatchPage() {
     const [currentStep, setCurrentStep] = useState<QuickMatchStep>(1);
     const [matchData, setMatchData] = useState<QuickMatchData>(initialData);
     const [isLoading, setIsLoading] = useState(false);
+    const { setProgress } = useQuickMatch();
     const router = useRouter();
+
+    // Set initial progress on mount
+    useEffect(() => {
+        setProgress((currentStep / 5) * 100);
+        return () => setProgress(0); // Clear progress on unmount
+    }, [currentStep, setProgress]);
 
     const handleNext = () => {
         if (currentStep < 5) {
-            setCurrentStep((prev) => (prev + 1) as QuickMatchStep);
+            const nextStep = (currentStep + 1) as QuickMatchStep;
+            setCurrentStep(nextStep);
+            setProgress((nextStep / 5) * 100);
             window.scrollTo(0, 0);
         } else {
             handleStartMatching();
@@ -44,23 +55,28 @@ export default function QuickMatchPage() {
 
     const handlePrevious = () => {
         if (currentStep > 1) {
-            setCurrentStep((prev) => (prev - 1) as QuickMatchStep);
+            const prevStep = (currentStep - 1) as QuickMatchStep;
+            setCurrentStep(prevStep);
+            setProgress((prevStep / 5) * 100);
             window.scrollTo(0, 0);
         } else {
+            setProgress(0);
             router.back();
         }
     };
 
     const handleStartMatching = async () => {
         setIsLoading(true);
-        
+        setProgress(100);
+
         // 3초 로딩 시뮬레이션
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+
         // 매칭 완료 후 처리 (추후 구현)
         console.log('매칭 데이터:', matchData);
         alert('매칭이 완료되었습니다! (임시 알림)');
         setIsLoading(false);
+        setProgress(0);
         router.push('/match');
     };
 
@@ -73,9 +89,16 @@ export default function QuickMatchPage() {
             case 1:
                 return matchData.game !== null;
             case 2:
-                return matchData.myPosition !== null && matchData.myPosition.length > 0 && matchData.desiredPositions.length > 0;
+                return (
+                    matchData.myPosition !== null &&
+                    matchData.myPosition.length > 0 &&
+                    matchData.desiredPositions.length > 0
+                );
             case 3:
-                return matchData.myTier !== null && matchData.desiredTierRange !== null;
+                return (
+                    matchData.myTier !== null &&
+                    matchData.desiredTierRange !== null
+                );
             case 4:
                 return matchData.microphonePreference !== null;
             case 5:
@@ -103,8 +126,10 @@ export default function QuickMatchPage() {
                         selectedGame={matchData.game}
                         myPosition={matchData.myPosition}
                         desiredPositions={matchData.desiredPositions}
-                        onMyPositionSelect={(positions) => updateMatchData({ myPosition: positions })}
-                        onDesiredPositionsChange={(positions) => 
+                        onMyPositionSelect={(positions) =>
+                            updateMatchData({ myPosition: positions })
+                        }
+                        onDesiredPositionsChange={(positions) =>
                             updateMatchData({ desiredPositions: positions })
                         }
                     />
@@ -114,8 +139,10 @@ export default function QuickMatchPage() {
                     <TierSelection
                         myTier={matchData.myTier}
                         desiredTierRange={matchData.desiredTierRange}
-                        onMyTierSelect={(tier) => updateMatchData({ myTier: tier })}
-                        onDesiredTierRangeChange={(range) => 
+                        onMyTierSelect={(tier) =>
+                            updateMatchData({ myTier: tier })
+                        }
+                        onDesiredTierRangeChange={(range) =>
                             updateMatchData({ desiredTierRange: range })
                         }
                     />
@@ -124,8 +151,10 @@ export default function QuickMatchPage() {
                 return (
                     <MicrophoneSelection
                         selectedPreference={matchData.microphonePreference}
-                        onPreferenceSelect={(preference) => 
-                            updateMatchData({ microphonePreference: preference })
+                        onPreferenceSelect={(preference) =>
+                            updateMatchData({
+                                microphonePreference: preference,
+                            })
                         }
                     />
                 );
@@ -133,7 +162,9 @@ export default function QuickMatchPage() {
                 return (
                     <StyleSelection
                         selectedStyles={matchData.desiredStyles}
-                        onStylesChange={(styles) => updateMatchData({ desiredStyles: styles })}
+                        onStylesChange={(styles) =>
+                            updateMatchData({ desiredStyles: styles })
+                        }
                     />
                 );
             default:
@@ -164,30 +195,17 @@ export default function QuickMatchPage() {
 
     return (
         <QuickMatchContainer>
-            <QuickMatchHeader>
-                <ProgressBar>
-                    <ProgressFill $progress={(currentStep / 5) * 100} />
-                </ProgressBar>
-                <StepIndicator>
-                    {currentStep}/5
-                </StepIndicator>
-            </QuickMatchHeader>
-
             <QuickMatchContent>
-                <StepTitle>{getStepTitle()}</StepTitle>
                 <StepContent>{renderStepContent()}</StepContent>
             </QuickMatchContent>
 
             <QuickMatchFooter>
-                <NavigationButton 
-                    onClick={handlePrevious}
-                    $variant="secondary"
-                >
+                <NavigationButton onClick={handlePrevious} $variant="secondary">
                     <ArrowLeft size={18} />
                     이전
                 </NavigationButton>
-                
-                <NavigationButton 
+
+                <NavigationButton
                     onClick={handleNext}
                     $variant="primary"
                     disabled={!canProceed()}
@@ -207,47 +225,12 @@ const QuickMatchContainer = styled.div`
     flex-direction: column;
 `;
 
-const QuickMatchHeader = styled.header`
-    padding: 2rem 2rem 1rem;
-    padding-top: calc(8rem + env(safe-area-inset-top));
-`;
-
-const ProgressBar = styled.div`
-    width: 100%;
-    height: 0.4rem;
-    background-color: #3f3f41;
-    border-radius: 0.2rem;
-    overflow: hidden;
-    margin-bottom: 1rem;
-`;
-
-const ProgressFill = styled.div<{ $progress: number }>`
-    width: ${({ $progress }) => $progress}%;
-    height: 100%;
-    background: linear-gradient(90deg, #4272ec 0%, #3a5fd9 100%);
-    transition: width 0.3s ease;
-`;
-
-const StepIndicator = styled.div`
-    text-align: center;
-    font-size: 1.4rem;
-    color: #939393;
-    font-weight: 500;
-`;
-
 const QuickMatchContent = styled.main`
     flex: 1;
     padding: 0 2rem;
+    padding-top: calc(8rem + env(safe-area-inset-top));
     display: flex;
     flex-direction: column;
-`;
-
-const StepTitle = styled.h1`
-    font-size: 2.4rem;
-    font-weight: 700;
-    color: #ffffff;
-    text-align: center;
-    margin: 0 0 3rem;
 `;
 
 const StepContent = styled.div`
@@ -265,7 +248,7 @@ const QuickMatchFooter = styled.footer`
     gap: 1rem;
 `;
 
-const NavigationButton = styled.button<{ 
+const NavigationButton = styled.button<{
     $variant: 'primary' | 'secondary';
     disabled?: boolean;
 }>`
@@ -286,15 +269,16 @@ const NavigationButton = styled.button<{
         if (disabled) return '#3f3f41';
         return $variant === 'primary' ? '#4272ec' : 'transparent';
     }};
-    
+
     color: ${({ $variant, disabled }) => {
         if (disabled) return '#939393';
         return $variant === 'primary' ? '#ffffff' : '#4272ec';
     }};
-    
-    border: ${({ $variant, disabled }) => 
-        $variant === 'secondary' && !disabled ? '0.1rem solid #4272ec' : 'none'
-    };
+
+    border: ${({ $variant, disabled }) =>
+        $variant === 'secondary' && !disabled
+            ? '0.1rem solid #4272ec'
+            : 'none'};
 
     &:disabled {
         cursor: not-allowed;
@@ -302,9 +286,8 @@ const NavigationButton = styled.button<{
 
     @media (hover: hover) and (pointer: fine) {
         &:hover:not(:disabled) {
-            background-color: ${({ $variant }) => 
-                $variant === 'primary' ? '#3a5fd9' : '#4272ec'
-            };
+            background-color: ${({ $variant }) =>
+                $variant === 'primary' ? '#3a5fd9' : '#4272ec'};
             color: #ffffff;
         }
     }

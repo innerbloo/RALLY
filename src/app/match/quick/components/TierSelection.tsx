@@ -100,9 +100,37 @@ export default function TierSelection({
             if (tier.subTiers.length === 0) {
                 // 마스터 이상은 세부 티어 없음
                 onMyTierSelect({ main: tierId });
+
+                setTimeout(() => {
+                    const duoTierSection = document.querySelector('[data-section="duo-tier-range"]');
+                    if (duoTierSection) {
+                        const headerHeight = 140;
+                        const sectionTop = duoTierSection.getBoundingClientRect().top + window.scrollY;
+                        const targetScroll = Math.max(0, sectionTop - headerHeight);
+
+                        window.scrollTo({
+                            top: targetScroll,
+                            behavior: 'smooth'
+                        });
+                    }
+                }, 300);
             } else {
                 // 세부 티어가 있는 경우 기본 선택값 없음
                 onMyTierSelect({ main: tierId });
+
+                setTimeout(() => {
+                    const subTierSection = document.querySelector('[data-section="sub-tier"]');
+                    if (subTierSection) {
+                        const headerHeight = 140;
+                        const sectionTop = subTierSection.getBoundingClientRect().top + window.scrollY;
+                        const targetScroll = Math.max(0, sectionTop - headerHeight);
+
+                        window.scrollTo({
+                            top: targetScroll,
+                            behavior: 'smooth'
+                        });
+                    }
+                }, 300);
             }
         }
     };
@@ -110,6 +138,20 @@ export default function TierSelection({
     const handleSubTierSelect = (subTier: string) => {
         if (selectedMainTier) {
             onMyTierSelect({ main: selectedMainTier, sub: subTier });
+
+            setTimeout(() => {
+                const duoTierSection = document.querySelector('[data-section="duo-tier-range"]');
+                if (duoTierSection) {
+                    const headerHeight = 140;
+                    const sectionTop = duoTierSection.getBoundingClientRect().top + window.scrollY;
+                    const targetScroll = Math.max(0, sectionTop - headerHeight);
+
+                    window.scrollTo({
+                        top: targetScroll,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 300);
         }
     };
 
@@ -122,6 +164,22 @@ export default function TierSelection({
             setRangeMaxTier(tierId);
             const newRange = { min: rangeMinTier || tierId, max: tierId };
             onDesiredTierRangeChange(newRange);
+        }
+
+        if ((type === 'min' && rangeMaxTier) || (type === 'max' && rangeMinTier)) {
+            setTimeout(() => {
+                const footer = document.querySelector('footer');
+                if (footer) {
+                    const headerHeight = 140;
+                    const footerTop = footer.getBoundingClientRect().top + window.scrollY;
+                    const targetScroll = Math.max(0, footerTop - window.innerHeight + footer.offsetHeight + headerHeight);
+
+                    window.scrollTo({
+                        top: targetScroll,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 300);
         }
     };
 
@@ -165,7 +223,7 @@ export default function TierSelection({
             </Section>
 
             {selectedMainTier && getSelectedTier()?.subTiers && getSelectedTier()!.subTiers.length > 0 && (
-                <Section>
+                <Section data-section="sub-tier">
                     <SectionTitle>세부 티어</SectionTitle>
                     <SectionDescription>세부 티어를 선택해주세요</SectionDescription>
                     <SubTierGrid>
@@ -183,7 +241,7 @@ export default function TierSelection({
             )}
 
             {myTier && (getSelectedTier()?.subTiers?.length === 0 || myTier.sub) && (
-                <Section>
+                <Section data-section="duo-tier-range">
                     <SectionTitle>원하는 듀오 티어 범위</SectionTitle>
                     <SectionDescription>함께 플레이하고 싶은 티어 범위를 설정해주세요</SectionDescription>
                 
@@ -269,7 +327,7 @@ const TierSelectionContainer = styled.div`
 const Section = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 0rem;
 `;
 
 const SectionTitle = styled.h2`
@@ -284,7 +342,7 @@ const SectionDescription = styled.p`
     font-size: 1.4rem;
     color: #939393;
     text-align: center;
-    margin: 0;
+    margin: 0 0 2rem;
     line-height: 1.4;
 `;
 
@@ -292,8 +350,7 @@ const TierGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
     gap: 1.5rem;
-    margin: 0 auto;
-    max-width: 80rem;
+    width: 100%;
 
     @media (max-width: 768px) {
         grid-template-columns: repeat(3, 1fr);
@@ -376,10 +433,11 @@ const SubTierButton = styled.button<{ $active: boolean }>`
 
 const RangeSection = styled.div`
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 2rem;
-    justify-content: center;
+    justify-content: space-between;
     flex-wrap: wrap;
+    width: 100%;
 `;
 
 const RangeSelector = styled.div`
@@ -387,6 +445,8 @@ const RangeSelector = styled.div`
     flex-direction: column;
     gap: 1rem;
     align-items: center;
+    flex: 1;
+    min-width: 0;
 `;
 
 const RangeLabel = styled.label`
@@ -405,7 +465,7 @@ const TierDropdown = styled.div`
     padding: 1rem;
     max-height: 30rem;
     overflow-y: auto;
-    min-width: 20rem;
+    width: 100%;
 
     /* 스크롤바 숨기기 */
     scrollbar-width: none; /* Firefox */
@@ -416,7 +476,6 @@ const TierDropdown = styled.div`
 
     @media (max-width: 480px) {
         grid-template-columns: 1fr;
-        min-width: 15rem;
     }
 `;
 

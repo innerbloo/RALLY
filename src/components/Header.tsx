@@ -6,6 +6,8 @@ import { useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
+import { useQuickMatch } from '@/contexts/QuickMatchContext';
+
 interface UserStatus {
     isOnline: boolean;
     currentGame: string | null;
@@ -59,6 +61,8 @@ export default function Header() {
     const [isGameSelectOpen, setIsGameSelectOpen] = useState(false);
     const [currentGame, setCurrentGame] = useState('리그오브레전드');
 
+    // QuickMatch progress context (will be 0 if not in QuickMatch)
+    const { progress } = useQuickMatch();
     const unreadCount = mockNotifications.filter((n) => !n.isRead).length;
 
     // 스크롤 시 드롭다운 닫기
@@ -100,6 +104,7 @@ export default function Header() {
 
     return (
         <HeaderContainer>
+            <ProgressOverlay $progress={progress} />
             <HeaderWrapper>
                 {/* 브랜딩 영역 */}
                 <BrandingSection>
@@ -488,4 +493,15 @@ const ProfileButton = styled.div`
             background: #252527;
         }
     }
+`;
+
+const ProgressOverlay = styled.div<{ $progress: number }>`
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    height: 3px;
+    width: ${({ $progress }) => $progress}%;
+    background: linear-gradient(90deg, #4272ec 0%, #3a5fd9 100%);
+    transition: width 0.3s ease;
+    z-index: 1;
 `;

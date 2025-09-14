@@ -15,39 +15,137 @@ interface StyleSelectionProps {
 
 const gameStyleOptions = {
     '전투 스타일': ['공격적인', '수비적인', '팀 중심형', '혼자 플레이 선호'],
-    '게임 진행 스타일': ['빠른 템포 선호', '신중한 플레이', '전략적인', '창의적인 플레이'],
+    '게임 진행 스타일': [
+        '빠른 템포 선호',
+        '신중한 플레이',
+        '전략적인',
+        '창의적인 플레이',
+    ],
     '역할 기반': ['리더형', '서포터형', '팀플 선호', '솔로 플레이 선호'],
 };
 
 const communicationStyleOptions = {
-    '말투 / 태도': ['예의 바른', '편하게 대화하는', '유머러스한', '차분한', '감정 기복 없는', '직설적인'],
-    '소통 방식': ['마이크 필수', '마이크 가능하지만 조용한', '채팅 위주', '필요한 말만 하는'],
-    '욕설 / 감정 표현': ['욕 안 하는', '가끔 욕하지만 선 넘지 않음', '감정 조절 가능', '다혈질', '쿨하고 감정 없음'],
+    '말투 / 태도': [
+        '예의 바른',
+        '편하게 대화하는',
+        '유머러스한',
+        '차분한',
+        '감정 기복 없는',
+        '직설적인',
+    ],
+    '소통 방식': [
+        '마이크 필수',
+        '마이크 가능하지만 조용한',
+        '채팅 위주',
+        '필요한 말만 하는',
+    ],
+    '욕설 / 감정 표현': [
+        '욕 안 하는',
+        '가끔 욕하지만 선 넘지 않음',
+        '감정 조절 가능',
+        '다혈질',
+        '쿨하고 감정 없음',
+    ],
 };
 
-export default function StyleSelection({ selectedStyles, onStylesChange }: StyleSelectionProps) {
+export default function StyleSelection({
+    selectedStyles,
+    onStylesChange,
+}: StyleSelectionProps) {
     const toggleGameStyle = (style: string) => {
         const isSelected = selectedStyles.gameStyles.includes(style);
         const newGameStyles = isSelected
-            ? selectedStyles.gameStyles.filter(s => s !== style)
+            ? selectedStyles.gameStyles.filter((s) => s !== style)
             : [...selectedStyles.gameStyles, style];
-        
-        onStylesChange({
+
+        const newStyles = {
             ...selectedStyles,
             gameStyles: newGameStyles,
-        });
+        };
+
+        onStylesChange(newStyles);
+
+        if (!isSelected) {
+            const categories = Object.keys(gameStyleOptions) as Array<keyof typeof gameStyleOptions>;
+            const isComplete = categories.every(category =>
+                gameStyleOptions[category].some(item =>
+                    newStyles.gameStyles.includes(item)
+                )
+            );
+
+            if (isComplete) {
+                setTimeout(() => {
+                    const communicationSection = document.querySelector('[data-section="communication-style"]');
+                    if (communicationSection) {
+                        const headerHeight = 140;
+                        const sectionTop = communicationSection.getBoundingClientRect().top + window.scrollY;
+                        const targetScroll = Math.max(0, sectionTop - headerHeight);
+
+                        window.scrollTo({
+                            top: targetScroll,
+                            behavior: 'smooth'
+                        });
+                    }
+                }, 300);
+            }
+        }
     };
 
     const toggleCommunicationStyle = (style: string) => {
         const isSelected = selectedStyles.communicationStyles.includes(style);
         const newCommunicationStyles = isSelected
-            ? selectedStyles.communicationStyles.filter(s => s !== style)
+            ? selectedStyles.communicationStyles.filter((s) => s !== style)
             : [...selectedStyles.communicationStyles, style];
-        
-        onStylesChange({
+
+        const newStyles = {
             ...selectedStyles,
             communicationStyles: newCommunicationStyles,
-        });
+        };
+
+        onStylesChange(newStyles);
+
+        if (!isSelected) {
+            const categories = Object.keys(communicationStyleOptions) as Array<keyof typeof communicationStyleOptions>;
+            const isComplete = categories.every(category =>
+                communicationStyleOptions[category].some(item =>
+                    newStyles.communicationStyles.includes(item)
+                )
+            );
+
+            if (isComplete) {
+                setTimeout(() => {
+                    const footer = document.querySelector('footer');
+                    if (footer) {
+                        const headerHeight = 140;
+                        const footerTop = footer.getBoundingClientRect().top + window.scrollY;
+                        const targetScroll = Math.max(0, footerTop - window.innerHeight + footer.offsetHeight + headerHeight);
+
+                        window.scrollTo({
+                            top: targetScroll,
+                            behavior: 'smooth'
+                        });
+                    }
+                }, 300);
+            }
+        }
+    };
+
+    const isGameStyleComplete = () => {
+        const categories = Object.keys(gameStyleOptions) as Array<keyof typeof gameStyleOptions>;
+        return categories.every(category =>
+            gameStyleOptions[category].some(item =>
+                selectedStyles.gameStyles.includes(item)
+            )
+        );
+    };
+
+    const isCommunicationStyleComplete = () => {
+        const categories = Object.keys(communicationStyleOptions) as Array<keyof typeof communicationStyleOptions>;
+        return categories.every(category =>
+            communicationStyleOptions[category].some(item =>
+                selectedStyles.communicationStyles.includes(item)
+            )
+        );
     };
 
     const renderStyleSection = (
@@ -55,14 +153,16 @@ export default function StyleSelection({ selectedStyles, onStylesChange }: Style
         options: Record<string, string[]>,
         selectedItems: string[],
         onToggle: (item: string) => void,
-        type: 'game' | 'communication'
+        type: 'game' | 'communication',
     ) => (
-        <StyleSection>
+        <StyleSection {...(type === 'communication' ? { 'data-section': 'communication-style' } : {})}>
             <SectionTitle>{title}</SectionTitle>
             <SectionDescription>
-                원하는 듀오의 {title.toLowerCase()}을 선택해주세요 (다중 선택 가능)
+                원하는 듀오의 {title.toLowerCase()}을 선택해주세요
+                <br />
+                (다중 선택 가능)
             </SectionDescription>
-            
+
             {Object.entries(options).map(([category, items]) => (
                 <CategorySection key={category}>
                     <CategoryTitle>{category}</CategoryTitle>
@@ -87,21 +187,24 @@ export default function StyleSelection({ selectedStyles, onStylesChange }: Style
     );
 
     const getTotalSelectedCount = () => {
-        return selectedStyles.gameStyles.length + selectedStyles.communicationStyles.length;
+        return (
+            selectedStyles.gameStyles.length +
+            selectedStyles.communicationStyles.length
+        );
     };
 
     return (
         <StyleSelectionContainer>
-            <Description>
-                함께 플레이하고 싶은 듀오의 성향을 선택해주세요
-            </Description>
+            {/*<Description>*/}
+            {/*    함께 플레이하고 싶은 듀오의 성향을 선택해주세요*/}
+            {/*</Description>*/}
 
             {renderStyleSection(
                 '게임 성향',
                 gameStyleOptions,
                 selectedStyles.gameStyles,
                 toggleGameStyle,
-                'game'
+                'game',
             )}
 
             {renderStyleSection(
@@ -109,7 +212,7 @@ export default function StyleSelection({ selectedStyles, onStylesChange }: Style
                 communicationStyleOptions,
                 selectedStyles.communicationStyles,
                 toggleCommunicationStyle,
-                'communication'
+                'communication',
             )}
 
             {getTotalSelectedCount() > 0 && (
@@ -117,7 +220,7 @@ export default function StyleSelection({ selectedStyles, onStylesChange }: Style
                     <SummaryTitle>
                         선택된 성향 ({getTotalSelectedCount()}개)
                     </SummaryTitle>
-                    
+
                     {selectedStyles.gameStyles.length > 0 && (
                         <SummarySection>
                             <SummaryLabel>게임 성향:</SummaryLabel>
@@ -135,11 +238,16 @@ export default function StyleSelection({ selectedStyles, onStylesChange }: Style
                         <SummarySection>
                             <SummaryLabel>커뮤니케이션:</SummaryLabel>
                             <SummaryTags>
-                                {selectedStyles.communicationStyles.map((style) => (
-                                    <SummaryTag key={style} $type="communication">
-                                        {style}
-                                    </SummaryTag>
-                                ))}
+                                {selectedStyles.communicationStyles.map(
+                                    (style) => (
+                                        <SummaryTag
+                                            key={style}
+                                            $type="communication"
+                                        >
+                                            {style}
+                                        </SummaryTag>
+                                    ),
+                                )}
                             </SummaryTags>
                         </SummarySection>
                     )}
@@ -149,8 +257,12 @@ export default function StyleSelection({ selectedStyles, onStylesChange }: Style
             <TipSection>
                 <TipTitle>💡 선택 가이드</TipTitle>
                 <TipList>
-                    <TipItem>더 많은 성향을 선택할수록 정확한 매칭이 가능해요</TipItem>
-                    <TipItem>최소 3-5개 정도 선택하시는 것을 추천합니다</TipItem>
+                    <TipItem>
+                        더 많은 성향을 선택할수록 정확한 매칭이 가능해요
+                    </TipItem>
+                    <TipItem>
+                        최소 3-5개 정도 선택하시는 것을 추천합니다
+                    </TipItem>
                     <TipItem>나중에 언제든지 설정을 변경할 수 있어요</TipItem>
                 </TipList>
             </TipSection>
@@ -175,7 +287,7 @@ const Description = styled.p`
 const StyleSection = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 0rem;
 `;
 
 const SectionTitle = styled.h2`
@@ -190,7 +302,7 @@ const SectionDescription = styled.p`
     font-size: 1.4rem;
     color: #939393;
     text-align: center;
-    margin: 0;
+    margin: 0 0 2rem;
     line-height: 1.4;
 `;
 
@@ -198,6 +310,11 @@ const CategorySection = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    margin-bottom: 3rem;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 `;
 
 const CategoryTitle = styled.h3`
@@ -213,7 +330,10 @@ const TagGrid = styled.div`
     gap: 1rem;
 `;
 
-const StyleTag = styled.button<{ $active: boolean; $type: 'game' | 'communication' }>`
+const StyleTag = styled.button<{
+    $active: boolean;
+    $type: 'game' | 'communication';
+}>`
     position: relative;
     display: flex;
     align-items: center;
@@ -221,17 +341,18 @@ const StyleTag = styled.button<{ $active: boolean; $type: 'game' | 'communicatio
     padding: 1rem 1.6rem;
     font-size: 1.3rem;
     font-weight: 500;
-    border: 0.1rem solid ${({ $active, $type }) => {
-        if ($active) {
-            return $type === 'game' ? '#4272ec' : '#22c55e';
-        }
-        return '#3f3f41';
-    }};
+    border: 0.1rem solid
+        ${({ $active, $type }) => {
+            if ($active) {
+                return $type === 'game' ? '#4272ec' : '#22c55e';
+            }
+            return '#3f3f41';
+        }};
     border-radius: 2rem;
     background-color: ${({ $active, $type }) => {
         if ($active) {
-            return $type === 'game' 
-                ? 'rgba(66, 114, 236, 0.2)' 
+            return $type === 'game'
+                ? 'rgba(66, 114, 236, 0.2)'
                 : 'rgba(34, 197, 94, 0.2)';
         }
         return 'transparent';
@@ -247,13 +368,13 @@ const StyleTag = styled.button<{ $active: boolean; $type: 'game' | 'communicatio
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
-            border-color: ${({ $type }) => $type === 'game' ? '#4272ec' : '#22c55e'};
-            background-color: ${({ $type }) => 
-                $type === 'game' 
-                    ? 'rgba(66, 114, 236, 0.1)' 
-                    : 'rgba(34, 197, 94, 0.1)'
-            };
-            color: ${({ $type }) => $type === 'game' ? '#4272ec' : '#22c55e'};
+            border-color: ${({ $type }) =>
+                $type === 'game' ? '#4272ec' : '#22c55e'};
+            background-color: ${({ $type }) =>
+                $type === 'game'
+                    ? 'rgba(66, 114, 236, 0.1)'
+                    : 'rgba(34, 197, 94, 0.1)'};
+            color: ${({ $type }) => ($type === 'game' ? '#4272ec' : '#22c55e')};
         }
     }
 `;
@@ -307,7 +428,7 @@ const SummaryTag = styled.span<{ $type: 'game' | 'communication' }>`
     font-size: 1.2rem;
     font-weight: 500;
     border-radius: 1.5rem;
-    background-color: ${({ $type }) => 
+    background-color: ${({ $type }) =>
         $type === 'game' ? '#4272ec' : '#22c55e'};
     color: #f5f5f5;
 `;

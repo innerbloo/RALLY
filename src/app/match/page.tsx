@@ -1,8 +1,8 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
 import { Zap } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { ReactNode, useState } from 'react';
 
 import PositionLolTop2 from '/public/lol/position-lol-top2.svg';
 import PositionOverwatchDPS2 from '/public/overwatch/position-overwatch-dps2.svg';
@@ -97,14 +97,18 @@ export default function MatchPage() {
     };
 
     const filteredUsers = mockUsers.filter((user) => {
-        const gameFilter = selectedGame === '전체' || user.game === selectedGame;
-        const searchFilter = searchTerm === '' ||
+        const gameFilter =
+            selectedGame === '전체' || user.game === selectedGame;
+        const searchFilter =
+            searchTerm === '' ||
             user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
             user.gameId.toLowerCase().includes(searchTerm.toLowerCase());
-        const styleFilter = selectedFilters.length === 0 ||
-            selectedFilters.some(filter =>
-                user.gameStyles.includes(filter) ||
-                user.communicationStyles.includes(filter)
+        const styleFilter =
+            selectedFilters.length === 0 ||
+            selectedFilters.some(
+                (filter) =>
+                    user.gameStyles.includes(filter) ||
+                    user.communicationStyles.includes(filter),
             );
 
         return gameFilter && searchFilter && styleFilter;
@@ -128,7 +132,14 @@ export default function MatchPage() {
                 <GameFilterContainer>
                     <h3>게임</h3>
                     <GameFilterList>
-                        {['전체', '리그오브레전드', '전략적 팀 전투', '발로란트', '오버워치2', '배틀그라운드'].map((game) => (
+                        {[
+                            '전체',
+                            '리그오브레전드',
+                            '전략적 팀 전투',
+                            '발로란트',
+                            '오버워치2',
+                            '배틀그라운드',
+                        ].map((game) => (
                             <GameFilterButton
                                 key={game}
                                 $active={selectedGame === game}
@@ -160,25 +171,44 @@ export default function MatchPage() {
                     {filteredUsers.map((user) => (
                         <UserRow key={user.id}>
                             <UserNameCell>
-                                <UserProfileImage src={user.profileImage} alt={`${user.username} 프로필`} />
+                                <UserProfileImage
+                                    src={user.profileImage}
+                                    alt={`${user.username} 프로필`}
+                                />
                                 <UserNameContent>
                                     <UserNameWithPosition>
                                         {user.username}
-                                        {user.position && <PositionIcon>{user.position}</PositionIcon>}
+                                        {user.position && (
+                                            <PositionIcon>
+                                                {user.position}
+                                            </PositionIcon>
+                                        )}
                                     </UserNameWithPosition>
                                     <UserGameId>{user.gameId}</UserGameId>
-                                    <UserDescription>{user.description}</UserDescription>
+                                    <UserDescription>
+                                        {user.description}
+                                    </UserDescription>
                                     <UserTags>
-                                        {user.gameStyles.slice(0, 2).map((style, index) => (
-                                            <TagBadge key={index} $type="game">
-                                                {style}
-                                            </TagBadge>
-                                        ))}
-                                        {user.communicationStyles.slice(0, 2).map((style, index) => (
-                                            <TagBadge key={index} $type="communication">
-                                                {style}
-                                            </TagBadge>
-                                        ))}
+                                        {user.gameStyles
+                                            .slice(0, 2)
+                                            .map((style, index) => (
+                                                <TagBadge
+                                                    key={index}
+                                                    $type="game"
+                                                >
+                                                    {style}
+                                                </TagBadge>
+                                            ))}
+                                        {user.communicationStyles
+                                            .slice(0, 2)
+                                            .map((style, index) => (
+                                                <TagBadge
+                                                    key={index}
+                                                    $type="communication"
+                                                >
+                                                    {style}
+                                                </TagBadge>
+                                            ))}
                                     </UserTags>
                                 </UserNameContent>
                             </UserNameCell>
@@ -187,7 +217,9 @@ export default function MatchPage() {
                                 <TierName>{user.tier}</TierName>
                             </TierCell>
                             <WinRateCell>
-                                <WinRateValue $rate={user.winRate}>{user.winRate}%</WinRateValue>
+                                <WinRateValue $rate={user.winRate}>
+                                    {user.winRate}%
+                                </WinRateValue>
                             </WinRateCell>
                             <KDACell>
                                 <KDAValue $kda={user.kda}>{user.kda}</KDAValue>
@@ -201,12 +233,16 @@ export default function MatchPage() {
                                 </StatusBadge>
                             </StatusCell>
                             <TimeCell>
-                                <TimeText>{new Date(user.registeredAt).toLocaleDateString('ko-KR', {
-                                    month: 'short',
-                                    day: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                })}</TimeText>
+                                <TimeText>
+                                    {new Date(
+                                        user.registeredAt,
+                                    ).toLocaleDateString('ko-KR', {
+                                        month: 'short',
+                                        day: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                    })}
+                                </TimeText>
                             </TimeCell>
                             <ActionCell>
                                 <ActionButtons>
@@ -422,7 +458,7 @@ const TagBadge = styled.span<{ $type: 'game' | 'communication' }>`
     font-size: 1rem;
     font-weight: 500;
     border-radius: 0.8rem;
-    background-color: ${({ $type }) => 
+    background-color: ${({ $type }) =>
         $type === 'game' ? '#4272ec' : '#22c55e'};
     color: #ffffff;
 `;
@@ -470,9 +506,8 @@ const WinRateCell = styled.div`
 const WinRateValue = styled.div<{ $rate: number }>`
     font-size: 1.4rem;
     font-weight: 600;
-    color: ${({ $rate }) => 
-        $rate >= 60 ? '#22c55e' :
-        $rate >= 50 ? '#f59e0b' : '#ef4444'};
+    color: ${({ $rate }) =>
+        $rate >= 60 ? '#22c55e' : $rate >= 50 ? '#f59e0b' : '#ef4444'};
 `;
 
 const KDACell = styled.div`
@@ -495,9 +530,8 @@ const KDACell = styled.div`
 const KDAValue = styled.div<{ $kda: number }>`
     font-size: 1.4rem;
     font-weight: 600;
-    color: ${({ $kda }) => 
-        $kda >= 2.0 ? '#22c55e' :
-        $kda >= 1.5 ? '#f59e0b' : '#ef4444'};
+    color: ${({ $kda }) =>
+        $kda >= 2.0 ? '#22c55e' : $kda >= 1.5 ? '#f59e0b' : '#ef4444'};
 `;
 
 const StatusCell = styled.div`
@@ -559,7 +593,7 @@ const ActionCell = styled.div`
 const ActionButtons = styled.div`
     display: flex;
     gap: 0.6rem;
-    
+
     @media (max-width: 768px) {
         width: 100%;
         justify-content: center;
@@ -650,10 +684,6 @@ const QuickMatchButton = styled.button`
         bottom: calc(8rem + env(safe-area-inset-bottom));
         padding: 1rem 1.6rem;
         font-size: 1.3rem;
-
-        span {
-            display: none;
-        }
     }
 
     svg {

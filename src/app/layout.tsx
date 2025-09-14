@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { Toaster } from 'react-hot-toast';
 
 import './globals.css';
 import ClientLayout from '@/components/ClientLayout';
@@ -42,6 +43,30 @@ export default function RootLayout({
         <html lang="ko">
             <body className={`${pretendard.variable} font-sans antialiased`} style={{ fontFamily: 'var(--font-pretendard)' }}>
                 <ClientLayout>{children}</ClientLayout>
+                <Toaster
+                    position="top-center"
+                    gutter={8}
+                    toastOptions={{
+                        duration: 3000,
+                        style: {
+                            background: 'linear-gradient(135deg, #4272ec 0%, #3a5fd9 100%)',
+                            color: '#ffffff',
+                            borderRadius: '16px',
+                            padding: '16px 24px',
+                            fontSize: '15px',
+                            fontWeight: '600',
+                            border: 'none',
+                            boxShadow: '0 8px 32px rgba(66, 114, 236, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2)',
+                            backdropFilter: 'blur(10px)',
+                            minWidth: '280px',
+                            textAlign: 'center',
+                        },
+                        iconTheme: {
+                            primary: '#ffffff',
+                            secondary: '#4272ec',
+                        },
+                    }}
+                />
             </body>
         </html>
     );

@@ -60,6 +60,8 @@ export default function PositionSelection({
     onMyPositionSelect,
     onDesiredPositionsChange,
 }: PositionSelectionProps) {
+    const [hasScrolledToDesired, setHasScrolledToDesired] = useState(false);
+    const [hasScrolledToFooter, setHasScrolledToFooter] = useState(false);
     if (selectedGame !== 'lol') {
         return (
             <NotSupportedMessage>
@@ -103,6 +105,23 @@ export default function PositionSelection({
                 onMyPositionSelect([]);
             } else {
                 onMyPositionSelect(['all']);
+
+                if (!hasScrolledToDesired) {
+                    setTimeout(() => {
+                        const desiredSection = document.querySelector('[data-section="desired-positions"]');
+                        if (desiredSection) {
+                            const headerHeight = 140;
+                            const sectionTop = desiredSection.getBoundingClientRect().top + window.scrollY;
+                            const targetScroll = Math.max(0, sectionTop - headerHeight);
+
+                            window.scrollTo({
+                                top: targetScroll,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }, 300);
+                    setHasScrolledToDesired(true);
+                }
             }
         } else {
             if (myPositions.includes(positionId)) {
@@ -110,6 +129,23 @@ export default function PositionSelection({
             } else {
                 const newPositions = myPositions.filter((p) => p !== 'all');
                 onMyPositionSelect([...newPositions, positionId]);
+
+                if (!hasScrolledToDesired) {
+                    setTimeout(() => {
+                        const desiredSection = document.querySelector('[data-section="desired-positions"]');
+                        if (desiredSection) {
+                            const headerHeight = 140;
+                            const sectionTop = desiredSection.getBoundingClientRect().top + window.scrollY;
+                            const targetScroll = Math.max(0, sectionTop - headerHeight);
+
+                            window.scrollTo({
+                                top: targetScroll,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }, 300);
+                    setHasScrolledToDesired(true);
+                }
             }
         }
     };
@@ -120,6 +156,23 @@ export default function PositionSelection({
                 onDesiredPositionsChange([]);
             } else {
                 onDesiredPositionsChange(['all']);
+
+                if (!hasScrolledToFooter) {
+                    setTimeout(() => {
+                        const footer = document.querySelector('footer');
+                        if (footer) {
+                            const headerHeight = 140;
+                            const footerTop = footer.getBoundingClientRect().top + window.scrollY;
+                            const targetScroll = Math.max(0, footerTop - window.innerHeight + footer.offsetHeight + headerHeight);
+
+                            window.scrollTo({
+                                top: targetScroll,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }, 300);
+                    setHasScrolledToFooter(true);
+                }
             }
         } else {
             if (desiredPositions.includes(positionId)) {
@@ -131,6 +184,23 @@ export default function PositionSelection({
                     (p) => p !== 'all',
                 );
                 onDesiredPositionsChange([...newPositions, positionId]);
+
+                if (!hasScrolledToFooter) {
+                    setTimeout(() => {
+                        const footer = document.querySelector('footer');
+                        if (footer) {
+                            const headerHeight = 140;
+                            const footerTop = footer.getBoundingClientRect().top + window.scrollY;
+                            const targetScroll = Math.max(0, footerTop - window.innerHeight + footer.offsetHeight + headerHeight);
+
+                            window.scrollTo({
+                                top: targetScroll,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }, 300);
+                    setHasScrolledToFooter(true);
+                }
             }
         }
     };
@@ -171,7 +241,7 @@ export default function PositionSelection({
             </Section>
 
             {myPosition && myPosition.length > 0 && (
-                <Section>
+                <Section data-section="desired-positions">
                     <SectionTitle>원하는 듀오 포지션</SectionTitle>
                     <SectionDescription>
                         함께 플레이하고 싶은 포지션을 선택해주세요
@@ -204,7 +274,9 @@ export default function PositionSelection({
                 </Section>
             )}
 
-            {myPosition && myPosition.length > 0 && desiredPositions.length > 0 && (
+            {myPosition &&
+                myPosition.length > 0 &&
+                desiredPositions.length > 0 && (
                     <SelectionSummary>
                         <SummaryContent>
                             <SummaryItem>
@@ -249,7 +321,7 @@ const PositionSelectionContainer = styled.div`
 const Section = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 0rem;
 `;
 
 const SectionTitle = styled.h2`
@@ -264,7 +336,7 @@ const SectionDescription = styled.p`
     font-size: 1.4rem;
     color: #939393;
     text-align: center;
-    margin: 0;
+    margin: 0 0 2rem;
     line-height: 1.4;
 `;
 

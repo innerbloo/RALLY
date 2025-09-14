@@ -63,7 +63,23 @@ export default function MicrophoneSelection({
                     <OptionCard
                         key={option.id}
                         $active={selectedPreference === option.id}
-                        onClick={() => onPreferenceSelect(option.id)}
+                        onClick={() => {
+                            onPreferenceSelect(option.id);
+
+                            setTimeout(() => {
+                                const footer = document.querySelector('footer');
+                                if (footer) {
+                                    const headerHeight = 140;
+                                    const footerTop = footer.getBoundingClientRect().top + window.scrollY;
+                                    const targetScroll = Math.max(0, footerTop - window.innerHeight + footer.offsetHeight + headerHeight);
+
+                                    window.scrollTo({
+                                        top: targetScroll,
+                                        behavior: 'smooth'
+                                    });
+                                }
+                            }, 300);
+                        }}
                     >
                         <IconContainer
                             $active={selectedPreference === option.id}
