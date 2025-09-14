@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { TierOption } from '../types/quickMatch';
+import type { TierOption } from '../types/quickMatch';
 
 interface TierSelectionProps {
     myTier: { main: string; sub?: string } | null;
@@ -164,7 +164,7 @@ export default function TierSelection({
 
             </Section>
 
-            {selectedMainTier && getSelectedTier()?.subTiers.length > 0 && (
+            {selectedMainTier && getSelectedTier()?.subTiers && getSelectedTier()!.subTiers.length > 0 && (
                 <Section>
                     <SectionTitle>세부 티어</SectionTitle>
                     <SectionDescription>세부 티어를 선택해주세요</SectionDescription>
@@ -182,7 +182,7 @@ export default function TierSelection({
                 </Section>
             )}
 
-            {myTier && (getSelectedTier()?.subTiers.length === 0 || myTier.sub) && (
+            {myTier && (getSelectedTier()?.subTiers?.length === 0 || myTier.sub) && (
                 <Section>
                     <SectionTitle>원하는 듀오 티어 범위</SectionTitle>
                     <SectionDescription>함께 플레이하고 싶은 티어 범위를 설정해주세요</SectionDescription>
@@ -196,7 +196,7 @@ export default function TierSelection({
                                     key={`min-${tier.id}`}
                                     $active={rangeMinTier === tier.id}
                                     onClick={() => handleRangeChange('min', tier.id)}
-                                    disabled={rangeMaxTier && getTierIndex(tier.id) > getTierIndex(rangeMaxTier)}
+                                    disabled={rangeMaxTier ? getTierIndex(tier.id) > getTierIndex(rangeMaxTier) : false}
                                 >
                                     <Image
                                         src={tier.icon}
@@ -218,7 +218,7 @@ export default function TierSelection({
                                     key={`max-${tier.id}`}
                                     $active={rangeMaxTier === tier.id}
                                     onClick={() => handleRangeChange('max', tier.id)}
-                                    disabled={rangeMinTier && getTierIndex(tier.id) < getTierIndex(rangeMinTier)}
+                                    disabled={rangeMinTier ? getTierIndex(tier.id) < getTierIndex(rangeMinTier) : false}
                                 >
                                     <Image
                                         src={tier.icon}

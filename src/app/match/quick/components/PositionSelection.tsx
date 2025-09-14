@@ -14,7 +14,7 @@ import styled from '@emotion/styled';
 
 interface PositionSelectionProps {
     selectedGame: string | null;
-    myPosition: string | null;
+    myPosition: string[] | null;
     desiredPositions: string[];
     onMyPositionSelect: (positions: string[]) => void;
     onDesiredPositionsChange: (positions: string[]) => void;
@@ -96,8 +96,7 @@ export default function PositionSelection({
     };
 
     const handleMyPositionToggle = (positionId: string) => {
-        const myPositions =
-            typeof myPosition === 'string' ? [myPosition] : myPosition || [];
+        const myPositions = myPosition || [];
 
         if (positionId === 'all') {
             if (myPositions.includes('all')) {
@@ -146,10 +145,7 @@ export default function PositionSelection({
 
                 <PositionGrid>
                     {lolPositions.map((position) => {
-                        const myPositions =
-                            typeof myPosition === 'string'
-                                ? [myPosition]
-                                : myPosition || [];
+                        const myPositions = myPosition || [];
                         return (
                             <PositionCard
                                 key={position.id}
@@ -174,8 +170,7 @@ export default function PositionSelection({
                 </PositionGrid>
             </Section>
 
-            {((typeof myPosition === 'string' && myPosition) ||
-                (Array.isArray(myPosition) && myPosition.length > 0)) && (
+            {myPosition && myPosition.length > 0 && (
                 <Section>
                     <SectionTitle>원하는 듀오 포지션</SectionTitle>
                     <SectionDescription>
@@ -209,28 +204,20 @@ export default function PositionSelection({
                 </Section>
             )}
 
-            {((typeof myPosition === 'string' && myPosition) ||
-                (Array.isArray(myPosition) && myPosition.length > 0)) &&
-                desiredPositions.length > 0 && (
+            {myPosition && myPosition.length > 0 && desiredPositions.length > 0 && (
                     <SelectionSummary>
                         <SummaryContent>
                             <SummaryItem>
                                 <SummaryLabel>내 포지션:</SummaryLabel>
                                 <SummaryValue>
-                                    {(() => {
-                                        const myPositions =
-                                            typeof myPosition === 'string'
-                                                ? [myPosition]
-                                                : myPosition || [];
-                                        return myPositions
-                                            .map(
-                                                (id) =>
-                                                    lolPositions.find(
-                                                        (p) => p.id === id,
-                                                    )?.name,
-                                            )
-                                            .join(', ');
-                                    })()}
+                                    {(myPosition || [])
+                                        .map(
+                                            (id) =>
+                                                lolPositions.find(
+                                                    (p) => p.id === id,
+                                                )?.name,
+                                        )
+                                        .join(', ')}
                                 </SummaryValue>
                             </SummaryItem>
                             <SummaryItem>
