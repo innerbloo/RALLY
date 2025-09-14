@@ -33,7 +33,7 @@ const TutorialLayout = styled.div`
     height: 100dvh;
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
+    padding: calc(20px + env(safe-area-inset-top)) 20px 20px;
     display: flex;
     flex-direction: column;
 `;
