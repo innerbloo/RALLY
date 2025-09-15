@@ -72,12 +72,18 @@ export default function QuickMatchPage() {
         // 3초 로딩 시뮬레이션
         await new Promise((resolve) => setTimeout(resolve, 3000));
 
-        // 매칭 완료 후 처리 (추후 구현)
-        console.log('매칭 데이터:', matchData);
-        alert('매칭이 완료되었습니다! (임시 알림)');
+        // 매칭 데이터를 URL 파라미터로 전달하여 결과 페이지로 이동
+        const params = new URLSearchParams({
+            game: matchData.game || '',
+            positions: JSON.stringify(matchData.desiredPositions),
+            tier: matchData.myTier ? `${matchData.myTier.main}${matchData.myTier.sub ? matchData.myTier.sub : ''}` : '',
+            micPreference: matchData.microphonePreference || '',
+            gameStyles: JSON.stringify(matchData.desiredStyles.gameStyles),
+            commStyles: JSON.stringify(matchData.desiredStyles.communicationStyles),
+        });
+
         setIsLoading(false);
-        setProgress(0);
-        router.push('/match');
+        router.push(`/match/quick/results?${params.toString()}`);
     };
 
     const updateMatchData = (updates: Partial<QuickMatchData>) => {

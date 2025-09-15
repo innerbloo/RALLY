@@ -174,3 +174,60 @@ const InteractiveComponent = styled.div`
 - All mock data arrays in `/src/app/page.tsx` are structured for easy API replacement
 - User authentication system not implemented
 - Real-time features (chat, matching) not implemented
+
+## Quick Match Implementation Patterns
+
+### Context-Based State Management
+- **QuickMatchContext** (`/src/contexts/QuickMatchContext.tsx`): Shares progress state between global Header and QuickMatch pages
+- **Provider Pattern**: ClientLayout wraps all components with QuickMatchProvider for context access
+- **Progress Integration**: Global header displays progress bar using `env(safe-area-inset-top)` for mobile compatibility
+
+### Multi-Step Form Patterns
+- **Step Management**: Uses numbered steps (1-5) with TypeScript union types (`QuickMatchStep`)
+- **Data Structure**: Centralized state object (`QuickMatchData`) passed through all step components
+- **Navigation**: Automatic step progression with scroll behavior and validation checks
+
+### Scroll Behavior Implementation
+- **Mobile-First**: All scroll calculations account for header height (140px) and safe area insets
+- **One-Time Scroll**: State-based tracking (`hasScrolledToDesired`, `hasScrolledToFooter`) prevents repeated scrolling
+- **Smooth Scrolling**: `scrollIntoView({ behavior: 'smooth' })` with offset calculations for mobile viewport
+
+### Toast Notification System
+- **Library**: react-hot-toast with brand-consistent styling (#4272ec primary color)
+- **Duplicate Prevention**: Unique toast IDs to prevent multiple identical notifications
+- **Mobile Positioning**: `containerStyle` with `calc(env(safe-area-inset-top) + 20px)` for notch compatibility
+- **Styling Pattern**:
+```typescript
+<Toaster
+    position="top-center"
+    containerStyle={{
+        top: 'calc(env(safe-area-inset-top) + 20px)',
+    }}
+    toastOptions={{
+        style: {
+            background: 'linear-gradient(135deg, #4272ec 0%, #3a5fd9 100%)',
+            // ... other brand-consistent styles
+        }
+    }}
+/>
+```
+
+### Animation Integration
+- **Lottie Animations**: Use lottie-react for complex animations
+- **File Organization**: Place Lottie JSON files in `/public/` directory
+- **Import Pattern**: Use relative paths from components (`../../../../../public/animation.json`)
+- **Implementation**: Loop animations with specified dimensions for loading states
+
+### TypeScript Patterns for Dynamic Objects
+- **Object.keys() Typing**: Use type assertions for dynamic object key access
+```typescript
+// Instead of: Object.keys(options)
+const categories = Object.keys(gameStyleOptions) as Array<keyof typeof gameStyleOptions>;
+```
+- **Index Signature Issues**: Resolve with explicit type casting when iterating over object properties
+
+### Mobile PWA Considerations
+- **Safe Area Insets**: Always use `env(safe-area-inset-top/bottom)` for spacing near device edges
+- **Progress Bars**: Integrate with global header using absolute positioning and z-index layering
+- **Header Integration**: Global header can be enhanced with progress overlays without disrupting existing layout
+- **Standalone Mode**: Account for `apple-mobile-web-app-status-bar-style: black-translucent` in viewport calculations

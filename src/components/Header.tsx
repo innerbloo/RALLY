@@ -2,7 +2,7 @@
 
 import { Bell, ChevronDown, Search, UserPlus } from 'lucide-react';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -108,7 +108,14 @@ export default function Header() {
             <HeaderWrapper>
                 {/* 브랜딩 영역 */}
                 <BrandingSection>
-                    <Logo>RALLY</Logo>
+                    <Logo>
+                        <Image
+                            src={'/logo-b2.png'}
+                            width={72}
+                            height={20}
+                            alt={'로고'}
+                        ></Image>
+                    </Logo>
                     {/*<StatusIndicator>*/}
                     {/*    <StatusDot $color={getStatusColor(mockUserStatus.matchingStatus)} />*/}
                     {/*    <StatusText>{getStatusText(mockUserStatus.matchingStatus)}</StatusText>*/}
@@ -248,6 +255,7 @@ const Logo = styled.h1`
     font-weight: 700;
     color: #4272ec;
     margin: 0;
+    height: 2rem;
 `;
 
 const StatusIndicator = styled.div`
