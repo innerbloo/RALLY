@@ -10,24 +10,10 @@ import SwipeableStack from './components/SwipeableStack';
 import styled from '@emotion/styled';
 
 import { useQuickMatch } from '@/contexts/QuickMatchContext';
+import { getUsersByGame, getGameNameById, type GameUser } from '@/data/mockGameUsers';
 
-// 매칭된 사용자 인터페이스
-interface MatchUser {
-    id: number;
-    profileImage: string;
-    username: string;
-    gameId: string;
-    position?: React.ReactNode;
-    tier: string;
-    rank: string;
-    winRate: number;
-    kda: number;
-    recentChampions: string[];
-    gameStyles: string[];
-    communicationStyles: string[];
-    description: string;
-    game: string;
-}
+// 매칭된 사용자 인터페이스 (GameUser와 동일)
+type MatchUser = GameUser;
 
 // 매칭 조건 인터페이스
 interface MatchingCriteria {
@@ -57,7 +43,12 @@ const tierOrder = [
 const filterUsersByMatchingCriteria = (
     criteria: MatchingCriteria,
 ): MatchUser[] => {
-    return mockMatchUsers.filter((user) => {
+    // 게임별 사용자 데이터 가져오기
+    const gameUsers = criteria.game
+        ? getUsersByGame(getGameNameById(criteria.game))
+        : [];
+
+    return gameUsers.filter((user) => {
         // 게임 매칭
         if (criteria.game && user.game !== getGameNameById(criteria.game)) {
             return false;
@@ -99,17 +90,6 @@ const filterUsersByMatchingCriteria = (
     });
 };
 
-// 게임 ID를 게임 이름으로 변환
-const getGameNameById = (gameId: string): string => {
-    const gameMap: { [key: string]: string } = {
-        lol: '리그오브레전드',
-        tft: '전략적 팀 전투',
-        overwatch: '오버워치2',
-        valorant: '발로란트',
-        pubg: '배틀그라운드',
-    };
-    return gameMap[gameId] || gameId;
-};
 
 // 티어 호환성 검사 (±2 티어 범위)
 const isCompatibleTier = (userTier: string, targetTier: string): boolean => {
@@ -150,92 +130,10 @@ const hasMatchingStyles = (
     return targetStyles.some((style) => userStyles.includes(style));
 };
 
-// 임시 매칭 사용자 데이터
-const mockMatchUsers: MatchUser[] = [
-    {
-        id: 1,
-        profileImage: '/lol/profile-lol-1.png',
-        username: '멋졌으면 핑찍어',
-        gameId: '#96327',
-        tier: '에메랄드',
-        rank: 'E4',
-        winRate: 68,
-        kda: 1.85,
-        recentChampions: ['아트록스', '가렌', '시온'],
-        gameStyles: ['공격적인', '팀 중심형', '빠른 템포 선호'],
-        communicationStyles: ['마이크 필수', '편하게 대화하는', '욕 안 하는'],
-        description: '디코하면서 같이 으쌰으쌰 하실분찾아요~',
-        game: '리그오브레전드',
-    },
-    {
-        id: 2,
-        profileImage: '/lol/profile-lol-2.png',
-        username: '티 모',
-        gameId: '#TM1',
-        tier: '골드',
-        rank: 'G1',
-        winRate: 72,
-        kda: 2.14,
-        recentChampions: ['베인', '갱플랭크', '가렌'],
-        gameStyles: ['전략적인', '창의적인 플레이', '신중한 플레이'],
-        communicationStyles: ['채팅 위주', '차분한', '감정 조절 가능'],
-        description: '함께 할 듀오 파트너를 찾고있어요.',
-        game: '리그오브레전드',
-    },
-    {
-        id: 3,
-        profileImage: '/lol/profile-lol-3.png',
-        username: '프로게이머의꿈',
-        gameId: '#PRO123',
-        tier: '플래티넘',
-        rank: 'P3',
-        winRate: 65,
-        kda: 2.05,
-        recentChampions: ['르블랑', '야스오', '벡스'],
-        gameStyles: ['리더형', '공격적인', '빠른 템포 선호'],
-        communicationStyles: ['마이크 필수', '직설적인', '필요한 말만 하는'],
-        description: '승부욕 강한 분 환영! 함께 랭크 올려요',
-        game: '리그오브레전드',
-    },
-    {
-        id: 4,
-        profileImage: '/lol/profile-lol-4.png',
-        username: '힐링게임러',
-        gameId: '#HEAL456',
-        tier: '실버',
-        rank: 'S2',
-        winRate: 58,
-        kda: 1.92,
-        recentChampions: ['소나', '잔나', '브라움'],
-        gameStyles: ['팀 중심형', '서포터형', '신중한 플레이'],
-        communicationStyles: [
-            '마이크 가능하지만 조용한',
-            '예의 바른',
-            '감정 조절 가능',
-        ],
-        description: '재밌게 게임하고 싶어요! 욕설은 안해요',
-        game: '리그오브레전드',
-    },
-    {
-        id: 5,
-        profileImage: '/lol/profile-lol-5.png',
-        username: '정글의왕',
-        gameId: '#JUNGLE789',
-        tier: '다이아몬드',
-        rank: 'D4',
-        winRate: 71,
-        kda: 2.38,
-        recentChampions: ['비에고', '카직스', '니달리'],
-        gameStyles: ['공격적인', '리더형', '창의적인 플레이'],
-        communicationStyles: ['마이크 필수', '유머러스한', '편하게 대화하는'],
-        description: '정글 전문, 캐리하고 싶은 분들 오세요!',
-        game: '리그오브레전드',
-    },
-];
 
 function MatchResultsContent() {
     const [currentUsers, setCurrentUsers] =
-        useState<MatchUser[]>(mockMatchUsers);
+        useState<MatchUser[]>([]);
     const [matchedUser, setMatchedUser] = useState<MatchUser | null>(null);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const { setProgress } = useQuickMatch();
@@ -334,8 +232,13 @@ function MatchResultsContent() {
             <SwipeableStack
                 users={currentUsers}
                 onSwipe={handleSwipe}
-                renderCard={(user, index) => (
-                    <MatchCard user={user} isTop={index === 0} />
+                renderCard={(user, index, props) => (
+                    <MatchCard
+                        user={user}
+                        index={index}
+                        isTop={index === 0}
+                        {...props}
+                    />
                 )}
             />
 

@@ -423,6 +423,7 @@ const NotificationDropdown = styled.div`
     border: 1px solid #3f3f41;
     border-radius: 1.2rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 999;
 
     @media (max-width: 480px) {
         width: 280px;
