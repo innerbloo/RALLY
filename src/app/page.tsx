@@ -426,6 +426,6 @@ const RecommendContentSection = styled.section`
 
     > h2 {
         padding: 0 2rem;
-        margin: 0 0 1 !important;
+        margin: 0 0 1rem !important;
     }
 `;
