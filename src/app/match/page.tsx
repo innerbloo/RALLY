@@ -686,6 +686,10 @@ const QuickMatchButton = styled.button`
         font-size: 1.3rem;
     }
 
+    @media (min-width: 769px) {
+        bottom: 8rem;
+    }
+
     svg {
         flex-shrink: 0;
     }

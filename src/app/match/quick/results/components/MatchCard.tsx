@@ -35,60 +35,85 @@ interface MatchCardProps {
 // 티어 이미지 매핑 함수
 const getTierImage = (tier: string): string => {
     const tierImageMap: { [key: string]: string } = {
-        '아이언': '/lol/rank-lol-iron.webp',
-        '브론즈': '/lol/rank-lol-bronze.webp',
-        '실버': '/lol/rank-lol-silver.webp',
-        '골드': '/lol/rank-lol-gold.webp',
-        '플래티넘': '/lol/rank-lol-platinum.webp',
-        '에메랄드': '/lol/rank-lol-emerald.webp',
-        '다이아몬드': '/lol/rank-lol-diamond.webp',
-        '마스터': '/lol/rank-lol-master.webp',
-        '그랜드마스터': '/lol/rank-lol-grandmaster.webp',
-        '챌린저': '/lol/rank-lol-challenger.webp',
+        아이언: '/lol/rank-lol-iron.webp',
+        브론즈: '/lol/rank-lol-bronze.webp',
+        실버: '/lol/rank-lol-silver.webp',
+        골드: '/lol/rank-lol-gold.webp',
+        플래티넘: '/lol/rank-lol-platinum.webp',
+        에메랄드: '/lol/rank-lol-emerald.webp',
+        다이아몬드: '/lol/rank-lol-diamond.webp',
+        마스터: '/lol/rank-lol-master.webp',
+        그랜드마스터: '/lol/rank-lol-grandmaster.webp',
+        챌린저: '/lol/rank-lol-challenger.webp',
     };
     return tierImageMap[tier] || '/lol/rank-lol-unranked.webp';
 };
 
-// 챔피언 이미지 매핑 함수
-const getChampionImage = (championName: string): string => {
-    const championImageMap: { [key: string]: string } = {
-        // Top 챔피언
-        '아트록스': '/lol/top-Aatrox.png',
-        '가렌': '/lol/top-Garen.png',
-        '갱플랭크': '/lol/top-Gangplank.png',
-        '시온': '/lol/top-Sion.png',
-        '베인': '/lol/top-Vayne.png',
 
-        // Jungle 챔피언
-        '비에고': '/lol/jungle-Viego.png',
-        '람머스': '/lol/jungle-Rammus.png',
-        '카직스': '/lol/jungle-KhaZix.png',
-        '니달리': '/lol/jungle-Nidalee.png',
-        '마스터 이': '/lol/jungle-Master Yi.png',
+// 포지션 이름 가져오기 함수
+const getPositionName = (positionElement: React.ReactNode): string => {
+    if (!positionElement || typeof positionElement !== 'object') return '';
 
-        // Mid 챔피언
-        '리산드라': '/lol/mid-Lissandra.png',
-        '르블랑': '/lol/mid-LeBlanc.png',
-        '트위스티드 페이트': '/lol/mid-Twisted Fate.png',
-        '야스오': '/lol/mid-Yasuo.png',
-        '벡스': '/lol/mid-Vex.png',
+    const elementType = (positionElement as any).type;
+    if (!elementType || !elementType.name) return '';
 
-        // AD 챔피언
-        '제리': '/lol/ad-Zeri.png',
-        '카이사': '/lol/ad-KaiSa.png',
-        '이즈리얼': '/lol/ad-Ezreal.png',
-        '루시안': '/lol/ad-Lucian.png',
-        '징크스': '/lol/ad-Jinx.png',
-
-        // Support 챔피언
-        '블리츠크랭크': '/lol/support_Blitzcrank.png',
-        '소나': '/lol/support_Sona.png',
-        '브라움': '/lol/support_Braum.png',
-        '잔나': '/lol/support_Janna.png',
-        '노틸러스': '/lol/support_Nautilus.png',
+    const positionMap: { [key: string]: string } = {
+        PositionLolTop2: '탑',
+        PositionLolJungle2: '정글',
+        PositionLolMid2: '미드',
+        PositionLolAdc2: '원딜',
+        PositionLolSupport2: '서포터',
     };
 
-    return championImageMap[championName] || '/lol/top-Garen.png'; // 기본 이미지로 가렌 사용
+    return positionMap[elementType.name] || '';
+};
+
+// 이미지 경로에서 챔피언 이름 추출 함수
+const getChampionNameFromPath = (imagePath: string): string => {
+    // '/lol/top-Aatrox.png' -> 'Aatrox' 또는 '/lol/support_Sona.png' -> 'Sona'
+    const fileName = imagePath.split('/').pop() || '';
+    const nameWithoutExtension = fileName.split('.')[0];
+
+    // '-' 또는 '_'로 구분된 마지막 부분을 챔피언 이름으로 추출
+    let championName = '';
+    if (nameWithoutExtension.includes('-')) {
+        championName = nameWithoutExtension.split('-').pop() || '';
+    } else if (nameWithoutExtension.includes('_')) {
+        championName = nameWithoutExtension.split('_').pop() || '';
+    } else {
+        championName = nameWithoutExtension;
+    }
+
+    // 영어 이름을 한국어로 변환
+    const championNameMap: { [key: string]: string } = {
+        'Aatrox': '아트록스',
+        'Garen': '가렌',
+        'Gangplank': '갱플랭크',
+        'Sion': '시온',
+        'Vayne': '베인',
+        'KhaZix': '카직스',
+        'Viego': '비에고',
+        'Nidalee': '니달리',
+        'Rammus': '람머스',
+        'Master Yi': '마스터 이',
+        'Yasuo': '야스오',
+        'LeBlanc': '르블랑',
+        'Vex': '벡스',
+        'Twisted Fate': '트위스티드 페이트',
+        'Lissandra': '리산드라',
+        'Jinx': '징크스',
+        'KaiSa': '카이사',
+        'Ezreal': '이즈리얼',
+        'Lucian': '루시안',
+        'Zeri': '제리',
+        'Sona': '소나',
+        'Janna': '잔나',
+        'Braum': '브라움',
+        'Blitzcrank': '블리츠크랭크',
+        'Nautilus': '노틸러스',
+    };
+
+    return championNameMap[championName] || championName;
 };
 
 export default function MatchCard({
@@ -98,7 +123,7 @@ export default function MatchCard({
     dragX = 0,
     dragY = 0,
     onMouseDown,
-    onTouchStart
+    onTouchStart,
 }: MatchCardProps) {
     // 드래그 방향에 따른 오버레이 투명도 계산
     const getOverlayOpacity = () => {
@@ -112,7 +137,13 @@ export default function MatchCard({
         return null;
     };
 
-    console.log('MatchCard render:', { index, isDragging, dragX, dragY, hasOnTouchStart: !!onTouchStart });
+    console.log('MatchCard render:', {
+        index,
+        isDragging,
+        dragX,
+        dragY,
+        hasOnTouchStart: !!onTouchStart,
+    });
 
     return (
         <CardContainer
@@ -145,7 +176,6 @@ export default function MatchCard({
                 </DragOverlay>
             )}
 
-
             {/* 사용자 정보 */}
             <UserInfo>
                 <UserHeaderSection>
@@ -156,7 +186,17 @@ export default function MatchCard({
                         height={60}
                     />
                     <UserNameInfo>
-                        <UserName>{user.username}</UserName>
+                        <UserName>
+                            {user.username}
+                            {user.position && (
+                                <PositionBadge>
+                                    {user.position}
+                                    <PositionText>
+                                        {getPositionName(user.position)}
+                                    </PositionText>
+                                </PositionBadge>
+                            )}
+                        </UserName>
                         <GameId>{user.gameId}</GameId>
                     </UserNameInfo>
                     <TierBadge>
@@ -194,17 +234,19 @@ export default function MatchCard({
                 <StyleSection>
                     <SectionTitle>최근 선호 챔피언</SectionTitle>
                     <ChampionList>
-                        {user.recentChampions.slice(0, 3).map((champion, index) => (
-                            <ChampionItem key={`champion-${index}`}>
-                                <ChampionImage
-                                    src={getChampionImage(champion)}
-                                    alt={champion}
-                                    width={32}
-                                    height={32}
-                                />
-                                <ChampionName>{champion}</ChampionName>
-                            </ChampionItem>
-                        ))}
+                        {user.recentChampions
+                            .slice(0, 3)
+                            .map((champion, index) => (
+                                <ChampionItem key={`champion-${index}`}>
+                                    <ChampionImage
+                                        src={champion}
+                                        alt={getChampionNameFromPath(champion)}
+                                        width={32}
+                                        height={32}
+                                    />
+                                    <ChampionName>{getChampionNameFromPath(champion)}</ChampionName>
+                                </ChampionItem>
+                            ))}
                     </ChampionList>
                 </StyleSection>
 
@@ -224,11 +266,16 @@ export default function MatchCard({
                 <StyleSection>
                     <SectionTitle>커뮤니케이션 스타일</SectionTitle>
                     <StyleTags>
-                        {user.communicationStyles.slice(0, 3).map((style, index) => (
-                            <StyleTag key={`comm-${index}`} $type="communication">
-                                {style}
-                            </StyleTag>
-                        ))}
+                        {user.communicationStyles
+                            .slice(0, 3)
+                            .map((style, index) => (
+                                <StyleTag
+                                    key={`comm-${index}`}
+                                    $type="communication"
+                                >
+                                    {style}
+                                </StyleTag>
+                            ))}
                     </StyleTags>
                 </StyleSection>
             </UserInfo>
@@ -298,15 +345,16 @@ const CardContainer = styled.div<{
         return 0;
     }};
 
-    cursor: ${({ $index }) => $index === 0 ? 'grab' : 'default'};
-    transition: ${({ $isDragging }) => $isDragging ? 'none' : 'all 0.3s ease'};
+    cursor: ${({ $index }) => ($index === 0 ? 'grab' : 'default')};
+    transition: ${({ $isDragging }) =>
+        $isDragging ? 'none' : 'all 0.3s ease'};
 
     &:active {
-        cursor: ${({ $index }) => $index === 0 ? 'grabbing' : 'default'};
+        cursor: ${({ $index }) => ($index === 0 ? 'grabbing' : 'default')};
     }
 
     /* 화면 밖 카드 숨김 */
-    display: ${({ $index }) => $index > 2 ? 'none' : 'flex'};
+    display: ${({ $index }) => ($index > 2 ? 'none' : 'flex')};
 `;
 
 const DragOverlay = styled.div<{ $type: 'like' | 'reject'; $opacity: number }>`
@@ -316,10 +364,7 @@ const DragOverlay = styled.div<{ $type: 'like' | 'reject'; $opacity: number }>`
     right: 0;
     bottom: 0;
     background-color: ${({ $type }) =>
-        $type === 'like'
-            ? 'rgba(34, 197, 94, 0.9)'
-            : 'rgba(239, 68, 68, 0.9)'
-    };
+        $type === 'like' ? 'rgba(34, 197, 94, 0.9)' : 'rgba(239, 68, 68, 0.9)'};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -341,14 +386,12 @@ const OverlayText = styled.div`
     letter-spacing: 0.2rem;
 `;
 
-
 const ProfileImage = styled(Image)`
     border-radius: 50%;
     border: 0.2rem solid #ffffff;
     object-fit: cover;
     flex-shrink: 0;
 `;
-
 
 const UserInfo = styled.div`
     padding: 1rem 1rem 1.5rem 1rem;
@@ -369,7 +412,6 @@ const UserHeaderSection = styled.div`
     gap: 1rem;
     margin-bottom: 1rem;
     padding: 1rem;
-    background: linear-gradient(135deg, #4272ec 0%, #3a5fd9 100%);
     border-radius: 1rem;
 `;
 
@@ -382,6 +424,10 @@ const UserName = styled.h2`
     font-weight: 700;
     color: #ffffff;
     margin: 0 0 0.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    flex-wrap: wrap;
 `;
 
 const GameId = styled.p`
@@ -450,10 +496,18 @@ const StatValue = styled.div<{ $type: string; $value: number }>`
     font-weight: 700;
     color: ${({ $type, $value }) => {
         if ($type === 'winrate') {
-            return $value >= 60 ? '#22c55e' : $value >= 50 ? '#f59e0b' : '#ef4444';
+            return $value >= 60
+                ? '#22c55e'
+                : $value >= 50
+                  ? '#f59e0b'
+                  : '#ef4444';
         }
         if ($type === 'kda') {
-            return $value >= 2.0 ? '#22c55e' : $value >= 1.5 ? '#f59e0b' : '#ef4444';
+            return $value >= 2.0
+                ? '#22c55e'
+                : $value >= 1.5
+                  ? '#f59e0b'
+                  : '#ef4444';
         }
         return '#ffffff';
     }};
@@ -543,4 +597,23 @@ const ChampionName = styled.span`
     font-weight: 500;
     text-align: center;
     line-height: 1.2;
+`;
+
+const PositionBadge = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 1rem;
+    flex-shrink: 0;
+
+    svg {
+        color: #e5e7eb;
+    }
+`;
+
+const PositionText = styled.span`
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1;
 `;
