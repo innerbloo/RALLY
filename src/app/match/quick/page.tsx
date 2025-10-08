@@ -2,7 +2,7 @@
 
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import GameSelection from './components/GameSelection';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -76,10 +76,14 @@ export default function QuickMatchPage() {
         const params = new URLSearchParams({
             game: matchData.game || '',
             positions: JSON.stringify(matchData.desiredPositions),
-            tier: matchData.myTier ? `${matchData.myTier.main}${matchData.myTier.sub ? matchData.myTier.sub : ''}` : '',
+            tier: matchData.myTier
+                ? `${matchData.myTier.main}${matchData.myTier.sub ? matchData.myTier.sub : ''}`
+                : '',
             micPreference: matchData.microphonePreference || '',
             gameStyles: JSON.stringify(matchData.desiredStyles.gameStyles),
-            commStyles: JSON.stringify(matchData.desiredStyles.communicationStyles),
+            commStyles: JSON.stringify(
+                matchData.desiredStyles.communicationStyles,
+            ),
         });
 
         setIsLoading(false);
@@ -248,7 +252,7 @@ const StepContent = styled.div`
 
 const QuickMatchFooter = styled.footer`
     padding: 2rem;
-    padding-bottom: calc(8rem + env(safe-area-inset-bottom));
+    padding-bottom: calc(3rem + env(safe-area-inset-bottom));
     display: flex;
     justify-content: space-between;
     gap: 1rem;

@@ -265,7 +265,7 @@ export default function MatchPage() {
 
 const MatchContainer = styled.main`
     padding-top: calc(6rem + env(safe-area-inset-top));
-    padding-bottom: 8rem;
+    padding-bottom: 6.65rem;
     background-color: #1a1a1a;
     min-height: 100vh;
 `;
@@ -651,8 +651,7 @@ const ChatButton = styled.button`
 
 const QuickMatchButton = styled.button`
     position: fixed;
-    right: 2rem;
-    bottom: 2rem;
+    bottom: 8rem;
     display: flex;
     align-items: center;
     gap: 0.8rem;
@@ -668,15 +667,38 @@ const QuickMatchButton = styled.button`
     z-index: 999;
     transition: all 0.3s ease;
 
+    /* Position relative to centered 800px container */
+    left: 50%;
+    transform: translateX(calc(800px / 2 - 2rem - 100%));
+
+    @media (max-width: 800px) {
+        right: 2rem;
+        left: auto;
+        transform: none;
+    }
+
     @media (hover: hover) and (pointer: fine) {
         &:hover {
-            transform: translateY(-2px);
+            transform: translateX(calc(800px / 2 - 2rem - 100%))
+                translateY(-2px);
             box-shadow: 0 8px 25px rgba(66, 114, 236, 0.5);
         }
     }
 
+    @media (hover: hover) and (pointer: fine) and (max-width: 800px) {
+        &:hover {
+            transform: translateY(-2px);
+        }
+    }
+
     &:active {
-        transform: translateY(0);
+        transform: translateX(calc(800px / 2 - 2rem - 100%)) translateY(0);
+    }
+
+    @media (max-width: 800px) {
+        &:active {
+            transform: translateY(0);
+        }
     }
 
     @media (max-width: 768px) {

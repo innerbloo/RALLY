@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
@@ -9,40 +10,26 @@ import PositionOverwatchDPS2 from '/public/overwatch/position-overwatch-dps2.svg
 
 import styled from '@emotion/styled';
 
+import BannerSwiper from '@/app/components/BannerSwiper';
 import CommunityList from '@/app/components/CommunityList';
 import DuoRecommendList from '@/app/components/DuoRecommendList';
 import MentorRecommendList from '@/app/components/MentorRecommendList';
 import RecommendContentList from '@/app/components/RecommendContentList';
-
-interface Game {
-    id: number;
-    icon: string;
-    name: string;
-}
-
-const games: Game[] = [
-    { id: 1, icon: '/game1.png', name: '리그오브레전드' },
-    { id: 2, icon: '/game2.png', name: '전략적 팀 전투' },
-    { id: 3, icon: '/game3.png', name: '발로란트' },
-    { id: 4, icon: '/game4.png', name: '오버워치2' },
-    { id: 5, icon: '/game5.png', name: '배틀그라운드' },
-    { id: 6, icon: '/game-more.png', name: '더보기' },
-    { id: 7, icon: '/game1.png', name: '리그오브레전드' },
-    { id: 8, icon: '/game2.png', name: '전략적 팀 전투' },
-    { id: 9, icon: '/game3.png', name: '발로란트' },
-    { id: 10, icon: '/game4.png', name: '오버워치2' },
-    { id: 5, icon: '/game5.png', name: '배틀그라운드' },
-    { id: 6, icon: '/game-more.png', name: '더보기' },
-    { id: 7, icon: '/game1.png', name: '리그오브레전드' },
-    { id: 8, icon: '/game2.png', name: '전략적 팀 전투' },
-    { id: 9, icon: '/game3.png', name: '발로란트' },
-    { id: 10, icon: '/game4.png', name: '오버워치2' },
-];
+import { mockPosts } from '@/data/communityMockData';
 
 export default function Home() {
+    const [communityPosts, setCommunityPosts] = useState(mockPosts.slice(0, 5));
+
+    useEffect(() => {
+        const myPosts = JSON.parse(localStorage.getItem('myPosts') || '[]');
+        const allPosts = [...myPosts, ...mockPosts];
+        setCommunityPosts(allPosts.slice(0, 5));
+    }, []);
+
     return (
         <div>
             <HomeContainer>
+                <BannerSwiper />
                 <PopularGameSection>
                     <h2>인기 게임</h2>
                     <GameWrapper>
@@ -314,55 +301,7 @@ export default function Home() {
 
                 <CommunitySection>
                     <h2>커뮤니티 인기 글</h2>
-                    <CommunityList
-                        list={[
-                            {
-                                id: 1,
-                                image: '/community/community1.png',
-                                username: '눈팅하러오는사람',
-                                title: '롤 첨할 때 생각한 거',
-                                createAt: '2025-09-08 08:00:00',
-                                comment: 120,
-                                game: '리그오브레전드',
-                            },
-                            {
-                                id: 2,
-                                image: '/community/community2.png',
-                                username: '허나거절한다',
-                                title: '남탓을 할 순 있다고 생각함',
-                                createAt: '2025-09-08 06:21:00',
-                                comment: 113,
-                                game: '리그오브레전드',
-                            },
-                            {
-                                id: 3,
-                                image: '/community/community3.png',
-                                username: '천둥군주의호령',
-                                title: '유미 전설 스킨 내놓는게 이해안감',
-                                createAt: '2025-09-08 05:20:30',
-                                comment: 98,
-                                game: '리그오브레전드',
-                            },
-                            {
-                                id: 4,
-                                image: '/community/community4.png',
-                                username: '수영하는파이리',
-                                title: '옵치 망했네',
-                                createAt: '2025-09-07 19:20:30',
-                                comment: 66,
-                                game: '오버워치2',
-                            },
-                            {
-                                id: 5,
-                                image: '/community/community5.png',
-                                username: '젠장또대상혁이야',
-                                title: '롤체 아이템 질문',
-                                createAt: '2025-09-06 21:53:12',
-                                comment: 53,
-                                game: '전략적 팀 전투',
-                            },
-                        ]}
-                    ></CommunityList>
+                    <CommunityList list={communityPosts} />
                 </CommunitySection>
 
                 <RecommendContentSection>
@@ -427,16 +366,20 @@ export default function Home() {
 
 const HomeContainer = styled.main`
     padding-top: calc(6rem + env(safe-area-inset-top));
-    padding-bottom: 8rem;
+    padding-bottom: 6.65rem;
 
     > section {
-        margin: 0 0 4rem;
+        margin: 0 0 3rem;
         padding: 2rem 2rem 0;
 
         > h2 {
             font-size: 2.4rem;
             font-weight: 700;
             margin: 0 0 2rem;
+        }
+
+        &:last-of-type {
+            margin: 0;
         }
     }
 `;
@@ -462,7 +405,7 @@ const GameWrapper = styled.ul`
 const DuoRecommendSection = styled.section``;
 
 const MentorRecommendSection = styled.section`
-    padding: unset !important;
+    padding: 2rem 0 0 0 !important;
 
     > h2 {
         padding: 0 2rem;

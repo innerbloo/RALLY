@@ -94,8 +94,10 @@ export default function GNB() {
 const GNBContainer = styled.nav`
     position: fixed;
     bottom: 0;
-    left: 0;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 800px;
+    width: 100%;
     z-index: 1000;
     background: #1a1a1a;
     border-top: 1px solid #3f3f41;

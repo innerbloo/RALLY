@@ -1,7 +1,8 @@
 'use client';
 
-import { Bell, ChevronDown, Search, UserPlus } from 'lucide-react';
+import { Bell, ChevronDown, ChevronLeft, Search, UserPlus } from 'lucide-react';
 import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
@@ -57,6 +58,8 @@ const games = [
 ];
 
 export default function Header() {
+    const pathname = usePathname();
+    const router = useRouter();
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
     const [isGameSelectOpen, setIsGameSelectOpen] = useState(false);
     const [currentGame, setCurrentGame] = useState('리그오브레전드');
@@ -64,6 +67,9 @@ export default function Header() {
     // QuickMatch progress context (will be 0 if not in QuickMatch)
     const { progress } = useQuickMatch();
     const unreadCount = mockNotifications.filter((n) => !n.isRead).length;
+
+    // 2depth 페이지 체크
+    const isDeepPage = pathname.split('/').filter(Boolean).length > 1;
 
     // 스크롤 시 드롭다운 닫기
     useEffect(() => {
@@ -106,66 +112,72 @@ export default function Header() {
         <HeaderContainer>
             <ProgressOverlay $progress={progress} />
             <HeaderWrapper>
-                {/* 브랜딩 영역 */}
-                <BrandingSection>
-                    <Logo>
-                        <Image
-                            src={'/logo-b2.png'}
-                            width={72}
-                            height={20}
-                            alt={'로고'}
-                        ></Image>
-                    </Logo>
-                    {/*<StatusIndicator>*/}
-                    {/*    <StatusDot $color={getStatusColor(mockUserStatus.matchingStatus)} />*/}
-                    {/*    <StatusText>{getStatusText(mockUserStatus.matchingStatus)}</StatusText>*/}
-                    {/*</StatusIndicator>*/}
-                </BrandingSection>
+                {/* 브랜딩 영역 또는 뒤로가기 */}
+                {isDeepPage ? (
+                    <BackButton onClick={() => router.back()}>
+                        <ChevronLeft size={28} />
+                    </BackButton>
+                ) : (
+                    <BrandingSection>
+                        <Logo onClick={() => router.push('/')}>
+                            <Image
+                                src={'/logo-b2.png'}
+                                width={72}
+                                height={20}
+                                alt={'로고'}
+                            ></Image>
+                        </Logo>
+                        {/*<StatusIndicator>*/}
+                        {/*    <StatusDot $color={getStatusColor(mockUserStatus.matchingStatus)} />*/}
+                        {/*    <StatusText>{getStatusText(mockUserStatus.matchingStatus)}</StatusText>*/}
+                        {/*</StatusIndicator>*/}
+                    </BrandingSection>
+                )}
 
                 {/* 액션 영역 */}
                 <ActionSection>
                     {/* 게임 선택 */}
-                    <GameSelect
-                        onClick={() => {
-                            setIsGameSelectOpen(!isGameSelectOpen);
-                            setIsNotificationOpen(false);
-                        }}
-                    >
-                        <Image
-                            src={
-                                games.find((g) => g.name === currentGame)
-                                    ?.icon || '/game1.png'
-                            }
-                            width={24}
-                            height={24}
-                            alt={currentGame}
-                        />
-                        <span>{currentGame}</span>
-                        <ChevronDown size={16} />
+                    {/*<GameSelect*/}
+                    {/*    onClick={() => {*/}
+                    {/*        setIsGameSelectOpen(!isGameSelectOpen);*/}
+                    {/*        setIsNotificationOpen(false);*/}
+                    {/*    }}*/}
+                    {/*>*/}
+                    {/*    <Image*/}
+                    {/*        src={*/}
+                    {/*            games.find((g) => g.name === currentGame)*/}
+                    {/*                ?.icon || '/game1.png'*/}
+                    {/*        }*/}
+                    {/*        width={24}*/}
+                    {/*        height={24}*/}
+                    {/*        alt={currentGame}*/}
+                    {/*    />*/}
+                    {/*    <span>{currentGame}</span>*/}
+                    {/*    <ChevronDown size={16} />*/}
 
-                        {isGameSelectOpen && (
-                            <GameDropdown>
-                                {games.map((game) => (
-                                    <GameItem
-                                        key={game.id}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setCurrentGame(game.name);
-                                            setIsGameSelectOpen(false);
-                                        }}
-                                    >
-                                        <Image
-                                            src={game.icon}
-                                            width={20}
-                                            height={20}
-                                            alt={game.name}
-                                        />
-                                        <span>{game.name}</span>
-                                    </GameItem>
-                                ))}
-                            </GameDropdown>
-                        )}
-                    </GameSelect>
+                    {/*    {isGameSelectOpen && (*/}
+                    {/*        <GameDropdown>*/}
+                    {/*            {games.map((game) => (*/}
+                    {/*                <GameItem*/}
+                    {/*                    key={game.id}*/}
+                    {/*                    onClick={(e) => {*/}
+                    {/*                        e.stopPropagation();*/}
+                    {/*                        setCurrentGame(game.name);*/}
+                    {/*                        setIsGameSelectOpen(false);*/}
+                    {/*                    }}*/}
+                    {/*                >*/}
+                    {/*                    <Image*/}
+                    {/*                        src={game.icon}*/}
+                    {/*                        width={20}*/}
+                    {/*                        height={20}*/}
+                    {/*                        alt={game.name}*/}
+                    {/*                    />*/}
+                    {/*                    <span>{game.name}</span>*/}
+                    {/*                </GameItem>*/}
+                    {/*            ))}*/}
+                    {/*        </GameDropdown>*/}
+                    {/*    )}*/}
+                    {/*</GameSelect>*/}
 
                     {/* 빠른 매칭 버튼 */}
                     {/*<QuickMatchButton>*/}
@@ -228,8 +240,10 @@ export default function Header() {
 const HeaderContainer = styled.header`
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 800px;
+    width: 100%;
     z-index: 1000;
     background: #1a1a1a;
     border-bottom: 1px solid #3f3f41;
@@ -241,7 +255,6 @@ const HeaderWrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    max-width: 100%;
 `;
 
 const BrandingSection = styled.div`
@@ -256,6 +269,7 @@ const Logo = styled.h1`
     color: #4272ec;
     margin: 0;
     height: 2rem;
+    cursor: pointer;
 `;
 
 const StatusIndicator = styled.div`
@@ -496,6 +510,27 @@ const ProfileButton = styled.div`
     img {
         border-radius: 50%;
     }
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            background: #252527;
+        }
+    }
+`;
+
+const BackButton = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #939393;
+    cursor: pointer;
+    padding: 0.8rem 0.8rem 0.8rem 0.8rem;
+    margin-left: -0.8rem;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 50%;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

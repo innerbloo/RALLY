@@ -14,6 +14,7 @@ interface CommunityData {
     createAt: string;
     comment: number;
     game: string;
+    category: string;
 }
 
 interface CommunityListProps {
@@ -26,12 +27,14 @@ export default function CommunityList({ list }: CommunityListProps) {
             {list.map((item) => (
                 <CommunityCard
                     key={item.id}
+                    id={item.id}
                     image={item.image}
                     username={item.username}
                     title={item.title}
                     createAt={item.createAt}
                     comment={item.comment}
                     game={item.game}
+                    category={item.category}
                 />
             ))}
         </CommunityWrapper>

@@ -64,9 +64,22 @@ export default function RootLayout({
                             minWidth: '280px',
                             textAlign: 'center',
                         },
-                        iconTheme: {
-                            primary: '#ffffff',
-                            secondary: '#4272ec',
+                        success: {
+                            iconTheme: {
+                                primary: '#ffffff',
+                                secondary: '#4272ec',
+                            },
+                        },
+                        error: {
+                            style: {
+                                background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                                color: '#ffffff',
+                                boxShadow: '0 8px 32px rgba(239, 68, 68, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2)',
+                            },
+                            iconTheme: {
+                                primary: '#ffffff',
+                                secondary: '#ef4444',
+                            },
                         },
                     }}
                 />

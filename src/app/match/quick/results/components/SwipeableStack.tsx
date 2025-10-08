@@ -24,7 +24,7 @@ interface MatchUser {
 interface SwipeableStackProps {
     users: MatchUser[];
     onSwipe: (user: MatchUser, direction: 'left' | 'right') => void;
-    renderCard: (user: MatchUser, index: number, props?: any) => React.ReactNode;
+    renderCard: (user: MatchUser, index: number, props?: Record<string, unknown>) => React.ReactNode;
 }
 
 interface DragState {

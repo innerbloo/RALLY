@@ -54,7 +54,7 @@ const getTierImage = (tier: string): string => {
 const getPositionName = (positionElement: React.ReactNode): string => {
     if (!positionElement || typeof positionElement !== 'object') return '';
 
-    const elementType = (positionElement as any).type;
+    const elementType = (positionElement as { type?: { name?: string } }).type;
     if (!elementType || !elementType.name) return '';
 
     const positionMap: { [key: string]: string } = {
