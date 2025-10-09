@@ -8,7 +8,7 @@ const google = createGoogleGenerativeAI({
 
 export async function POST(req: Request) {
     try {
-        const { messages, roomId } = await req.json();
+        const { messages } = await req.json();
 
         console.log(
             'API Key exists:',

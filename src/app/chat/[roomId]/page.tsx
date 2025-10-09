@@ -292,7 +292,7 @@ export default function ChatRoomPage() {
                         <DateDivider>
                             <DateText>{date}</DateText>
                         </DateDivider>
-                        {dateMessages.map((message, index) => {
+                        {dateMessages.map((message) => {
                             const globalIndex = messages.indexOf(message);
                             const isMine = message.senderId === 0;
                             const showProfile =
