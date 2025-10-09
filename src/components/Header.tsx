@@ -108,13 +108,24 @@ export default function Header() {
         }
     };
 
+    const handleBack = () => {
+        const pathSegments = pathname.split('/').filter(Boolean);
+        if (pathSegments.length > 0) {
+            pathSegments.pop();
+            const parentPath = '/' + pathSegments.join('/');
+            router.push(parentPath || '/');
+        } else {
+            router.push('/');
+        }
+    };
+
     return (
         <HeaderContainer>
             <ProgressOverlay $progress={progress} />
             <HeaderWrapper>
                 {/* 브랜딩 영역 또는 뒤로가기 */}
                 {isDeepPage ? (
-                    <BackButton onClick={() => router.back()}>
+                    <BackButton onClick={handleBack}>
                         <ChevronLeft size={28} />
                     </BackButton>
                 ) : (

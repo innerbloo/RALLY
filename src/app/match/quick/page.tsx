@@ -61,7 +61,7 @@ export default function QuickMatchPage() {
             window.scrollTo(0, 0);
         } else {
             setProgress(0);
-            router.back();
+            router.push('/match');
         }
     };
 
