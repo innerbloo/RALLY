@@ -2,6 +2,14 @@
 # yarn lockfile v1
 
 
+"@ai-sdk/anthropic@^2.0.25":
+  version "2.0.25"
+  resolved "https://registry.npmjs.org/@ai-sdk/anthropic/-/anthropic-2.0.25.tgz"
+  integrity sha512-XuGg4Mk/hbbe34a27ElFbontKbQMi0lSIOw4iFpbzXowsvW/ld5tspFOcrjDrNcy+0z5iXSFVklwwQcNwe65SQ==
+  dependencies:
+    "@ai-sdk/provider" "2.0.0"
+    "@ai-sdk/provider-utils" "3.0.11"
+
 "@ai-sdk/gateway@1.0.35":
   version "1.0.35"
   resolved "https://registry.npmjs.org/@ai-sdk/gateway/-/gateway-1.0.35.tgz"
@@ -15,6 +23,14 @@
   version "2.0.18"
   resolved "https://registry.npmjs.org/@ai-sdk/google/-/google-2.0.18.tgz"
   integrity sha512-ycGAqouueHjU0hB6JHYmUhXYCnN67PqI8+9jCv13MbuE0g+b9w78HiPuab5ResakY0cq3ynFDvbiu8jAGo1RZQ==
+  dependencies:
+    "@ai-sdk/provider" "2.0.0"
+    "@ai-sdk/provider-utils" "3.0.11"
+
+"@ai-sdk/groq@^2.0.23":
+  version "2.0.23"
+  resolved "https://registry.npmjs.org/@ai-sdk/groq/-/groq-2.0.23.tgz"
+  integrity sha512-7LZ/P7Dj7+0SPDJf61gYH23e4352ifysajZ23ftOyFBIANNJqNFMJuSRCya11WuyeqSq2XW0MAj4+oNQn+5cpw==
   dependencies:
     "@ai-sdk/provider" "2.0.0"
     "@ai-sdk/provider-utils" "3.0.11"

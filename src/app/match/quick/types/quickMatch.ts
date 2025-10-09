@@ -1,9 +1,7 @@
 export interface QuickMatchData {
   game: 'lol' | 'tft' | 'overwatch' | null;
-  myPosition: string[] | null;
   desiredPositions: string[];
-  myTier: { main: string; sub?: string } | null;
-  desiredTierRange: { min: string; max: string } | null;
+  desiredTier: string | null;
   microphonePreference: 'required' | 'optional' | 'chat' | null;
   desiredStyles: {
     gameStyles: string[];

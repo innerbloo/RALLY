@@ -15,13 +15,12 @@ import { QuickMatchData, QuickMatchStep } from './types/quickMatch';
 import styled from '@emotion/styled';
 
 import { useQuickMatch } from '@/contexts/QuickMatchContext';
+import { getUsersByGame, getGameNameById } from '@/data/mockGameUsers';
 
 const initialData: QuickMatchData = {
     game: null,
-    myPosition: null,
     desiredPositions: [],
-    myTier: null,
-    desiredTierRange: null,
+    desiredTier: null,
     microphonePreference: null,
     desiredStyles: {
         gameStyles: [],
@@ -69,6 +68,49 @@ export default function QuickMatchPage() {
         setIsLoading(true);
         setProgress(100);
 
+        // 매칭 조건에 따라 사용자 필터링
+        const gameUsers = matchData.game
+            ? getUsersByGame(getGameNameById(matchData.game))
+            : [];
+
+        const filteredUsers = gameUsers.filter((user) => {
+            // 포지션 매칭
+            if (matchData.desiredPositions.length > 0 && !matchData.desiredPositions.includes('all')) {
+                const positionId = 'positionId' in user ? user.positionId : undefined;
+                if (!positionId || !matchData.desiredPositions.includes(positionId)) {
+                    return false;
+                }
+            }
+            return true;
+        });
+
+        // 최대 5명 선택
+        const selectedUsers = filteredUsers.slice(0, 5);
+
+        // 각 유저에게 고정 랭크 할당 (티어 기반)
+        const tierMap: { [key: string]: { abbr: string } } = {
+            iron: { abbr: 'I' },
+            bronze: { abbr: 'B' },
+            silver: { abbr: 'S' },
+            gold: { abbr: 'G' },
+            platinum: { abbr: 'P' },
+            emerald: { abbr: 'E' },
+            diamond: { abbr: 'D' },
+            master: { abbr: 'M' },
+            grandmaster: { abbr: 'GM' },
+            challenger: { abbr: 'C' },
+        };
+
+        const tierKey = matchData.desiredTier?.match(/^[a-z]+/i)?.[0]?.toLowerCase() || '';
+        const tierInfo = tierMap[tierKey];
+
+        // 유저별 고정 랭크 생성 (1-4 랜덤하게 할당)
+        const userRanksMap: { [key: number]: string } = {};
+        selectedUsers.forEach((user) => {
+            const rankNum = Math.floor(Math.random() * 4) + 1;
+            userRanksMap[user.id] = tierInfo ? `${tierInfo.abbr}${rankNum}` : '';
+        });
+
         // 3초 로딩 시뮬레이션
         await new Promise((resolve) => setTimeout(resolve, 3000));
 
@@ -76,14 +118,14 @@ export default function QuickMatchPage() {
         const params = new URLSearchParams({
             game: matchData.game || '',
             positions: JSON.stringify(matchData.desiredPositions),
-            tier: matchData.myTier
-                ? `${matchData.myTier.main}${matchData.myTier.sub ? matchData.myTier.sub : ''}`
-                : '',
+            tier: matchData.desiredTier || '',
             micPreference: matchData.microphonePreference || '',
             gameStyles: JSON.stringify(matchData.desiredStyles.gameStyles),
             commStyles: JSON.stringify(
                 matchData.desiredStyles.communicationStyles,
             ),
+            userIds: JSON.stringify(selectedUsers.map(u => u.id)),
+            userRanks: JSON.stringify(userRanksMap),
         });
 
         setIsLoading(false);
@@ -99,16 +141,9 @@ export default function QuickMatchPage() {
             case 1:
                 return matchData.game !== null;
             case 2:
-                return (
-                    matchData.myPosition !== null &&
-                    matchData.myPosition.length > 0 &&
-                    matchData.desiredPositions.length > 0
-                );
+                return matchData.desiredPositions.length > 0;
             case 3:
-                return (
-                    matchData.myTier !== null &&
-                    matchData.desiredTierRange !== null
-                );
+                return matchData.desiredTier !== null;
             case 4:
                 return matchData.microphonePreference !== null;
             case 5:
@@ -134,11 +169,7 @@ export default function QuickMatchPage() {
                 return (
                     <PositionSelection
                         selectedGame={matchData.game}
-                        myPosition={matchData.myPosition}
                         desiredPositions={matchData.desiredPositions}
-                        onMyPositionSelect={(positions) =>
-                            updateMatchData({ myPosition: positions })
-                        }
                         onDesiredPositionsChange={(positions) =>
                             updateMatchData({ desiredPositions: positions })
                         }
@@ -147,13 +178,9 @@ export default function QuickMatchPage() {
             case 3:
                 return (
                     <TierSelection
-                        myTier={matchData.myTier}
-                        desiredTierRange={matchData.desiredTierRange}
-                        onMyTierSelect={(tier) =>
-                            updateMatchData({ myTier: tier })
-                        }
-                        onDesiredTierRangeChange={(range) =>
-                            updateMatchData({ desiredTierRange: range })
+                        desiredTier={matchData.desiredTier}
+                        onDesiredTierChange={(tier) =>
+                            updateMatchData({ desiredTier: tier })
                         }
                     />
                 );

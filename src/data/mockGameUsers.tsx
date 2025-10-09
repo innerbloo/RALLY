@@ -10,6 +10,7 @@ export interface BaseUser {
     username: string;
     gameId: string;
     position?: React.ReactNode;
+    positionId?: string; // 포지션 ID (필터링용)
     tier: string;
     rank: string;
     winRate: number;

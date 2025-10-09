@@ -13,6 +13,8 @@ interface MessageBubbleProps {
     isMine: boolean;
     senderProfileImage?: string;
     showProfileImage: boolean; // 같은 발신자의 연속 메시지인 경우 프로필 숨김
+    searchQuery?: string; // 검색어
+    isCurrentSearchResult?: boolean; // 현재 선택된 검색 결과인지
 }
 
 export default function MessageBubble({
@@ -20,7 +22,35 @@ export default function MessageBubble({
     isMine,
     senderProfileImage,
     showProfileImage,
+    searchQuery,
+    isCurrentSearchResult,
 }: MessageBubbleProps) {
+    // 검색어 하이라이트 함수
+    const highlightText = (text: string, query: string) => {
+        if (!query || !query.trim()) return text;
+
+        try {
+            // 정규식 특수문자 이스케이프
+            const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const parts = text.split(new RegExp(`(${escapedQuery})`, 'gi'));
+
+            return parts.map((part, index) => {
+                if (part.toLowerCase() === query.toLowerCase()) {
+                    return (
+                        <Highlight key={index} $isCurrent={isCurrentSearchResult}>
+                            {part}
+                        </Highlight>
+                    );
+                }
+                return part;
+            });
+        } catch (error) {
+            // 정규식 에러 발생 시 원본 텍스트 반환
+            console.error('Highlight error:', error);
+            return text;
+        }
+    };
+
     // 시스템 메시지인 경우
     if (message.messageType === 'system') {
         return (
@@ -46,7 +76,11 @@ export default function MessageBubble({
             {!isMine && !showProfileImage && <ProfileSpacer />}
 
             <BubbleWrapper $isMine={isMine}>
-                <Bubble $isMine={isMine}>{message.content}</Bubble>
+                <Bubble $isMine={isMine}>
+                    {searchQuery
+                        ? highlightText(message.content, searchQuery)
+                        : message.content}
+                </Bubble>
                 <MessageInfo $isMine={isMine}>
                     <TimeStamp>{dayjs(message.timestamp).format('A h:mm')}</TimeStamp>
                     {isMine && message.isRead && <ReadStatus>읽음</ReadStatus>}
@@ -134,4 +168,13 @@ const ReadStatus = styled.span`
     font-size: 1.1rem;
     color: #4272ec;
     font-weight: 500;
+`;
+
+const Highlight = styled.mark<{ $isCurrent?: boolean }>`
+    background-color: ${({ $isCurrent }) =>
+        $isCurrent ? '#fbbf24' : '#fde047'};
+    color: #000000;
+    font-weight: 600;
+    padding: 0.1rem 0.2rem;
+    border-radius: 0.2rem;
 `;

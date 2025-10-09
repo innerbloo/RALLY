@@ -14,9 +14,7 @@ import styled from '@emotion/styled';
 
 interface PositionSelectionProps {
     selectedGame: string | null;
-    myPosition: string[] | null;
     desiredPositions: string[];
-    onMyPositionSelect: (positions: string[]) => void;
     onDesiredPositionsChange: (positions: string[]) => void;
 }
 
@@ -55,12 +53,9 @@ const lolPositions: PositionOption[] = [
 
 export default function PositionSelection({
     selectedGame,
-    myPosition,
     desiredPositions,
-    onMyPositionSelect,
     onDesiredPositionsChange,
 }: PositionSelectionProps) {
-    const [hasScrolledToDesired, setHasScrolledToDesired] = useState(false);
     const [hasScrolledToFooter, setHasScrolledToFooter] = useState(false);
     if (selectedGame !== 'lol') {
         return (
@@ -94,59 +89,6 @@ export default function PositionSelection({
                 return <PositionLolSupport2 {...iconProps} />;
             default:
                 return null;
-        }
-    };
-
-    const handleMyPositionToggle = (positionId: string) => {
-        const myPositions = myPosition || [];
-
-        if (positionId === 'all') {
-            if (myPositions.includes('all')) {
-                onMyPositionSelect([]);
-            } else {
-                onMyPositionSelect(['all']);
-
-                if (!hasScrolledToDesired) {
-                    setTimeout(() => {
-                        const desiredSection = document.querySelector('[data-section="desired-positions"]');
-                        if (desiredSection) {
-                            const headerHeight = 140;
-                            const sectionTop = desiredSection.getBoundingClientRect().top + window.scrollY;
-                            const targetScroll = Math.max(0, sectionTop - headerHeight);
-
-                            window.scrollTo({
-                                top: targetScroll,
-                                behavior: 'smooth'
-                            });
-                        }
-                    }, 300);
-                    setHasScrolledToDesired(true);
-                }
-            }
-        } else {
-            if (myPositions.includes(positionId)) {
-                onMyPositionSelect(myPositions.filter((p) => p !== positionId));
-            } else {
-                const newPositions = myPositions.filter((p) => p !== 'all');
-                onMyPositionSelect([...newPositions, positionId]);
-
-                if (!hasScrolledToDesired) {
-                    setTimeout(() => {
-                        const desiredSection = document.querySelector('[data-section="desired-positions"]');
-                        if (desiredSection) {
-                            const headerHeight = 140;
-                            const sectionTop = desiredSection.getBoundingClientRect().top + window.scrollY;
-                            const targetScroll = Math.max(0, sectionTop - headerHeight);
-
-                            window.scrollTo({
-                                top: targetScroll,
-                                behavior: 'smooth'
-                            });
-                        }
-                    }, 300);
-                    setHasScrolledToDesired(true);
-                }
-            }
         }
     };
 
@@ -208,106 +150,36 @@ export default function PositionSelection({
     return (
         <PositionSelectionContainer>
             <Section>
-                <SectionTitle>내 포지션</SectionTitle>
+                <SectionTitle>원하는 듀오 포지션</SectionTitle>
                 <SectionDescription>
-                    본인이 플레이하는 포지션을 선택해주세요
+                    함께 플레이하고 싶은 포지션을 선택해주세요
                 </SectionDescription>
 
                 <PositionGrid>
-                    {lolPositions.map((position) => {
-                        const myPositions = myPosition || [];
-                        return (
-                            <PositionCard
-                                key={position.id}
-                                $active={myPositions.includes(position.id)}
-                                onClick={() =>
-                                    handleMyPositionToggle(position.id)
-                                }
-                                $multiSelect
-                            >
-                                <PositionIcon
-                                    $active={myPositions.includes(position.id)}
-                                >
-                                    {getPositionIcon(position.icon)}
-                                </PositionIcon>
-                                <PositionName>{position.name}</PositionName>
-                                {myPositions.includes(position.id) && (
-                                    <SelectedIndicator>✓</SelectedIndicator>
+                    {lolPositions.map((position) => (
+                        <PositionCard
+                            key={position.id}
+                            $active={desiredPositions.includes(position.id)}
+                            onClick={() =>
+                                handleDesiredPositionToggle(position.id)
+                            }
+                            $multiSelect
+                        >
+                            <PositionIcon
+                                $active={desiredPositions.includes(
+                                    position.id,
                                 )}
-                            </PositionCard>
-                        );
-                    })}
+                            >
+                                {getPositionIcon(position.icon)}
+                            </PositionIcon>
+                            <PositionName>{position.name}</PositionName>
+                            {desiredPositions.includes(position.id) && (
+                                <SelectedIndicator>✓</SelectedIndicator>
+                            )}
+                        </PositionCard>
+                    ))}
                 </PositionGrid>
             </Section>
-
-            {myPosition && myPosition.length > 0 && (
-                <Section data-section="desired-positions">
-                    <SectionTitle>원하는 듀오 포지션</SectionTitle>
-                    <SectionDescription>
-                        함께 플레이하고 싶은 포지션을 선택해주세요
-                    </SectionDescription>
-
-                    <PositionGrid>
-                        {lolPositions.map((position) => (
-                            <PositionCard
-                                key={position.id}
-                                $active={desiredPositions.includes(position.id)}
-                                onClick={() =>
-                                    handleDesiredPositionToggle(position.id)
-                                }
-                                $multiSelect
-                            >
-                                <PositionIcon
-                                    $active={desiredPositions.includes(
-                                        position.id,
-                                    )}
-                                >
-                                    {getPositionIcon(position.icon)}
-                                </PositionIcon>
-                                <PositionName>{position.name}</PositionName>
-                                {desiredPositions.includes(position.id) && (
-                                    <SelectedIndicator>✓</SelectedIndicator>
-                                )}
-                            </PositionCard>
-                        ))}
-                    </PositionGrid>
-                </Section>
-            )}
-
-            {myPosition &&
-                myPosition.length > 0 &&
-                desiredPositions.length > 0 && (
-                    <SelectionSummary>
-                        <SummaryContent>
-                            <SummaryItem>
-                                <SummaryLabel>내 포지션:</SummaryLabel>
-                                <SummaryValue>
-                                    {(myPosition || [])
-                                        .map(
-                                            (id) =>
-                                                lolPositions.find(
-                                                    (p) => p.id === id,
-                                                )?.name,
-                                        )
-                                        .join(', ')}
-                                </SummaryValue>
-                            </SummaryItem>
-                            <SummaryItem>
-                                <SummaryLabel>듀오 포지션:</SummaryLabel>
-                                <SummaryValue>
-                                    {desiredPositions
-                                        .map(
-                                            (id) =>
-                                                lolPositions.find(
-                                                    (p) => p.id === id,
-                                                )?.name,
-                                        )
-                                        .join(', ')}
-                                </SummaryValue>
-                            </SummaryItem>
-                        </SummaryContent>
-                    </SelectionSummary>
-                )}
         </PositionSelectionContainer>
     );
 }

@@ -25,20 +25,6 @@ interface MatchingCriteria {
     commStyles: string[];
 }
 
-// 티어 순서 정의 (매칭 범위 계산용)
-const tierOrder = [
-    '아이언',
-    '브론즈',
-    '실버',
-    '골드',
-    '플래티넘',
-    '에메랄드',
-    '다이아몬드',
-    '마스터',
-    '그랜드마스터',
-    '챌린저',
-];
-
 // 매칭 조건에 따른 사용자 필터링 함수
 const filterUsersByMatchingCriteria = (
     criteria: MatchingCriteria,
@@ -54,80 +40,53 @@ const filterUsersByMatchingCriteria = (
             return false;
         }
 
-        // 티어 매칭 (±2 티어 범위)
-        if (criteria.tier && !isCompatibleTier(user.tier, criteria.tier)) {
-            return false;
+        // 포지션 매칭만 수행 (티어는 무시)
+        if (criteria.positions.length > 0 && !criteria.positions.includes('all')) {
+            // 'all'이 아닌 경우에만 필터링
+            const positionId = 'positionId' in user ? user.positionId : undefined;
+            if (!positionId || !criteria.positions.includes(positionId)) {
+                return false;
+            }
         }
 
-        // 마이크 선호도 매칭
-        if (
-            criteria.micPreference &&
-            !isCompatibleMicPreference(
-                user.communicationStyles,
-                criteria.micPreference,
-            )
-        ) {
-            return false;
-        }
-
-        // 게임 스타일 매칭 (최소 1개 일치)
-        if (
-            criteria.gameStyles.length > 0 &&
-            !hasMatchingStyles(user.gameStyles, criteria.gameStyles)
-        ) {
-            return false;
-        }
-
-        // 커뮤니케이션 스타일 매칭 (최소 1개 일치)
-        if (
-            criteria.commStyles.length > 0 &&
-            !hasMatchingStyles(user.communicationStyles, criteria.commStyles)
-        ) {
-            return false;
-        }
+        // 티어, 마이크 선호도, 게임 스타일, 커뮤니케이션 스타일 필터링 제거
+        // (포지션만 필터링 - 카드에서 선택한 티어와 스타일을 표시)
 
         return true;
     });
 };
 
 
-// 티어 호환성 검사 (±2 티어 범위)
-const isCompatibleTier = (userTier: string, targetTier: string): boolean => {
-    const userIndex = tierOrder.indexOf(userTier);
-    const targetIndex = tierOrder.indexOf(targetTier);
+// 티어 ID를 한글 이름으로 변환
+const getTierNameFromId = (tierId: string): string => {
+    // tierId 형식: "ironI1", "bronzeB3", "silverS2", "goldG1", "platinumP4",
+    //              "emeraldE2", "diamondD1", "masterM1", "grandmasterGM1", "challengerC1"
 
-    if (userIndex === -1 || targetIndex === -1) return true; // 알 수 없는 티어는 허용
+    if (!tierId) return '';
 
-    return Math.abs(userIndex - targetIndex) <= 2;
+    const tierMap: { [key: string]: string } = {
+        iron: '아이언',
+        bronze: '브론즈',
+        silver: '실버',
+        gold: '골드',
+        platinum: '플래티넘',
+        emerald: '에메랄드',
+        diamond: '다이아몬드',
+        master: '마스터',
+        grandmaster: '그랜드마스터',
+        challenger: '챌린저',
+    };
+
+    // tierId에서 티어 부분만 추출 (예: "emeraldE2" -> "emerald")
+    const tierKey = tierId.match(/^[a-z]+/i)?.[0]?.toLowerCase() || '';
+
+    return tierMap[tierKey] || '';
 };
 
-// 마이크 선호도 호환성 검사
-const isCompatibleMicPreference = (
-    userCommStyles: string[],
-    micPreference: string,
-): boolean => {
-    if (micPreference === '마이크 필수') {
-        return userCommStyles.includes('마이크 필수');
-    } else if (micPreference === '마이크 선택') {
-        return (
-            userCommStyles.includes('마이크 필수') ||
-            userCommStyles.includes('마이크 가능하지만 조용한')
-        );
-    } else if (micPreference === '채팅만') {
-        return (
-            userCommStyles.includes('채팅 위주') ||
-            !userCommStyles.includes('마이크 필수')
-        );
-    }
-    return true;
-};
-
-// 스타일 매칭 검사 (최소 1개 일치)
-const hasMatchingStyles = (
-    userStyles: string[],
-    targetStyles: string[],
-): boolean => {
-    return targetStyles.some((style) => userStyles.includes(style));
+// 티어 정확히 일치 검사
+const isExactTierMatch = (userTier: string, targetTierId: string): boolean => {
+    const targetTierName = getTierNameFromId(targetTierId);
+    return userTier === targetTierName;
 };
 
 
@@ -136,6 +95,12 @@ function MatchResultsContent() {
         useState<MatchUser[]>([]);
     const [matchedUser, setMatchedUser] = useState<MatchUser | null>(null);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [selectedGameStyles, setSelectedGameStyles] = useState<string[]>([]);
+    const [selectedCommStyles, setSelectedCommStyles] = useState<string[]>([]);
+    const [selectedTier, setSelectedTier] = useState<string>('');
+    const [userRanksMap, setUserRanksMap] = useState<{ [key: number]: string }>({});
+    const [matchedUserTier, setMatchedUserTier] = useState<string>('');
+    const [matchedUserRank, setMatchedUserRank] = useState<string>('');
     const { setProgress } = useQuickMatch();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -151,6 +116,8 @@ function MatchResultsContent() {
         const micPreference = searchParams.get('micPreference');
         const gameStyles = searchParams.get('gameStyles');
         const commStyles = searchParams.get('commStyles');
+        const userIds = searchParams.get('userIds');
+        const userRanks = searchParams.get('userRanks');
 
         console.log('매칭 조건:', {
             game,
@@ -159,19 +126,41 @@ function MatchResultsContent() {
             micPreference,
             gameStyles,
             commStyles,
+            userIds,
+            userRanks,
         });
 
-        // 매칭 조건에 따라 사용자 필터링
-        const filteredUsers = filterUsersByMatchingCriteria({
-            game,
-            positions: positions ? JSON.parse(positions) : [],
-            tier,
-            micPreference,
-            gameStyles: gameStyles ? JSON.parse(gameStyles) : [],
-            commStyles: commStyles ? JSON.parse(commStyles) : [],
-        });
+        // URL에서 전달받은 유저 ID와 랭크 맵 사용
+        if (userIds && userRanks) {
+            const selectedUserIds: number[] = JSON.parse(userIds);
+            const ranksMap: { [key: number]: string } = JSON.parse(userRanks);
 
-        setCurrentUsers(filteredUsers);
+            // 전체 유저 목록에서 선택된 유저들만 필터링
+            const gameUsers = game ? getUsersByGame(getGameNameById(game)) : [];
+            const selectedUsers = gameUsers.filter(user =>
+                selectedUserIds.includes(user.id)
+            );
+
+            setCurrentUsers(selectedUsers);
+            setUserRanksMap(ranksMap);
+        } else {
+            // URL에 유저 정보가 없으면 기존 방식으로 필터링 (폴백)
+            const filteredUsers = filterUsersByMatchingCriteria({
+                game,
+                positions: positions ? JSON.parse(positions) : [],
+                tier,
+                micPreference,
+                gameStyles: gameStyles ? JSON.parse(gameStyles) : [],
+                commStyles: commStyles ? JSON.parse(commStyles) : [],
+            });
+
+            setCurrentUsers(filteredUsers.slice(0, 5));
+        }
+
+        // 선택한 스타일과 티어 저장
+        setSelectedGameStyles(gameStyles ? JSON.parse(gameStyles) : []);
+        setSelectedCommStyles(commStyles ? JSON.parse(commStyles) : []);
+        setSelectedTier(tier || '');
 
         return () => {
             setProgress(0);
@@ -184,6 +173,28 @@ function MatchResultsContent() {
         if (direction === 'right') {
             // 관심 표시 - 매칭 성공
             setMatchedUser(user);
+
+            // 매칭된 유저의 티어와 랭크 계산
+            const tierMap: { [key: string]: { name: string } } = {
+                iron: { name: '아이언' },
+                bronze: { name: '브론즈' },
+                silver: { name: '실버' },
+                gold: { name: '골드' },
+                platinum: { name: '플래티넘' },
+                emerald: { name: '에메랄드' },
+                diamond: { name: '다이아몬드' },
+                master: { name: '마스터' },
+                grandmaster: { name: '그랜드마스터' },
+                challenger: { name: '챌린저' },
+            };
+
+            const tierKey = selectedTier?.match(/^[a-z]+/i)?.[0]?.toLowerCase() || '';
+            const tierInfo = tierMap[tierKey];
+            const displayTier = tierInfo ? tierInfo.name : user.tier;
+            const displayRank = userRanksMap[user.id] || user.rank;
+
+            setMatchedUserTier(displayTier);
+            setMatchedUserRank(displayRank);
             setShowSuccessModal(true);
         }
 
@@ -237,6 +248,10 @@ function MatchResultsContent() {
                         user={user}
                         index={index}
                         isTop={index === 0}
+                        selectedGameStyles={selectedGameStyles}
+                        selectedCommStyles={selectedCommStyles}
+                        selectedTier={selectedTier}
+                        assignedRank={userRanksMap[user.id]}
                         {...props}
                     />
                 )}
@@ -245,6 +260,8 @@ function MatchResultsContent() {
             {showSuccessModal && matchedUser && (
                 <MatchSuccessModal
                     user={matchedUser}
+                    displayTier={matchedUserTier}
+                    displayRank={matchedUserRank}
                     onClose={handleSuccessModalClose}
                 />
             )}

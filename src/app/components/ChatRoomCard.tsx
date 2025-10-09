@@ -92,7 +92,9 @@ export default function ChatRoomCard({
                     <LastMessage $hasUnread={unreadCount > 0}>
                         {lastMessage.content}
                     </LastMessage>
-                    {unreadCount > 0 && <UnreadBadge>{unreadCount}</UnreadBadge>}
+                    {unreadCount > 0 && (
+                        <UnreadBadge>{unreadCount}</UnreadBadge>
+                    )}
                 </BottomRow>
             </ContentSection>
         </CardContainer>
@@ -132,8 +134,8 @@ const OnlineIndicator = styled.div`
     position: absolute;
     bottom: 0.2rem;
     right: 0.2rem;
-    width: 1.2rem;
-    height: 1.2rem;
+    width: 1.5rem;
+    height: 1.5rem;
     background-color: #22c55e;
     border: 0.2rem solid #1a1a1a;
     border-radius: 50%;

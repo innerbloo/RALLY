@@ -8,10 +8,8 @@ import styled from '@emotion/styled';
 import type { TierOption } from '../types/quickMatch';
 
 interface TierSelectionProps {
-    myTier: { main: string; sub?: string } | null;
-    desiredTierRange: { min: string; max: string } | null;
-    onMyTierSelect: (tier: { main: string; sub?: string }) => void;
-    onDesiredTierRangeChange: (range: { min: string; max: string }) => void;
+    desiredTier: string | null;
+    onDesiredTierChange: (tierId: string) => void;
 }
 
 const tierOptions: TierOption[] = [
@@ -84,125 +82,39 @@ const tierOptions: TierOption[] = [
 ];
 
 export default function TierSelection({
-    myTier,
-    desiredTierRange,
-    onMyTierSelect,
-    onDesiredTierRangeChange,
+    desiredTier,
+    onDesiredTierChange,
 }: TierSelectionProps) {
-    const [selectedMainTier, setSelectedMainTier] = useState<string | null>(myTier?.main || null);
-    const [rangeMinTier, setRangeMinTier] = useState<string | null>(desiredTierRange?.min || null);
-    const [rangeMaxTier, setRangeMaxTier] = useState<string | null>(desiredTierRange?.max || null);
+    const handleTierSelect = (tierId: string) => {
+        onDesiredTierChange(tierId);
 
-    const handleMainTierSelect = (tierId: string) => {
-        setSelectedMainTier(tierId);
-        const tier = tierOptions.find(t => t.id === tierId);
-        if (tier) {
-            if (tier.subTiers.length === 0) {
-                // 마스터 이상은 세부 티어 없음
-                onMyTierSelect({ main: tierId });
+        setTimeout(() => {
+            const footer = document.querySelector('footer');
+            if (footer) {
+                const headerHeight = 140;
+                const footerTop = footer.getBoundingClientRect().top + window.scrollY;
+                const targetScroll = Math.max(0, footerTop - window.innerHeight + footer.offsetHeight + headerHeight);
 
-                setTimeout(() => {
-                    const duoTierSection = document.querySelector('[data-section="duo-tier-range"]');
-                    if (duoTierSection) {
-                        const headerHeight = 140;
-                        const sectionTop = duoTierSection.getBoundingClientRect().top + window.scrollY;
-                        const targetScroll = Math.max(0, sectionTop - headerHeight);
-
-                        window.scrollTo({
-                            top: targetScroll,
-                            behavior: 'smooth'
-                        });
-                    }
-                }, 300);
-            } else {
-                // 세부 티어가 있는 경우 기본 선택값 없음
-                onMyTierSelect({ main: tierId });
-
-                setTimeout(() => {
-                    const subTierSection = document.querySelector('[data-section="sub-tier"]');
-                    if (subTierSection) {
-                        const headerHeight = 140;
-                        const sectionTop = subTierSection.getBoundingClientRect().top + window.scrollY;
-                        const targetScroll = Math.max(0, sectionTop - headerHeight);
-
-                        window.scrollTo({
-                            top: targetScroll,
-                            behavior: 'smooth'
-                        });
-                    }
-                }, 300);
+                window.scrollTo({
+                    top: targetScroll,
+                    behavior: 'smooth'
+                });
             }
-        }
-    };
-
-    const handleSubTierSelect = (subTier: string) => {
-        if (selectedMainTier) {
-            onMyTierSelect({ main: selectedMainTier, sub: subTier });
-
-            setTimeout(() => {
-                const duoTierSection = document.querySelector('[data-section="duo-tier-range"]');
-                if (duoTierSection) {
-                    const headerHeight = 140;
-                    const sectionTop = duoTierSection.getBoundingClientRect().top + window.scrollY;
-                    const targetScroll = Math.max(0, sectionTop - headerHeight);
-
-                    window.scrollTo({
-                        top: targetScroll,
-                        behavior: 'smooth'
-                    });
-                }
-            }, 300);
-        }
-    };
-
-    const handleRangeChange = (type: 'min' | 'max', tierId: string) => {
-        if (type === 'min') {
-            setRangeMinTier(tierId);
-            const newRange = { min: tierId, max: rangeMaxTier || tierId };
-            onDesiredTierRangeChange(newRange);
-        } else {
-            setRangeMaxTier(tierId);
-            const newRange = { min: rangeMinTier || tierId, max: tierId };
-            onDesiredTierRangeChange(newRange);
-        }
-
-        if ((type === 'min' && rangeMaxTier) || (type === 'max' && rangeMinTier)) {
-            setTimeout(() => {
-                const footer = document.querySelector('footer');
-                if (footer) {
-                    const headerHeight = 140;
-                    const footerTop = footer.getBoundingClientRect().top + window.scrollY;
-                    const targetScroll = Math.max(0, footerTop - window.innerHeight + footer.offsetHeight + headerHeight);
-
-                    window.scrollTo({
-                        top: targetScroll,
-                        behavior: 'smooth'
-                    });
-                }
-            }, 300);
-        }
-    };
-
-    const getTierIndex = (tierId: string) => {
-        return tierOptions.findIndex(t => t.id === tierId);
-    };
-
-    const getSelectedTier = () => {
-        return tierOptions.find(t => t.id === selectedMainTier);
+        }, 300);
     };
 
     return (
         <TierSelectionContainer>
             <Section>
-                <SectionTitle>내 티어</SectionTitle>
-                <SectionDescription>현재 본인의 티어를 선택해주세요</SectionDescription>
-                
+                <SectionTitle>원하는 듀오 티어</SectionTitle>
+                <SectionDescription>함께 플레이하고 싶은 티어를 선택해주세요</SectionDescription>
+
                 <TierGrid>
                     {tierOptions.map((tier) => (
                         <TierCard
                             key={tier.id}
-                            $active={selectedMainTier === tier.id}
-                            onClick={() => handleMainTierSelect(tier.id)}
+                            $active={desiredTier === tier.id}
+                            onClick={() => handleTierSelect(tier.id)}
                         >
                             <TierIcon>
                                 <Image
@@ -213,107 +125,13 @@ export default function TierSelection({
                                 />
                             </TierIcon>
                             <TierName>{tier.name}</TierName>
-                            {selectedMainTier === tier.id && (
+                            {desiredTier === tier.id && (
                                 <SelectedIndicator>✓</SelectedIndicator>
                             )}
                         </TierCard>
                     ))}
                 </TierGrid>
-
             </Section>
-
-            {selectedMainTier && getSelectedTier()?.subTiers && getSelectedTier()!.subTiers.length > 0 && (
-                <Section data-section="sub-tier">
-                    <SectionTitle>세부 티어</SectionTitle>
-                    <SectionDescription>세부 티어를 선택해주세요</SectionDescription>
-                    <SubTierGrid>
-                        {getSelectedTier()?.subTiers.map((subTier) => (
-                            <SubTierButton
-                                key={subTier}
-                                $active={myTier?.sub === subTier}
-                                onClick={() => handleSubTierSelect(subTier)}
-                            >
-                                {subTier}
-                            </SubTierButton>
-                        ))}
-                    </SubTierGrid>
-                </Section>
-            )}
-
-            {myTier && (getSelectedTier()?.subTiers?.length === 0 || myTier.sub) && (
-                <Section data-section="duo-tier-range">
-                    <SectionTitle>원하는 듀오 티어 범위</SectionTitle>
-                    <SectionDescription>함께 플레이하고 싶은 티어 범위를 설정해주세요</SectionDescription>
-                
-                <RangeSection>
-                    <RangeSelector>
-                        <RangeLabel>최소 티어</RangeLabel>
-                        <TierDropdown>
-                            {tierOptions.map((tier) => (
-                                <TierOption
-                                    key={`min-${tier.id}`}
-                                    $active={rangeMinTier === tier.id}
-                                    onClick={() => handleRangeChange('min', tier.id)}
-                                    disabled={rangeMaxTier ? getTierIndex(tier.id) > getTierIndex(rangeMaxTier) : false}
-                                >
-                                    <Image
-                                        src={tier.icon}
-                                        width={24}
-                                        height={24}
-                                        alt={tier.name}
-                                    />
-                                    {tier.name}
-                                    {rangeMinTier === tier.id && <span>✓</span>}
-                                </TierOption>
-                            ))}
-                        </TierDropdown>
-                    </RangeSelector>
-                    <RangeSelector>
-                        <RangeLabel>최대 티어</RangeLabel>
-                        <TierDropdown>
-                            {tierOptions.map((tier) => (
-                                <TierOption
-                                    key={`max-${tier.id}`}
-                                    $active={rangeMaxTier === tier.id}
-                                    onClick={() => handleRangeChange('max', tier.id)}
-                                    disabled={rangeMinTier ? getTierIndex(tier.id) < getTierIndex(rangeMinTier) : false}
-                                >
-                                    <Image
-                                        src={tier.icon}
-                                        width={24}
-                                        height={24}
-                                        alt={tier.name}
-                                    />
-                                    {tier.name}
-                                    {rangeMaxTier === tier.id && <span>✓</span>}
-                                </TierOption>
-                            ))}
-                        </TierDropdown>
-                    </RangeSelector>
-                </RangeSection>
-                </Section>
-            )}
-
-            {myTier && desiredTierRange && (
-                <SelectionSummary>
-                    <SummaryContent>
-                        <SummaryItem>
-                            <SummaryLabel>내 티어:</SummaryLabel>
-                            <SummaryValue>
-                                {tierOptions.find(t => t.id === myTier.main)?.name}
-                                {myTier.sub && ` ${myTier.sub}`}
-                            </SummaryValue>
-                        </SummaryItem>
-                        <SummaryItem>
-                            <SummaryLabel>듀오 티어:</SummaryLabel>
-                            <SummaryValue>
-                                {tierOptions.find(t => t.id === desiredTierRange.min)?.name} ~ {' '}
-                                {tierOptions.find(t => t.id === desiredTierRange.max)?.name}
-                            </SummaryValue>
-                        </SummaryItem>
-                    </SummaryContent>
-                </SelectionSummary>
-            )}
         </TierSelectionContainer>
     );
 }

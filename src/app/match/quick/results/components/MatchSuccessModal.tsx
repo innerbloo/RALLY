@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
-import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
 
 interface MatchUser {
     id: number;
@@ -25,12 +25,51 @@ interface MatchUser {
 
 interface MatchSuccessModalProps {
     user: MatchUser;
+    displayTier?: string;
+    displayRank?: string;
     onClose: () => void;
 }
 
+// 티어 이미지 매핑 함수
+const getTierImage = (tier: string): string => {
+    const tierImageMap: { [key: string]: string } = {
+        아이언: '/lol/rank-lol-iron.webp',
+        브론즈: '/lol/rank-lol-bronze.webp',
+        실버: '/lol/rank-lol-silver.webp',
+        골드: '/lol/rank-lol-gold.webp',
+        플래티넘: '/lol/rank-lol-platinum.webp',
+        에메랄드: '/lol/rank-lol-emerald.webp',
+        다이아몬드: '/lol/rank-lol-diamond.webp',
+        마스터: '/lol/rank-lol-master.webp',
+        그랜드마스터: '/lol/rank-lol-grandmaster.webp',
+        챌린저: '/lol/rank-lol-challenger.webp',
+    };
+    return tierImageMap[tier] || '/lol/rank-lol-unranked.webp';
+};
+
+// 포지션 이름 가져오기 함수
+const getPositionName = (positionElement: React.ReactNode): string => {
+    if (!positionElement || typeof positionElement !== 'object') return '';
+
+    const elementType = (positionElement as { type?: { name?: string } }).type;
+    if (!elementType || !elementType.name) return '';
+
+    const positionMap: { [key: string]: string } = {
+        PositionLolTop2: '탑',
+        PositionLolJungle2: '정글',
+        PositionLolMid2: '미드',
+        PositionLolAdc2: '원딜',
+        PositionLolSupport2: '서포터',
+    };
+
+    return positionMap[elementType.name] || '';
+};
+
 export default function MatchSuccessModal({
     user,
-    onClose
+    displayTier,
+    displayRank,
+    onClose,
 }: MatchSuccessModalProps) {
     const [isVisible, setIsVisible] = useState(false);
 
@@ -59,7 +98,6 @@ export default function MatchSuccessModal({
             <ModalContainer $visible={isVisible}>
                 {/* 축하 아이콘 */}
                 <CelebrationSection>
-                    <HeartIcon>💕</HeartIcon>
                     <SuccessTitle>매칭 성공!</SuccessTitle>
                     <SuccessSubtitle>
                         {user.username}님과 연결되었습니다
@@ -75,13 +113,35 @@ export default function MatchSuccessModal({
                         height={80}
                     />
                     <UserDetails>
-                        <UserName>{user.username}</UserName>
+                        <UserNameRow>
+                            <UserName>{user.username}</UserName>
+                            {user.position && (
+                                <PositionBadge>
+                                    {user.position}
+                                    <PositionText>
+                                        {getPositionName(user.position)}
+                                    </PositionText>
+                                </PositionBadge>
+                            )}
+                        </UserNameRow>
                         <GameInfo>
-                            <span>{user.gameId}</span>
-                            <TierBadge>
-                                {user.rank} {user.tier}
-                            </TierBadge>
+                            <GameId>{user.gameId}</GameId>
                         </GameInfo>
+                        <TierInfoContainer>
+                            <TierBadgeWithIcon>
+                                <TierImage
+                                    src={getTierImage(
+                                        displayTier || user.tier,
+                                    )}
+                                    alt={`${displayTier || user.tier} 티어`}
+                                    width={28}
+                                    height={28}
+                                />
+                                <TierRank>
+                                    {displayRank || user.rank}
+                                </TierRank>
+                            </TierBadgeWithIcon>
+                        </TierInfoContainer>
                         <Description>{user.description}</Description>
                     </UserDetails>
                 </UserInfoSection>
@@ -91,25 +151,23 @@ export default function MatchSuccessModal({
                     <TipsTitle>💡 매칭 팁</TipsTitle>
                     <TipsList>
                         <TipItem>먼저 인사하고 간단한 소개를 해보세요</TipItem>
-                        <TipItem>선호하는 게임 모드나 플레이 시간을 물어보세요</TipItem>
+                        <TipItem>
+                            선호하는 게임 모드나 플레이 시간을 물어보세요
+                        </TipItem>
                         <TipItem>서로의 플레이 스타일을 존중해주세요</TipItem>
                     </TipsList>
                 </TipsSection>
 
                 {/* 액션 버튼 */}
                 <ActionSection>
-                    <ChatButton onClick={handleClose}>
-                        💬 채팅하기
-                    </ChatButton>
+                    <ChatButton onClick={handleClose}>💬 채팅하기</ChatButton>
                     <SecondaryButton onClick={handleClose}>
                         나중에 하기
                     </SecondaryButton>
                 </ActionSection>
 
                 {/* 닫기 버튼 */}
-                <CloseButton onClick={handleClose}>
-                    ✕
-                </CloseButton>
+                <CloseButton onClick={handleClose}>✕</CloseButton>
             </ModalContainer>
         </ModalBackdrop>
     );
@@ -181,7 +239,7 @@ const ModalBackdrop = styled.div<{ $visible: boolean }>`
     justify-content: center;
     z-index: 1000;
     padding: 2rem;
-    opacity: ${({ $visible }) => $visible ? 1 : 0};
+    opacity: ${({ $visible }) => ($visible ? 1 : 0)};
     transition: opacity 0.3s ease;
     backdrop-filter: blur(4px);
 `;
@@ -195,7 +253,7 @@ const ModalContainer = styled.div<{ $visible: boolean }>`
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
-    animation: ${({ $visible }) => $visible ? slideUp : 'none'} 0.3s ease-out;
+    animation: ${({ $visible }) => ($visible ? slideUp : 'none')} 0.3s ease-out;
     box-shadow: 0 20px 60px rgba(66, 114, 236, 0.3);
 `;
 
@@ -214,16 +272,13 @@ const CelebrationSection = styled.div`
         left: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        background: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.1) 0%,
+            transparent 70%
+        );
         animation: ${bounce} 2s ease-in-out infinite;
     }
-`;
-
-const HeartIcon = styled.div`
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    animation: ${heartPulse} 2s ease-in-out infinite;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 `;
 
 const SuccessTitle = styled.h2`
@@ -259,25 +314,81 @@ const ProfileImage = styled(Image)`
 const UserDetails = styled.div`
     flex: 1;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+`;
+
+const UserNameRow = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
 `;
 
 const UserName = styled.h3`
     font-size: 1.8rem;
     font-weight: 700;
     color: #ffffff;
-    margin: 0 0 0.5rem;
+    margin: 0;
+`;
+
+const PositionBadge = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-shrink: 0;
+
+    svg {
+        width: 1.8rem;
+        height: 1.8rem;
+        color: #e5e7eb;
+    }
+`;
+
+const PositionText = styled.span`
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1;
 `;
 
 const GameInfo = styled.div`
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.8rem;
+    gap: 0.6rem;
+`;
 
-    span {
-        font-size: 1.3rem;
-        color: #939393;
-    }
+const GameId = styled.span`
+    font-size: 1.3rem;
+    color: #939393;
+`;
+
+const TierInfoContainer = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const TierBadgeWithIcon = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 1rem;
+    background-color: rgba(66, 114, 236, 0.2);
+    border: 0.1rem solid #4272ec;
+    border-radius: 1rem;
+`;
+
+const TierImage = styled(Image)`
+    object-fit: contain;
+    flex-shrink: 0;
+`;
+
+const TierRank = styled.span`
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #4272ec;
+    line-height: 1;
 `;
 
 const TierBadge = styled.span`

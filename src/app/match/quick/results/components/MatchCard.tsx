@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useMemo } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -28,6 +29,10 @@ interface MatchCardProps {
     isDragging?: boolean;
     dragX?: number;
     dragY?: number;
+    selectedGameStyles?: string[];
+    selectedCommStyles?: string[];
+    selectedTier?: string;
+    assignedRank?: string;
     onMouseDown?: (e: React.MouseEvent) => void;
     onTouchStart?: (e: React.TouchEvent) => void;
 }
@@ -48,7 +53,6 @@ const getTierImage = (tier: string): string => {
     };
     return tierImageMap[tier] || '/lol/rank-lol-unranked.webp';
 };
-
 
 // 포지션 이름 가져오기 함수
 const getPositionName = (positionElement: React.ReactNode): string => {
@@ -86,31 +90,31 @@ const getChampionNameFromPath = (imagePath: string): string => {
 
     // 영어 이름을 한국어로 변환
     const championNameMap: { [key: string]: string } = {
-        'Aatrox': '아트록스',
-        'Garen': '가렌',
-        'Gangplank': '갱플랭크',
-        'Sion': '시온',
-        'Vayne': '베인',
-        'KhaZix': '카직스',
-        'Viego': '비에고',
-        'Nidalee': '니달리',
-        'Rammus': '람머스',
+        Aatrox: '아트록스',
+        Garen: '가렌',
+        Gangplank: '갱플랭크',
+        Sion: '시온',
+        Vayne: '베인',
+        KhaZix: '카직스',
+        Viego: '비에고',
+        Nidalee: '니달리',
+        Rammus: '람머스',
         'Master Yi': '마스터 이',
-        'Yasuo': '야스오',
-        'LeBlanc': '르블랑',
-        'Vex': '벡스',
+        Yasuo: '야스오',
+        LeBlanc: '르블랑',
+        Vex: '벡스',
         'Twisted Fate': '트위스티드 페이트',
-        'Lissandra': '리산드라',
-        'Jinx': '징크스',
-        'KaiSa': '카이사',
-        'Ezreal': '이즈리얼',
-        'Lucian': '루시안',
-        'Zeri': '제리',
-        'Sona': '소나',
-        'Janna': '잔나',
-        'Braum': '브라움',
-        'Blitzcrank': '블리츠크랭크',
-        'Nautilus': '노틸러스',
+        Lissandra: '리산드라',
+        Jinx: '징크스',
+        KaiSa: '카이사',
+        Ezreal: '이즈리얼',
+        Lucian: '루시안',
+        Zeri: '제리',
+        Sona: '소나',
+        Janna: '잔나',
+        Braum: '브라움',
+        Blitzcrank: '블리츠크랭크',
+        Nautilus: '노틸러스',
     };
 
     return championNameMap[championName] || championName;
@@ -122,6 +126,10 @@ export default function MatchCard({
     isDragging = false,
     dragX = 0,
     dragY = 0,
+    selectedGameStyles = [],
+    selectedCommStyles = [],
+    selectedTier = '',
+    assignedRank,
     onMouseDown,
     onTouchStart,
 }: MatchCardProps) {
@@ -136,6 +144,56 @@ export default function MatchCard({
         if (dragX < -50) return 'reject';
         return null;
     };
+
+    // 선택한 티어 ID를 한글 티어명과 랭크로 변환
+    const getDisplayTierInfo = (tierId: string, preAssignedRank?: string) => {
+        if (!tierId) return { tierName: user.tier, rank: user.rank };
+
+        const tierMap: { [key: string]: { name: string; abbr: string } } = {
+            iron: { name: '아이언', abbr: 'I' },
+            bronze: { name: '브론즈', abbr: 'B' },
+            silver: { name: '실버', abbr: 'S' },
+            gold: { name: '골드', abbr: 'G' },
+            platinum: { name: '플래티넘', abbr: 'P' },
+            emerald: { name: '에메랄드', abbr: 'E' },
+            diamond: { name: '다이아몬드', abbr: 'D' },
+            master: { name: '마스터', abbr: 'M' },
+            grandmaster: { name: '그랜드마스터', abbr: 'GM' },
+            challenger: { name: '챌린저', abbr: 'C' },
+        };
+
+        // tierId에서 티어 부분 추출 (예: "emeraldE2" -> "emerald")
+        const tierKey = tierId.match(/^[a-z]+/i)?.[0]?.toLowerCase() || '';
+        const tierInfo = tierMap[tierKey];
+
+        if (!tierInfo) return { tierName: user.tier, rank: user.rank };
+
+        // 미리 할당된 랭크가 있으면 사용, 없으면 랜덤 생성 (폴백)
+        const displayRank = preAssignedRank || `${tierInfo.abbr}${Math.floor(Math.random() * 4) + 1}`;
+
+        return { tierName: tierInfo.name, rank: displayRank };
+    };
+
+    const { tierName: displayTier, rank: displayRank } = useMemo(
+        () => getDisplayTierInfo(selectedTier, assignedRank),
+        [selectedTier, assignedRank, user.id]
+    );
+
+    console.log('MatchCard 티어 변환:', {
+        selectedTier,
+        originalTier: user.tier,
+        originalRank: user.rank,
+        displayTier,
+        displayRank,
+    });
+
+    // 유저의 실제 스타일과 선택한 스타일을 병합 (중복 제거)
+    const displayGameStyles = Array.from(
+        new Set([...selectedGameStyles, ...user.gameStyles])
+    );
+    const displayCommStyles = Array.from(
+        new Set([...selectedCommStyles, ...user.communicationStyles])
+    );
 
     console.log('MatchCard render:', {
         index,
@@ -201,14 +259,13 @@ export default function MatchCard({
                     </UserNameInfo>
                     <TierBadge>
                         <TierImage
-                            src={getTierImage(user.tier)}
-                            alt={`${user.tier} 티어`}
+                            src={getTierImage(displayTier)}
+                            alt={`${displayTier} 티어`}
                             width={24}
                             height={24}
                         />
                         <TierInfo>
-                            <TierRank>{user.rank}</TierRank>
-                            <TierName>{user.tier}</TierName>
+                            <TierRank>{displayRank}</TierRank>
                         </TierInfo>
                     </TierBadge>
                 </UserHeaderSection>
@@ -244,7 +301,9 @@ export default function MatchCard({
                                         width={32}
                                         height={32}
                                     />
-                                    <ChampionName>{getChampionNameFromPath(champion)}</ChampionName>
+                                    <ChampionName>
+                                        {getChampionNameFromPath(champion)}
+                                    </ChampionName>
                                 </ChampionItem>
                             ))}
                     </ChampionList>
@@ -254,7 +313,7 @@ export default function MatchCard({
                 <StyleSection>
                     <SectionTitle>게임 스타일</SectionTitle>
                     <StyleTags>
-                        {user.gameStyles.slice(0, 3).map((style, index) => (
+                        {displayGameStyles.slice(0, 3).map((style, index) => (
                             <StyleTag key={`game-${index}`} $type="game">
                                 {style}
                             </StyleTag>
@@ -266,7 +325,7 @@ export default function MatchCard({
                 <StyleSection>
                     <SectionTitle>커뮤니케이션 스타일</SectionTitle>
                     <StyleTags>
-                        {user.communicationStyles
+                        {displayCommStyles
                             .slice(0, 3)
                             .map((style, index) => (
                                 <StyleTag
