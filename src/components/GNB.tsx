@@ -64,6 +64,11 @@ export default function GNB() {
         return pathname.startsWith(path);
     };
 
+    const handleMatchClick = () => {
+        // 매칭 페이지로 이동할 때 튜토리얼 표시 플래그 설정
+        sessionStorage.setItem('showMatchTutorial', 'true');
+    };
+
     return (
         <GNBContainer>
             <GNBWrapper>
@@ -73,7 +78,14 @@ export default function GNB() {
 
                     return (
                         <GNBItem key={item.id}>
-                            <Link href={item.path}>
+                            <Link
+                                href={item.path}
+                                onClick={
+                                    item.id === 'match'
+                                        ? handleMatchClick
+                                        : undefined
+                                }
+                            >
                                 <GNBLink $active={active}>
                                     <IconWrapper>
                                         <IconComponent size={item.size ?? 20} />

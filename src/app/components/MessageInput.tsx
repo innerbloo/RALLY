@@ -1,7 +1,7 @@
 'use client';
 
 import { Send } from 'lucide-react';
-import { KeyboardEvent, useState } from 'react';
+import { forwardRef, KeyboardEvent, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -9,9 +9,10 @@ interface MessageInputProps {
     onSendMessage: (content: string) => void;
 }
 
-export default function MessageInput({ onSendMessage }: MessageInputProps) {
-    const [message, setMessage] = useState('');
-    const [isComposing, setIsComposing] = useState(false);
+const MessageInput = forwardRef<HTMLTextAreaElement, MessageInputProps>(
+    ({ onSendMessage }, ref) => {
+        const [message, setMessage] = useState('');
+        const [isComposing, setIsComposing] = useState(false);
 
     const handleSend = () => {
         if (message.trim()) {
@@ -28,30 +29,36 @@ export default function MessageInput({ onSendMessage }: MessageInputProps) {
         }
     };
 
-    return (
-        <InputContainer>
-            <InputWrapper>
-                <MessageTextarea
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    onCompositionStart={() => setIsComposing(true)}
-                    onCompositionEnd={() => setIsComposing(false)}
-                    placeholder="메시지를 입력하세요..."
-                    rows={1}
-                    maxLength={500}
-                />
-                <SendButton
-                    onClick={handleSend}
-                    disabled={!message.trim()}
-                    $hasContent={!!message.trim()}
-                >
-                    <Send size={20} />
-                </SendButton>
-            </InputWrapper>
-        </InputContainer>
-    );
-}
+        return (
+            <InputContainer>
+                <InputWrapper>
+                    <MessageTextarea
+                        ref={ref}
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        onCompositionStart={() => setIsComposing(true)}
+                        onCompositionEnd={() => setIsComposing(false)}
+                        placeholder="메시지를 입력하세요..."
+                        rows={1}
+                        maxLength={500}
+                    />
+                    <SendButton
+                        onClick={handleSend}
+                        disabled={!message.trim()}
+                        $hasContent={!!message.trim()}
+                    >
+                        <Send size={20} />
+                    </SendButton>
+                </InputWrapper>
+            </InputContainer>
+        );
+    },
+);
+
+MessageInput.displayName = 'MessageInput';
+
+export default MessageInput;
 
 const InputContainer = styled.div`
     position: fixed;

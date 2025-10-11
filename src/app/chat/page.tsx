@@ -1,12 +1,17 @@
 'use client';
 
 import { Search } from 'lucide-react';
-import { useState, useMemo, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import styled from '@emotion/styled';
 
 import ChatRoomList from '@/app/components/ChatRoomList';
-import { mockChatRooms, mockMessages, ChatRoom, Message } from '@/data/chatMockData';
+import {
+    ChatRoom,
+    Message,
+    mockChatRooms,
+    mockMessages,
+} from '@/data/chatMockData';
 
 export default function ChatPage() {
     const [chatRooms, setChatRooms] = useState<ChatRoom[]>(mockChatRooms);
@@ -37,7 +42,8 @@ export default function ChatPage() {
 
         const updatedRooms = allRooms.map((room) => {
             // localStorage에 저장된 메시지가 있으면 해당 메시지 사용
-            const roomMessages: Message[] = storedMessages[room.id] || mockMessages[room.id] || [];
+            const roomMessages: Message[] =
+                storedMessages[room.id] || mockMessages[room.id] || [];
 
             if (roomMessages.length > 0) {
                 // 마지막 메시지 찾기
@@ -101,10 +107,7 @@ export default function ChatPage() {
 
     // 읽지 않은 메시지 총 개수
     const totalUnreadCount = useMemo(() => {
-        return chatRooms.reduce(
-            (sum, room) => sum + room.unreadCount,
-            0,
-        );
+        return chatRooms.reduce((sum, room) => sum + room.unreadCount, 0);
     }, [chatRooms]);
 
     return (
@@ -131,6 +134,19 @@ export default function ChatPage() {
                     </SearchInputWrapper>
                 </SearchSection>
 
+                <GameFilterSection>
+                    <GameFilterList>
+                        {gameList.map((game) => (
+                            <GameFilterButton
+                                key={game}
+                                $active={selectedGame === game}
+                                onClick={() => setSelectedGame(game)}
+                            >
+                                {game}
+                            </GameFilterButton>
+                        ))}
+                    </GameFilterList>
+                </GameFilterSection>
                 <FilterSection>
                     <FilterGroup>
                         <FilterButton
@@ -147,26 +163,10 @@ export default function ChatPage() {
                         </FilterButton>
                     </FilterGroup>
                 </FilterSection>
-
-                <GameFilterSection>
-                    <GameFilterList>
-                        {gameList.map((game) => (
-                            <GameFilterButton
-                                key={game}
-                                $active={selectedGame === game}
-                                onClick={() => setSelectedGame(game)}
-                            >
-                                {game}
-                            </GameFilterButton>
-                        ))}
-                    </GameFilterList>
-                </GameFilterSection>
             </ChatHeader>
 
             <ResultSection>
-                <ResultCount>
-                    {filteredRooms.length}개의 채팅방
-                </ResultCount>
+                <ResultCount>{filteredRooms.length}개의 채팅방</ResultCount>
             </ResultSection>
 
             <ChatRoomList rooms={filteredRooms} />
@@ -284,6 +284,11 @@ const GameFilterSection = styled.div`
     margin-bottom: 1.5rem;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+
+    @media (max-width: 480px) {
+        margin: 0 -2rem 1.5rem;
+        padding: 0 2rem;
+    }
 
     &::-webkit-scrollbar {
         display: none;

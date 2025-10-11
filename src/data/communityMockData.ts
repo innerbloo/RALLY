@@ -15,6 +15,7 @@ export interface CommunityData {
 
 export interface Comment {
     id: number;
+    userId: number;
     username: string;
     profileImage: string;
     content: string;
@@ -24,6 +25,7 @@ export interface Comment {
 
 export interface PostDetail {
     id: number;
+    userId: number;
     image: string;
     username: string;
     profileImage: string;
@@ -285,6 +287,7 @@ export const mockPosts: CommunityData[] = [
 export const mockPostDetails: { [key: number]: PostDetail } = {
     1: {
         id: 1,
+        userId: 51,
         image: '/community/community1.jpg',
         username: '눈팅하러오는사람',
         profileImage: '/lol/profile-lol-1.png',
@@ -308,6 +311,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 1,
                 username: '정글러의품격',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '저도 처음엔 그랬어요 ㅋㅋ 지금은 랭크 스트레스가...',
@@ -316,6 +320,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 2,
                 username: '미드라이너',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '공감합니다. 초심을 잃지 말아야죠!',
@@ -324,6 +329,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 3,
+                userId: 3,
                 username: '티 모',
                 profileImage: '/lol/profile-lol-4.png',
                 content: '저는 아직도 재밌어요 ㅎㅎ 즐겜러라서 그런가',
@@ -334,6 +340,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     2: {
         id: 2,
+        userId: 52,
         image: '/community/community2.jpg',
         username: '허나거절한다',
         profileImage: '/lol/profile-lol-2.png',
@@ -355,6 +362,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 4,
                 username: '브론즈탈출기',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '맞아요 ㅋㅋ 그래도 말은 안 하는 게 낫죠',
@@ -363,6 +371,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 5,
                 username: '정글러의품격',
                 profileImage: '/lol/profile-lol-4.png',
                 content:
@@ -374,6 +383,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     3: {
         id: 3,
+        userId: 53,
         image: '/community/community3.jpg',
         username: '천둥군주의호령',
         profileImage: '/lol/profile-lol-3.png',
@@ -395,6 +405,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 6,
                 username: '미드라이너',
                 profileImage: '/lol/profile-lol-4.png',
                 content: '돈이 되니까 주는 거겠죠...',
@@ -403,6 +414,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 7,
                 username: '티 모',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '유미 유저인데 미안합니다 ㅋㅋㅋ',
@@ -413,6 +425,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     4: {
         id: 4,
+        userId: 21,
         image: '/community/community4.jpg',
         username: '수영하는파이리',
         profileImage: '/overwatch/profile-overwatch-1.png',
@@ -434,6 +447,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 8,
                 username: '오버워치마스터',
                 profileImage: '/overwatch/profile-overwatch-2.png',
                 content: '저는 아직도 재밌게 하고 있는데...',
@@ -442,6 +456,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 9,
                 username: '겐지장인',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '밸런스 패치가 문제인 것 같아요',
@@ -452,6 +467,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     5: {
         id: 5,
+        userId: 21,
         image: '/community/community5.jpg',
         username: '젠장또대상혁이야',
         profileImage: '/lol/profile-lol-4.png',
@@ -471,6 +487,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 10,
                 username: '롤토체스장인',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '메타 덱마다 필수 아이템이 있어요. 검색해보세요!',
@@ -479,6 +496,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 11,
                 username: '전략가',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '제 가이드 글 참고하시면 도움될 거예요',
@@ -489,6 +507,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     6: {
         id: 6,
+        userId: 54,
         image: '/community/community6.jpg',
         username: '정글러의품격',
         profileImage: '/lol/profile-lol-2.png',
@@ -511,6 +530,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 12,
                 username: '브론즈탈출기',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '감사합니다! 도움 많이 됐어요',
@@ -519,6 +539,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 13,
                 username: '눈팅하러오는사람',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '정글 연습해봐야겠네요 ㅎㅎ',
@@ -529,6 +550,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     7: {
         id: 7,
+        userId: 55,
         image: '/community/community7.jpg',
         username: '오버워치마스터',
         profileImage: '/overwatch/profile-overwatch-2.png',
@@ -552,6 +574,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 14,
                 username: '겐지장인',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '탱커 유저는 아니지만 도움됐어요',
@@ -560,6 +583,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 15,
                 username: '힐러의길',
                 profileImage: '/overwatch/profile-overwatch-1.png',
                 content: '탱커분들 이것좀 읽어주세요 제발 ㅠㅠ',
@@ -568,6 +592,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 3,
+                userId: 16,
                 username: '수영하는파이리',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '유익한 글 감사합니다!',
@@ -578,6 +603,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     8: {
         id: 8,
+        userId: 56,
         image: '/community/community8.jpg',
         username: '발로란트고수',
         profileImage: '/lol/profile-lol-3.png',
@@ -601,6 +627,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 17,
                 username: '발로초보',
                 profileImage: '/lol/profile-lol-4.png',
                 content: '저도 해봐야겠네요!',
@@ -609,6 +636,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 18,
                 username: '발로고인물',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '데스매치 3판이 핵심인 것 같아요',
@@ -619,6 +647,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     9: {
         id: 9,
+        userId: 57,
         image: '/community/community9.jpg',
         username: '배그킹',
         profileImage: '/lol/profile-lol-4.png',
@@ -642,6 +671,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 19,
                 username: '배그생존왕',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '저는 군기지가 최고예요',
@@ -650,6 +680,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 20,
                 username: '배그프로',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '포친키 물자 진짜 좋죠',
@@ -660,6 +691,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     10: {
         id: 10,
+        userId: 58,
         image: '/community/community10.jpg',
         username: '롤토체스장인',
         profileImage: '/lol/profile-lol-2.png',
@@ -690,6 +722,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 1,
                 username: '전략가',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '요정 기계류 카운터는 뭔가요?',
@@ -698,6 +731,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 2,
                 username: '롤체매니아',
                 profileImage: '/lol/profile-lol-4.png',
                 content: '정리 잘 해주셨네요!',
@@ -706,6 +740,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 3,
+                userId: 3,
                 username: '젠장또대상혁이야',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '블로그 주소 알 수 있을까요?',
@@ -716,6 +751,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     11: {
         id: 11,
+        userId: 59,
         image: '/community/community11.jpg',
         username: '브론즈탈출기',
         profileImage: '/lol/profile-lol-1.png',
@@ -737,6 +773,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 4,
                 username: '정글러의품격',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '축하드려요! 골드도 금방 가실 거예요',
@@ -745,6 +782,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 5,
                 username: '미드라이너',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '고생하셨습니다 ㅎㅎ',
@@ -755,6 +793,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     12: {
         id: 12,
+        userId: 60,
         image: '/community/community12.jpg',
         username: '겐지장인',
         profileImage: '/lol/profile-lol-1.png',
@@ -776,6 +815,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 6,
                 username: '오버워치마스터',
                 profileImage: '/overwatch/profile-overwatch-2.png',
                 content: '상황마다 다르지만 보통은 질풍참 직후가 좋아요',
@@ -784,6 +824,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 7,
                 username: '힐러의길',
                 profileImage: '/overwatch/profile-overwatch-1.png',
                 content: '연습장에서 타이밍 연습 많이 해보세요!',
@@ -794,6 +835,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     13: {
         id: 13,
+        userId: 61,
         image: '/community/community13.jpg',
         username: '발로초보',
         profileImage: '/lol/profile-lol-4.png',
@@ -815,6 +857,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 8,
                 username: '발로란트고수',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '상황 판단이 중요해요. 영상 많이 보시는 걸 추천',
@@ -823,6 +866,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 9,
                 username: '발로고인물',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '라운드 초반엔 정보 스킬, 중반엔 전투 스킬!',
@@ -833,6 +877,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     14: {
         id: 14,
+        userId: 62,
         image: '/community/community14.jpg',
         username: '배그생존왕',
         profileImage: '/lol/profile-lol-2.png',
@@ -857,6 +902,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 10,
                 username: '배그킹',
                 profileImage: '/lol/profile-lol-4.png',
                 content: '마지막 팁이 진짜 중요하죠',
@@ -865,6 +911,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 11,
                 username: '배그프로',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '유익한 정보 감사합니다!',
@@ -875,6 +922,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     15: {
         id: 15,
+        userId: 63,
         image: '/community/community15.jpg',
         username: '롤체매니아',
         profileImage: '/lol/profile-lol-4.png',
@@ -896,6 +944,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 12,
                 username: '롤토체스장인',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '환영합니다! 재밌게 즐기세요',
@@ -904,6 +953,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 13,
                 username: '전략가',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '저도 롤토체스가 본게임보다 재밌어요 ㅎㅎ',
@@ -914,6 +964,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     16: {
         id: 16,
+        userId: 64,
         image: '/community/community16.jpg',
         username: '미드라이너',
         profileImage: '/lol/profile-lol-3.png',
@@ -936,6 +987,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 14,
                 username: '브론즈탈출기',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '레벨 2 타이밍 몰랐는데 감사합니다!',
@@ -944,6 +996,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 15,
                 username: '정글러의품격',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '정글 입장에서도 도움되는 글이네요',
@@ -954,6 +1007,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     17: {
         id: 17,
+        userId: 65,
         image: '/community/community17.jpg',
         username: '힐러의길',
         profileImage: '/overwatch/profile-overwatch-1.png',
@@ -975,6 +1029,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 16,
                 username: '오버워치마스터',
                 profileImage: '/overwatch/profile-overwatch-2.png',
                 content: '탱커 뒤에서 팀 전체를 볼 수 있는 위치가 좋아요',
@@ -983,6 +1038,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 17,
                 username: '겐지장인',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '엄폐물 근처에 계시는 게 중요합니다',
@@ -993,6 +1049,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     18: {
         id: 18,
+        userId: 66,
         image: '/community/community18.jpg',
         username: '발로고인물',
         profileImage: '/lol/profile-lol-1.png',
@@ -1017,6 +1074,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 18,
                 username: '발로초보',
                 profileImage: '/lol/profile-lol-4.png',
                 content: '멘탈이 진짜 중요하죠 ㅠㅠ',
@@ -1025,6 +1083,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 19,
                 username: '발로란트고수',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '한 요원 파는 게 정답인 것 같아요',
@@ -1035,6 +1094,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     19: {
         id: 19,
+        userId: 67,
         image: '/community/community19.jpg',
         username: '배그프로',
         profileImage: '/lol/profile-lol-3.png',
@@ -1059,6 +1119,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 20,
                 username: '배그킹',
                 profileImage: '/lol/profile-lol-4.png',
                 content: '수류탄 먼저 던지는 거 진짜 중요해요',
@@ -1067,6 +1128,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 1,
                 username: '배그생존왕',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '엄폐물 잘 쓰는 게 핵심이죠',
@@ -1077,6 +1139,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
     },
     20: {
         id: 20,
+        userId: 68,
         image: '/community/community20.jpg',
         username: '전략가',
         profileImage: '/lol/profile-lol-3.png',
@@ -1108,6 +1171,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
         comments: [
             {
                 id: 1,
+                userId: 2,
                 username: '롤체매니아',
                 profileImage: '/lol/profile-lol-4.png',
                 content: '초보자한테 딱 필요한 글이네요!',
@@ -1116,6 +1180,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 2,
+                userId: 3,
                 username: '젠장또대상혁이야',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '경제 운영이 진짜 어려워요 ㅠㅠ',
@@ -1124,6 +1189,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
             },
             {
                 id: 3,
+                userId: 4,
                 username: '롤토체스장인',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '잘 정리하셨네요. 추천합니다',

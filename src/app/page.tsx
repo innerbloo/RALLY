@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
+import PositionLolJungle2 from '/public/lol/position-lol-jungle2.svg';
 import PositionLolTop2 from '/public/lol/position-lol-top2.svg';
-import PositionOverwatchDPS2 from '/public/overwatch/position-overwatch-dps2.svg';
 
 import styled from '@emotion/styled';
 
@@ -90,43 +90,6 @@ export default function Home() {
                     </GameWrapper>
                 </PopularGameSection>
 
-                {/*<EventSection>*/}
-                {/*    <h2>이벤트 & 공지사항</h2>*/}
-                {/*    <EventList*/}
-                {/*        events={[*/}
-                {/*            {*/}
-                {/*                id: 1,*/}
-                {/*                image: '/event/event1.png',*/}
-                {/*                title: '시즌 14 랭크 리셋 이벤트',*/}
-                {/*                type: '시즌 이벤트',*/}
-                {/*                startDate: '2025-09-10',*/}
-                {/*                endDate: '2025-09-30',*/}
-                {/*                participants: 1245,*/}
-                {/*                game: '리그오브레전드',*/}
-                {/*            },*/}
-                {/*            {*/}
-                {/*                id: 2,*/}
-                {/*                image: '/event/event2.png',*/}
-                {/*                title: '오버워치2 토너먼트 개최',*/}
-                {/*                type: '토너먼트',*/}
-                {/*                startDate: '2025-09-15',*/}
-                {/*                endDate: '2025-09-20',*/}
-                {/*                participants: 856,*/}
-                {/*                game: '오버워치2',*/}
-                {/*            },*/}
-                {/*            {*/}
-                {/*                id: 3,*/}
-                {/*                image: '/event/event3.png',*/}
-                {/*                title: '신규 유저 웰컴 이벤트',*/}
-                {/*                type: '신규 유저',*/}
-                {/*                startDate: '2025-09-01',*/}
-                {/*                endDate: '2025-09-30',*/}
-                {/*                game: '전체',*/}
-                {/*            },*/}
-                {/*        ]}*/}
-                {/*    />*/}
-                {/*</EventSection>*/}
-
                 <DuoRecommendSection>
                     <h2>듀오 추천</h2>
                     <DuoRecommendList
@@ -145,8 +108,8 @@ export default function Home() {
                                 rankText: 'E4',
                                 tags: [
                                     '공격적인',
-                                    '신중한 플레이',
-                                    '다혈질',
+                                    '팀 중심형',
+                                    '마이크 필수',
                                     '+',
                                 ],
                                 gameImage: '/game1.png',
@@ -155,108 +118,54 @@ export default function Home() {
                             {
                                 id: 2,
                                 profileImage: '/lol/profile-lol-2.png',
-                                username: '티 모',
-                                userCode: '#TM1',
+                                username: 'ShadowHunter',
+                                position: (
+                                    <PositionLolJungle2
+                                        width={20}
+                                        height={20}
+                                    />
+                                ),
+                                userCode: '#SH001',
                                 description:
-                                    '함께 할 듀오 파트너를 찾고있어요.',
-                                rankImage: '/lol/rank-lol-gold.webp',
-                                rankText: 'G1',
+                                    '정글러 메인입니다. 실력 있는 원딜분과 듀오하고 싶어요',
+                                rankImage: '/lol/rank-lol-diamond.webp',
+                                rankText: 'D3',
                                 tags: [
-                                    '전략적인',
-                                    '창의적인 플레이',
-                                    '편하게 대화하는',
+                                    '공격적인',
+                                    '리더형',
+                                    '마이크 필수',
                                     '+',
                                 ],
-                                gameImage: '/game2.png',
-                                gameAlt: '전략적 팀 전투',
+                                gameImage: '/game1.png',
+                                gameAlt: '리그오브레전드',
                             },
                             {
                                 id: 3,
-                                profileImage:
-                                    '/overwatch/profile-overwatch-1.png',
-                                username: '닮은 살걀',
+                                profileImage: '/lol/profile-lol-3.png',
+                                username: '정글의왕',
                                 position: (
-                                    <PositionOverwatchDPS2
-                                        width={18}
+                                    <PositionLolJungle2
+                                        width={20}
                                         height={20}
-                                        style={{ objectFit: 'contain' }}
                                     />
                                 ),
-                                userCode: '#32948',
-                                description: '즐빡겜 듀오 구해요!',
-                                rankImage:
-                                    '/overwatch/rank-overwatch-diamond.webp',
-                                rankText: 'D2',
+                                userCode: '#KING789',
+                                description:
+                                    '정글 전문, 캐리하고 싶은 분들 오세요!',
+                                rankImage: '/lol/rank-lol-platinum.webp',
+                                rankText: 'P2',
                                 tags: [
-                                    '팀 중심형',
-                                    '빠른 템포 선호',
                                     '리더형',
+                                    '팀 중심형',
+                                    '유머러스한',
                                     '+',
                                 ],
-                                gameImage: '/game4.png',
-                                gameAlt: '전략적 팀 전투',
+                                gameImage: '/game1.png',
+                                gameAlt: '리그오브레전드',
                             },
                         ]}
                     />
                 </DuoRecommendSection>
-
-                {/*<OnlineActivitySection>*/}
-                {/*    <h2>지금 온라인</h2>*/}
-                {/*    <OnlineUserList*/}
-                {/*        users={[*/}
-                {/*            {*/}
-                {/*                id: 1,*/}
-                {/*                profileImage: '/lol/profile-lol-3.png',*/}
-                {/*                username: '리신은내꺼',*/}
-                {/*                position: (*/}
-                {/*                    <PositionLolTop2 width={18} height={20} />*/}
-                {/*                ),*/}
-                {/*                userCode: '#KR1234',*/}
-                {/*                currentGame: '리그오브레전드',*/}
-                {/*                status: 'online' as const,*/}
-                {/*                rankImage: '/lol/rank-lol-platinum.webp',*/}
-                {/*                rankText: 'P2',*/}
-                {/*                tags: ['적극적인', '소통 선호', '캐리형'],*/}
-                {/*                gameImage: '/game1.png',*/}
-                {/*                gameAlt: '리그오브레전드',*/}
-                {/*            },*/}
-                {/*            {*/}
-                {/*                id: 2,*/}
-                {/*                profileImage:*/}
-                {/*                    '/overwatch/profile-overwatch-2.png',*/}
-                {/*                username: '힐러는내가',*/}
-                {/*                position: (*/}
-                {/*                    <PositionOverwatchDPS2*/}
-                {/*                        width={18}*/}
-                {/*                        height={20}*/}
-                {/*                    />*/}
-                {/*                ),*/}
-                {/*                userCode: '#OW5678',*/}
-                {/*                currentGame: '오버워치2',*/}
-                {/*                status: 'matching' as const,*/}
-                {/*                rankImage:*/}
-                {/*                    '/overwatch/rank-overwatch-gold.webp',*/}
-                {/*                rankText: 'G1',*/}
-                {/*                tags: ['서포터', '팀워크', '신중함'],*/}
-                {/*                gameImage: '/game4.png',*/}
-                {/*                gameAlt: '오버워치2',*/}
-                {/*            },*/}
-                {/*            {*/}
-                {/*                id: 3,*/}
-                {/*                profileImage: '/lol/profile-lol-4.png',*/}
-                {/*                username: '야스오장인',*/}
-                {/*                userCode: '#YAS999',*/}
-                {/*                currentGame: '리그오브레전드',*/}
-                {/*                status: 'in-game' as const,*/}
-                {/*                rankImage: '/lol/rank-lol-diamond.webp',*/}
-                {/*                rankText: 'D4',*/}
-                {/*                tags: ['메카닉', '솔로킬', '공격적인'],*/}
-                {/*                gameImage: '/game1.png',*/}
-                {/*                gameAlt: '리그오브레전드',*/}
-                {/*            },*/}
-                {/*        ]}*/}
-                {/*    />*/}
-                {/*</OnlineActivitySection>*/}
 
                 <MentorRecommendSection>
                     <h2>멘토 추천</h2>

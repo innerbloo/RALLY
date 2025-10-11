@@ -2,13 +2,14 @@
 
 import { Zap } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 import PositionLolTop2 from '/public/lol/position-lol-top2.svg';
 import PositionOverwatchDPS2 from '/public/overwatch/position-overwatch-dps2.svg';
 
 import styled from '@emotion/styled';
 
+import MatchTutorial from '@/app/match/components/MatchTutorial';
 import StyleFilter from '@/app/match/components/StyleFilter';
 
 interface MatchUser {
@@ -90,11 +91,84 @@ export default function MatchPage() {
     const [selectedGame, setSelectedGame] = useState<string>('전체');
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+    const [isAtBottom, setIsAtBottom] = useState(false);
+    const [showTutorial, setShowTutorial] = useState(false);
     const router = useRouter();
 
     const handleQuickMatch = () => {
+        // 튜토리얼 활성화 중이면 튜토리얼 닫기
+        if (showTutorial) {
+            handleCloseTutorial();
+            return;
+        }
+        // 튜토리얼이 없으면 빠른 매칭 실행
         router.push('/match/quick');
     };
+
+    // 튜토리얼 표시 - GNB를 통해 접근했을 때만
+    useEffect(() => {
+        const shouldShowTutorial =
+            sessionStorage.getItem('showMatchTutorial') === 'true';
+        if (shouldShowTutorial) {
+            // 플래그 제거 (한 번만 표시)
+            sessionStorage.removeItem('showMatchTutorial');
+            // 페이지 로드 후 약간의 딜레이를 두고 표시
+            setTimeout(() => setShowTutorial(true), 250);
+        }
+    }, []);
+
+    // 튜토리얼 활성화 시 백그라운드 스크롤 비활성화
+    useEffect(() => {
+        if (showTutorial) {
+            // 현재 스크롤 위치 저장
+            const scrollY = window.scrollY;
+            // body와 html 모두 스크롤 비활성화
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+            // 모바일 대응
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}px`;
+            document.body.style.width = '100%';
+        } else {
+            // 스크롤 위치 복원
+            const scrollY = document.body.style.top;
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        }
+
+        // 컴포넌트 언마운트 시 원래대로 복원
+        return () => {
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+        };
+    }, [showTutorial]);
+
+    const handleCloseTutorial = () => {
+        setShowTutorial(false);
+    };
+
+    // 스크롤 바닥 감지
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+
+            // 바닥에서 50px 이내면 버튼 숨김
+            const atBottom = scrollTop + windowHeight >= documentHeight - 50;
+            setIsAtBottom(atBottom);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     const filteredUsers = mockUsers.filter((user) => {
         const gameFilter =
@@ -255,10 +329,16 @@ export default function MatchPage() {
                 </UserList>
             </UserListSection>
 
-            <QuickMatchButton onClick={handleQuickMatch}>
+            <QuickMatchButton
+                onClick={handleQuickMatch}
+                $isAtBottom={isAtBottom}
+                $tutorialActive={showTutorial}
+            >
                 <Zap size={24} />
                 <span>빠른 매칭</span>
             </QuickMatchButton>
+
+            {showTutorial && <MatchTutorial onClose={handleCloseTutorial} />}
         </MatchContainer>
     );
 }
@@ -649,7 +729,10 @@ const ChatButton = styled.button`
     }
 `;
 
-const QuickMatchButton = styled.button`
+const QuickMatchButton = styled.button<{
+    $isAtBottom: boolean;
+    $tutorialActive: boolean;
+}>`
     position: fixed;
     bottom: 8rem;
     display: flex;
@@ -663,41 +746,86 @@ const QuickMatchButton = styled.button`
     font-size: 1.4rem;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 4px 20px rgba(66, 114, 236, 0.4);
-    z-index: 999;
+    z-index: ${({ $tutorialActive }) => ($tutorialActive ? 10000 : 999)};
     transition: all 0.3s ease;
+
+    ${({ $tutorialActive }) =>
+        $tutorialActive
+            ? `
+        animation: pulseGlow 2s ease-in-out infinite;
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 0 4px rgba(66, 114, 236, 0.3), 0 8px 30px rgba(66, 114, 236, 0.6);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(66, 114, 236, 0.2), 0 12px 40px rgba(66, 114, 236, 0.8);
+            }
+        }
+    `
+            : `
+        box-shadow: 0 4px 20px rgba(66, 114, 236, 0.4);
+    `}
 
     /* Position relative to centered 800px container */
     left: 50%;
-    transform: translateX(calc(800px / 2 - 2rem - 100%));
+    transform: ${({ $isAtBottom, $tutorialActive }) => {
+        if ($tutorialActive) return 'translateX(calc(800px / 2 - 2rem - 100%))';
+        return $isAtBottom
+            ? 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(150%)'
+            : 'translateX(calc(800px / 2 - 2rem - 100%))';
+    }};
 
     @media (max-width: 800px) {
         right: 2rem;
         left: auto;
-        transform: none;
+        transform: ${({ $isAtBottom, $tutorialActive }) => {
+            if ($tutorialActive) return 'none';
+            return $isAtBottom ? 'translateY(150%)' : 'none';
+        }};
     }
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
-            transform: translateX(calc(800px / 2 - 2rem - 100%))
-                translateY(-2px);
-            box-shadow: 0 8px 25px rgba(66, 114, 236, 0.5);
+            transform: ${({ $isAtBottom, $tutorialActive }) => {
+                if ($tutorialActive)
+                    return 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(-2px)';
+                return $isAtBottom
+                    ? 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(150%)'
+                    : 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(-2px)';
+            }};
+            box-shadow: ${({ $tutorialActive }) =>
+                $tutorialActive
+                    ? '0 0 0 4px rgba(66, 114, 236, 0.3), 0 12px 35px rgba(66, 114, 236, 0.7)'
+                    : '0 8px 25px rgba(66, 114, 236, 0.5)'};
         }
     }
 
     @media (hover: hover) and (pointer: fine) and (max-width: 800px) {
         &:hover {
-            transform: translateY(-2px);
+            transform: ${({ $isAtBottom, $tutorialActive }) => {
+                if ($tutorialActive) return 'translateY(-2px)';
+                return $isAtBottom ? 'translateY(150%)' : 'translateY(-2px)';
+            }};
         }
     }
 
     &:active {
-        transform: translateX(calc(800px / 2 - 2rem - 100%)) translateY(0);
+        transform: ${({ $isAtBottom, $tutorialActive }) => {
+            if ($tutorialActive)
+                return 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(0)';
+            return $isAtBottom
+                ? 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(150%)'
+                : 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(0)';
+        }};
     }
 
     @media (max-width: 800px) {
         &:active {
-            transform: translateY(0);
+            transform: ${({ $isAtBottom, $tutorialActive }) => {
+                if ($tutorialActive) return 'translateY(0)';
+                return $isAtBottom ? 'translateY(150%)' : 'translateY(0)';
+            }};
         }
     }
 

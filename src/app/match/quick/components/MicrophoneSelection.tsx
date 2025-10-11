@@ -1,6 +1,6 @@
 'use client';
 
-import { MessageSquare, Mic, MicOff } from 'lucide-react';
+import { MessageSquare, MessageSquareDot, Mic } from 'lucide-react';
 
 import { MicrophoneOption } from '../types/quickMatch';
 
@@ -46,7 +46,7 @@ export default function MicrophoneSelection({
             case 'mic':
                 return <Mic {...iconProps} />;
             case 'mic-optional':
-                return <MicOff {...iconProps} />;
+                return <MessageSquareDot {...iconProps} />;
             case 'chat':
                 return <MessageSquare {...iconProps} />;
             default:
@@ -70,12 +70,20 @@ export default function MicrophoneSelection({
                                 const footer = document.querySelector('footer');
                                 if (footer) {
                                     const headerHeight = 140;
-                                    const footerTop = footer.getBoundingClientRect().top + window.scrollY;
-                                    const targetScroll = Math.max(0, footerTop - window.innerHeight + footer.offsetHeight + headerHeight);
+                                    const footerTop =
+                                        footer.getBoundingClientRect().top +
+                                        window.scrollY;
+                                    const targetScroll = Math.max(
+                                        0,
+                                        footerTop -
+                                            window.innerHeight +
+                                            footer.offsetHeight +
+                                            headerHeight,
+                                    );
 
                                     window.scrollTo({
                                         top: targetScroll,
-                                        behavior: 'smooth'
+                                        behavior: 'smooth',
                                     });
                                 }
                             }, 300);
@@ -108,8 +116,8 @@ export default function MicrophoneSelection({
                 <TipTitle>💡 소통 방식 안내</TipTitle>
                 <TipList>
                     <TipItem>
-                        <strong>마이크 필수:</strong> 실시간 음성 소통으로 더
-                        빠른 협업이 가능해요
+                        <strong>마이크 필수:</strong> 실시간 음성으로 더 빠른
+                        소통이 가능해요
                     </TipItem>
                     <TipItem>
                         <strong>마이크 가능:</strong> 유연한 소통으로 상황에

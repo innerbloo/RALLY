@@ -1,12 +1,14 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import Rate from '/public/mentor/rate.svg';
 
 import styled from '@emotion/styled';
 
 interface DuoRecommendCardProps {
+    id: number;
     profileImage: string;
     username: string;
     rate: number;
@@ -17,6 +19,7 @@ interface DuoRecommendCardProps {
 }
 
 export default function MentorRecommendCard({
+    id,
     profileImage,
     username,
     rate,
@@ -25,8 +28,14 @@ export default function MentorRecommendCard({
     gameImage,
     gameAlt,
 }: DuoRecommendCardProps) {
+    const router = useRouter();
+
+    const handleClick = () => {
+        router.push(`/mentor/${id}`);
+    };
+
     return (
-        <CardContainer>
+        <CardContainer onClick={handleClick}>
             <DuoTopSection>
                 <Image
                     src={profileImage}
@@ -65,6 +74,15 @@ const CardContainer = styled.li`
     border: 0.1rem solid #3f3f41;
     border-radius: 1.6rem;
     background-color: #252527;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            border-color: #4272ec;
+            transform: translateY(-0.2rem);
+        }
+    }
 `;
 
 const DuoTopSection = styled.div`

@@ -316,4 +316,20 @@ export const mockTFTUsers: TFTUser[] = [
         description: '티어표만 보고 플레이하는 안전한 스타일입니다',
         game: '전략적 팀 전투',
     },
+    // 커뮤니티 작성자 추가
+    {
+        id: 21,
+        profileImage: '/lol/profile-lol-4.png',
+        username: '젠장또대상혁이야',
+        gameId: '#SANGHYUK021',
+        tier: '실버',
+        rank: 'S4',
+        winRate: 48,
+        kda: 0,
+        recentChampions: ['/tft/synergy-assassin.png', '/tft/synergy-mage.png', '/tft/synergy-bruiser.png'],
+        gameStyles: ['초보자', '배우는 중', '질문 많은'],
+        communicationStyles: ['채팅 위주', '예의 바른', '편하게 대화하는'],
+        description: 'TFT 배우는 중입니다! 아이템 조합 알려주세요 ㅠㅠ',
+        game: '전략적 팀 전투',
+    },
 ];

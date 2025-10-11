@@ -109,14 +109,7 @@ export default function Header() {
     };
 
     const handleBack = () => {
-        const pathSegments = pathname.split('/').filter(Boolean);
-        if (pathSegments.length > 0) {
-            pathSegments.pop();
-            const parentPath = '/' + pathSegments.join('/');
-            router.push(parentPath || '/');
-        } else {
-            router.push('/');
-        }
+        router.back();
     };
 
     return (

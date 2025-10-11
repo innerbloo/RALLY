@@ -45,7 +45,7 @@ export default function ProfilePage() {
     const [profile, setProfile] = useState<UserProfile>({
         nickname: '한성대 즐겜러',
         profileImage: '/hsu.png',
-        bio: '안녕하세요! 한성대학교에 재학중인 게임을 사랑하는 학생입니다. 언제든지 같이 게임할 사람 구해요!',
+        bio: '안녕하세요! 언제든지 같이 게임할 사람 구해요!',
     });
 
     const [stats, setStats] = useState<UserStats>({

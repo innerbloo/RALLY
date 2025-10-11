@@ -7,6 +7,7 @@ export interface ChatRoom {
         profileImage: string;
         position?: string; // 게임 포지션 (SVG 경로)
         isOnline: boolean; // 온라인 상태
+        isMentor?: boolean; // 멘토 여부
     };
     game: {
         name: string; // 게임 이름

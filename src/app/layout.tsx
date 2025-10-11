@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import { Toaster } from 'react-hot-toast';
 
 import './globals.css';
+
 import ClientLayout from '@/components/ClientLayout';
 
 const pretendard = localFont({
@@ -13,14 +14,14 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-    title: 'RALLY',
+    title: 'Rally - 듀오 매칭의 새로운 기준',
     description: '실시간 듀오 매칭 서비스',
     manifest: '/manifest.json',
     other: {
         'mobile-web-app-capable': 'yes',
         'apple-mobile-web-app-capable': 'yes',
         'apple-mobile-web-app-status-bar-style': 'black-translucent',
-        'apple-mobile-web-app-title': 'RALLY',
+        'apple-mobile-web-app-title': 'Rally',
         'theme-color': '#000000',
     },
 };
@@ -41,7 +42,10 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="ko">
-            <body className={`${pretendard.variable} font-sans antialiased`} style={{ fontFamily: 'var(--font-pretendard)' }}>
+            <body
+                className={`${pretendard.variable} font-sans antialiased`}
+                style={{ fontFamily: 'var(--font-pretendard)' }}
+            >
                 <ClientLayout>{children}</ClientLayout>
                 <Toaster
                     position="top-center"
@@ -52,14 +56,16 @@ export default function RootLayout({
                     toastOptions={{
                         duration: 3000,
                         style: {
-                            background: 'linear-gradient(135deg, #4272ec 0%, #3a5fd9 100%)',
+                            background:
+                                'linear-gradient(135deg, #4272ec 0%, #3a5fd9 100%)',
                             color: '#ffffff',
                             borderRadius: '16px',
                             padding: '16px 24px',
                             fontSize: '15px',
                             fontWeight: '600',
                             border: 'none',
-                            boxShadow: '0 8px 32px rgba(66, 114, 236, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2)',
+                            boxShadow:
+                                '0 8px 32px rgba(66, 114, 236, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2)',
                             backdropFilter: 'blur(10px)',
                             minWidth: '280px',
                             textAlign: 'center',
@@ -72,9 +78,11 @@ export default function RootLayout({
                         },
                         error: {
                             style: {
-                                background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                                background:
+                                    'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
                                 color: '#ffffff',
-                                boxShadow: '0 8px 32px rgba(239, 68, 68, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2)',
+                                boxShadow:
+                                    '0 8px 32px rgba(239, 68, 68, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2)',
                             },
                             iconTheme: {
                                 primary: '#ffffff',

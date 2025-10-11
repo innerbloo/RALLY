@@ -25,12 +25,14 @@ import MessageBubble from '@/app/components/MessageBubble';
 import MessageInput from '@/app/components/MessageInput';
 import TypingIndicator from '@/app/components/TypingIndicator';
 import { Message, mockChatRooms, mockMessages, ChatRoom } from '@/data/chatMockData';
+import { getMentorDetailById } from '@/data/mentorDetailMockData';
 
 export default function ChatRoomPage() {
     const params = useParams();
     const router = useRouter();
     const roomId = Number(params.roomId);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const messageInputRef = useRef<HTMLTextAreaElement>(null);
 
     // 채팅방 정보 상태
     const [room, setRoom] = useState<ChatRoom | null>(null);
@@ -80,6 +82,19 @@ export default function ChatRoomPage() {
     useEffect(() => {
         scrollToBottom();
     }, [messages, isAiTyping]);
+
+    // 데스크톱 환경에서만 입력창에 자동 포커스
+    useEffect(() => {
+        // 데스크톱 환경 감지 (호버 가능 + 정밀한 포인터)
+        const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+        if (isDesktop && messageInputRef.current) {
+            // 약간의 딜레이를 두고 포커스 (페이지 로딩 완료 후)
+            setTimeout(() => {
+                messageInputRef.current?.focus();
+            }, 100);
+        }
+    }, []);
 
     // 외부 클릭 시 드롭다운 닫기
     useEffect(() => {
@@ -166,6 +181,15 @@ export default function ChatRoomPage() {
         setCurrentResultIndex(0);
     };
 
+    const handleProfileClick = () => {
+        // 멘토인 경우 멘토 상세 페이지로, 아니면 유저 프로필로
+        if (room?.matchedUser.isMentor) {
+            router.push(`/mentor/${room.matchedUser.userId}`);
+        } else {
+            router.push(`/profile/${room?.matchedUser.userId}`);
+        }
+    };
+
     // 메시지 전송 핸들러
     const handleSendMessage = async (content: string) => {
         const newMessage: Message = {
@@ -216,7 +240,68 @@ export default function ChatRoomPage() {
                     content: msg.content,
                 }));
 
-                console.log('Sending to AI:', conversationHistory);
+                // 멘토인 경우 시스템 프롬프트 추가
+                let messages = conversationHistory;
+                if (room?.matchedUser.isMentor) {
+                    const mentorDetail = getMentorDetailById(room.matchedUser.userId);
+                    if (mentorDetail) {
+                        // 첫 대화인지 확인 (시스템 메시지 제외)
+                        const userMessages = updatedMessages.filter(msg => msg.messageType !== 'system');
+                        const isFirstMessage = userMessages.length <= 1;
+
+                        const systemPrompt = `당신은 ${mentorDetail.username} 멘토입니다.
+
+[기본 정보]
+- 게임: ${mentorDetail.game}
+- 티어: ${mentorDetail.tier}
+- 전문 분야: ${mentorDetail.specialties.join(', ')}
+- 뱃지: ${mentorDetail.badges.join(', ')}
+
+[경력]
+${mentorDetail.career.join('\n')}
+
+[자기소개]
+${mentorDetail.bio}
+
+[멘토링 스타일]
+${mentorDetail.style}
+
+[제공 서비스]
+${mentorDetail.services.map(s => `- ${s.type}: ${s.description} (${s.duration}분, ${s.price.toLocaleString()}원)`).join('\n')}
+
+[커리큘럼]
+${mentorDetail.curriculum.join('\n')}
+
+[통계]
+- 총 세션: ${mentorDetail.totalSessions}회
+- 수강생 수: ${mentorDetail.studentCount}명
+- 평점: ${mentorDetail.rating}/5.0 (리뷰 ${mentorDetail.reviewCount}개)
+
+당신은 이 정보를 바탕으로 ${mentorDetail.username} 멘토의 성격과 말투로 대화하세요.
+학생들에게 친절하고 전문적으로 답변하되, 멘토의 스타일을 유지하세요.
+멘토링 관련 질문에는 위 정보를 참고하여 구체적으로 답변하세요.
+
+${isFirstMessage ? `
+[중요] 이번 대화는 학생과의 첫 만남입니다. 반드시 다음 형식으로 답변하세요:
+1. 따뜻한 인사말로 시작
+2. 자신의 전문 분야와 경력을 2-3줄로 간단히 소개
+3. 학생이 어떤 부분에서 도움이 필요한지 물어보기
+4. 친근하고 격려하는 톤 유지
+
+예시 형식:
+"안녕하세요! 문의 주셔서 감사합니다 😊
+저는 [경력 요약]이고, [전문 분야] 멘토링을 하고 있어요.
+어떤 부분에서 도움이 필요하신가요?"
+` : ''}`;
+
+                        messages = [
+                            { role: 'system', content: systemPrompt },
+                            ...conversationHistory
+                        ];
+                    }
+                }
+
+                console.log('Sending to AI:', messages);
 
                 const response = await fetch('/api/chat', {
                     method: 'POST',
@@ -224,7 +309,7 @@ export default function ChatRoomPage() {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        messages: conversationHistory,
+                        messages: messages,
                         roomId: roomId,
                     }),
                 });
@@ -466,25 +551,27 @@ export default function ChatRoomPage() {
                             <BackButton onClick={() => router.back()}>
                                 <ChevronLeft size={28} />
                             </BackButton>
-                            <ProfileImageWrapper>
-                                <Image
-                                    src={room.matchedUser.profileImage}
-                                    width={40}
-                                    height={40}
-                                    alt={`${room.matchedUser.username} 프로필`}
-                                />
-                                {room.matchedUser.isOnline && (
-                                    <OnlineIndicator />
-                                )}
-                            </ProfileImageWrapper>
-                            <UserInfo>
-                                <Username>{room.matchedUser.username}</Username>
-                                <OnlineStatus>
-                                    {room.matchedUser.isOnline
-                                        ? '온라인'
-                                        : '오프라인'}
-                                </OnlineStatus>
-                            </UserInfo>
+                            <ProfileSection onClick={handleProfileClick}>
+                                <ProfileImageWrapper>
+                                    <Image
+                                        src={room.matchedUser.profileImage}
+                                        width={40}
+                                        height={40}
+                                        alt={`${room.matchedUser.username} 프로필`}
+                                    />
+                                    {room.matchedUser.isOnline && (
+                                        <OnlineIndicator />
+                                    )}
+                                </ProfileImageWrapper>
+                                <UserInfo>
+                                    <Username>{room.matchedUser.username}</Username>
+                                    <OnlineStatus>
+                                        {room.matchedUser.isOnline
+                                            ? '온라인'
+                                            : '오프라인'}
+                                    </OnlineStatus>
+                                </UserInfo>
+                            </ProfileSection>
                         </HeaderLeft>
                         <HeaderRight>
                             <MoreButton
@@ -606,7 +693,7 @@ export default function ChatRoomPage() {
                 <div ref={messagesEndRef} />
             </MessagesContainer>
 
-            <MessageInput onSendMessage={handleSendMessage} />
+            <MessageInput ref={messageInputRef} onSendMessage={handleSendMessage} />
         </ChatRoomContainer>
     );
 }
@@ -638,6 +725,23 @@ const HeaderLeft = styled.div`
     display: flex;
     align-items: center;
     gap: 1.2rem;
+`;
+
+const ProfileSection = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    padding: 0.4rem 0.8rem;
+    margin: -0.4rem -0.8rem;
+    border-radius: 1.2rem;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            background: #252527;
+        }
+    }
 `;
 
 const BackButton = styled.button`

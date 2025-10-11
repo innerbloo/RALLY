@@ -15,12 +15,29 @@ export default function CommunityPage() {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [sortBy, setSortBy] = useState<'latest' | 'popular'>('latest');
     const [allPosts, setAllPosts] = useState(mockPosts);
+    const [isAtBottom, setIsAtBottom] = useState(false);
     const router = useRouter();
 
     // 로컬스토리지에서 내가 작성한 게시글 불러오기
     useEffect(() => {
         const myPosts = JSON.parse(localStorage.getItem('myPosts') || '[]');
         setAllPosts([...myPosts, ...mockPosts]);
+    }, []);
+
+    // 스크롤 바닥 감지
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+
+            // 바닥에서 50px 이내면 버튼 숨김
+            const atBottom = scrollTop + windowHeight >= documentHeight - 50;
+            setIsAtBottom(atBottom);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     const handleNewPost = () => {
@@ -131,7 +148,7 @@ export default function CommunityPage() {
                 <CommunityList list={filteredPosts} />
             </PostListSection>
 
-            <NewPostButton onClick={handleNewPost}>
+            <NewPostButton onClick={handleNewPost} $isAtBottom={isAtBottom}>
                 <Edit3 size={20} />
                 <span>글쓰기</span>
             </NewPostButton>
@@ -200,7 +217,24 @@ const GameFilterContainer = styled.div`
 const GameFilterList = styled.div`
     display: flex;
     gap: 1rem;
-    flex-wrap: wrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+
+    @media (max-width: 480px) {
+        margin: 0 -2rem;
+        padding: 0 2rem;
+    }
+
+    &::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Edge */
+    }
+
+    /* Prevent buttons from shrinking */
+    > button {
+        flex-shrink: 0;
+    }
 `;
 
 const GameFilterButton = styled.button<{ $active: boolean }>`
@@ -295,7 +329,7 @@ const PostListSection = styled.section`
     flex: 1;
 `;
 
-const NewPostButton = styled.button`
+const NewPostButton = styled.button<{ $isAtBottom: boolean }>`
     position: fixed;
     bottom: 8rem;
     display: flex;
@@ -315,35 +349,46 @@ const NewPostButton = styled.button`
 
     /* Position relative to centered 800px container */
     left: 50%;
-    transform: translateX(calc(800px / 2 - 2rem - 100%));
+    transform: ${({ $isAtBottom }) =>
+        $isAtBottom
+            ? 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(150%)'
+            : 'translateX(calc(800px / 2 - 2rem - 100%))'};
 
     @media (max-width: 800px) {
         right: 2rem;
         left: auto;
-        transform: none;
+        transform: ${({ $isAtBottom }) =>
+            $isAtBottom ? 'translateY(150%)' : 'none'};
     }
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
-            transform: translateX(calc(800px / 2 - 2rem - 100%))
-                translateY(-2px);
+            transform: ${({ $isAtBottom }) =>
+                $isAtBottom
+                    ? 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(150%)'
+                    : 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(-2px)'};
             box-shadow: 0 8px 25px rgba(66, 114, 236, 0.5);
         }
     }
 
     @media (hover: hover) and (pointer: fine) and (max-width: 800px) {
         &:hover {
-            transform: translateY(-2px);
+            transform: ${({ $isAtBottom }) =>
+                $isAtBottom ? 'translateY(150%)' : 'translateY(-2px)'};
         }
     }
 
     &:active {
-        transform: translateX(calc(800px / 2 - 2rem - 100%)) translateY(0);
+        transform: ${({ $isAtBottom }) =>
+            $isAtBottom
+                ? 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(150%)'
+                : 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(0)'};
     }
 
     @media (max-width: 800px) {
         &:active {
-            transform: translateY(0);
+            transform: ${({ $isAtBottom }) =>
+                $isAtBottom ? 'translateY(150%)' : 'translateY(0)'};
         }
     }
 

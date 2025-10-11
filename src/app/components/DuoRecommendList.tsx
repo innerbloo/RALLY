@@ -1,6 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
 
 import DuoRecommendCard from './DuoRecommendCard';
 
@@ -25,6 +26,12 @@ interface DuoRecommendListProps {
 }
 
 export default function DuoRecommendList({ duos }: DuoRecommendListProps) {
+    const router = useRouter();
+
+    const handleDuoClick = (userId: number) => {
+        router.push(`/profile/${userId}`);
+    };
+
     return (
         <DuoWrapper>
             {duos.map((duo) => (
@@ -40,6 +47,7 @@ export default function DuoRecommendList({ duos }: DuoRecommendListProps) {
                     tags={duo.tags}
                     gameImage={duo.gameImage}
                     gameAlt={duo.gameAlt}
+                    onClick={() => handleDuoClick(duo.id)}
                 />
             ))}
         </DuoWrapper>

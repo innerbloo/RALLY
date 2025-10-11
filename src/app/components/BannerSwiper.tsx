@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { Swiper as SwiperType } from 'swiper';
 import 'swiper/css';
@@ -22,6 +23,7 @@ const pcBanners = [
 ];
 
 export default function BannerSwiper() {
+    const router = useRouter();
     const [currentIndex, setCurrentIndex] = useState(1);
     const [isDesktop, setIsDesktop] = useState(false);
 
@@ -42,6 +44,10 @@ export default function BannerSwiper() {
         setCurrentIndex(swiper.realIndex + 1);
     };
 
+    const handleBannerClick = (bannerId: number) => {
+        router.push(`/event/${bannerId}`);
+    };
+
     return (
         <BannerContainer>
             <StyledSwiper
@@ -57,7 +63,7 @@ export default function BannerSwiper() {
             >
                 {banners.map((banner) => (
                     <StyledSwiperSlide key={banner.id}>
-                        <BannerSlide>
+                        <BannerSlide onClick={() => handleBannerClick(banner.id)}>
                             <Image
                                 src={banner.image}
                                 alt={banner.alt}
@@ -102,6 +108,7 @@ const BannerSlide = styled.div`
     position: relative;
     width: 100%;
     height: 100%;
+    cursor: pointer;
 `;
 
 const PageIndicator = styled.div`

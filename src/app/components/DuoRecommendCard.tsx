@@ -16,6 +16,7 @@ interface DuoRecommendCardProps {
     tags: string[];
     gameImage: string;
     gameAlt: string;
+    onClick?: () => void;
 }
 
 export default function DuoRecommendCard({
@@ -29,9 +30,10 @@ export default function DuoRecommendCard({
     tags,
     gameImage,
     gameAlt,
+    onClick,
 }: DuoRecommendCardProps) {
     return (
-        <CardContainer>
+        <CardContainer onClick={onClick}>
             <DuoTopSection>
                 <div>
                     <Image
@@ -90,6 +92,16 @@ const CardContainer = styled.li`
     border: 0.1rem solid #3f3f41;
     border-radius: 1.6rem;
     background-color: #252527;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            border-color: #4272ec;
+            transform: translateY(-0.2rem);
+            box-shadow: 0 4px 12px rgba(66, 114, 236, 0.2);
+        }
+    }
 `;
 
 const DuoTopSection = styled.div`

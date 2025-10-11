@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
+import { MessageSquare } from 'lucide-react';
 
 import MatchCard from './components/MatchCard';
 import MatchSuccessModal from './components/MatchSuccessModal';
@@ -341,6 +342,11 @@ function MatchResultsContent() {
         handleChatClick();
     };
 
+    // 프로필 페이지로 이동하는 함수
+    const handleProfileClick = (userId: number) => {
+        router.push(`/profile/${userId}`);
+    };
+
     if (remainingUsers.length === 0) {
         // 매칭된 유저가 있으면 리스트를 보여주고, 없으면 기본 메시지 표시
         if (matchedUsers.length > 0) {
@@ -355,19 +361,22 @@ function MatchResultsContent() {
                         <MatchedUsersList>
                             {matchedUsers.map((user) => (
                                 <MatchedUserCard key={user.id}>
-                                    <UserImage
-                                        src={user.profileImage}
-                                        alt={user.username}
-                                    />
-                                    <UserInfo>
-                                        <UserName>{user.username}</UserName>
-                                        <UserGameId>{user.gameId}</UserGameId>
-                                        <UserTier>
-                                            {user.displayTier || user.tier} {user.displayRank || user.rank}
-                                        </UserTier>
-                                    </UserInfo>
+                                    <UserClickArea onClick={() => handleProfileClick(user.id)}>
+                                        <UserImage
+                                            src={user.profileImage}
+                                            alt={user.username}
+                                        />
+                                        <UserInfo>
+                                            <UserName>{user.username}</UserName>
+                                            <UserGameId>{user.gameId}</UserGameId>
+                                            <UserTier>
+                                                {user.displayTier || user.tier} {user.displayRank || user.rank}
+                                            </UserTier>
+                                        </UserInfo>
+                                    </UserClickArea>
                                     <ChatButton onClick={() => handleStartChat(user)}>
-                                        채팅하기
+                                        <MessageSquare size={18} />
+                                        <ChatButtonText>채팅하기</ChatButtonText>
                                     </ChatButton>
                                 </MatchedUserCard>
                             ))}
@@ -375,7 +384,7 @@ function MatchResultsContent() {
 
                         <ButtonGroup>
                             <BackButton onClick={handleBackToMatch}>
-                                새로운 매칭 시작하기
+                                매칭 홈으로 돌아가기
                             </BackButton>
                         </ButtonGroup>
                     </MatchedUsersContent>
@@ -518,12 +527,19 @@ const MatchedUsersContent = styled.div`
 
 const MatchedUsersList = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+    grid-template-columns: 1fr;
     gap: 2rem;
     margin: 3rem 0;
     max-height: 50vh;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+    }
 
     &::-webkit-scrollbar {
         width: 0.8rem;
@@ -559,6 +575,14 @@ const MatchedUserCard = styled.div`
     }
 `;
 
+const UserClickArea = styled.div`
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    cursor: pointer;
+`;
+
 const UserImage = styled.img`
     width: 6rem;
     height: 6rem;
@@ -579,6 +603,9 @@ const UserName = styled.div`
     font-size: 1.6rem;
     font-weight: 700;
     color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 const UserGameId = styled.div`
@@ -593,21 +620,41 @@ const UserTier = styled.div`
 `;
 
 const ChatButton = styled.button`
-    padding: 0.8rem 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.8rem;
+    width: 3.6rem;
+    height: 3.6rem;
     font-size: 1.4rem;
     font-weight: 600;
     background-color: #4272ec;
     color: #ffffff;
     border: none;
-    border-radius: 0.8rem;
+    border-radius: 50%;
     cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
+
+    @media (min-width: 768px) {
+        width: auto;
+        padding: 0.8rem 1.6rem;
+        border-radius: 0.8rem;
+    }
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
             background-color: #3a5fd9;
         }
+    }
+`;
+
+const ChatButtonText = styled.span`
+    display: none;
+
+    @media (min-width: 768px) {
+        display: inline;
     }
 `;
 

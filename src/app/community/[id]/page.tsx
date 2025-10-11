@@ -199,6 +199,14 @@ export default function CommunityDetailPage() {
         });
     };
 
+    const handleAuthorClick = () => {
+        router.push(`/profile/${post.userId}`);
+    };
+
+    const handleCommentAuthorClick = (userId: number) => {
+        router.push(`/profile/${userId}`);
+    };
+
     const handleSubmitComment = () => {
         if (!newComment.trim()) return;
 
@@ -214,6 +222,7 @@ export default function CommunityDetailPage() {
 
         const newCommentObj: Comment = {
             id: Date.now(), // 고유 ID 생성
+            userId: 0, // 현재 사용자 ID
             username: userProfile.nickname,
             profileImage: userProfile.profileImage,
             content: commentContent,
@@ -265,7 +274,7 @@ export default function CommunityDetailPage() {
                 <PostTitle>{post.title}</PostTitle>
 
                 <AuthorInfo>
-                    <AuthorProfile>
+                    <AuthorProfile onClick={handleAuthorClick}>
                         <AuthorImage
                             src={post.profileImage}
                             alt={post.username}
@@ -324,7 +333,7 @@ export default function CommunityDetailPage() {
                 <CommentsList>
                     {post.comments.map((comment) => (
                         <CommentItem key={comment.id}>
-                            <CommentAuthor>
+                            <CommentAuthor onClick={() => handleCommentAuthorClick(comment.userId)}>
                                 <CommentAuthorImage
                                     src={comment.profileImage}
                                     alt={comment.username}
@@ -437,6 +446,17 @@ const AuthorProfile = styled.div`
     display: flex;
     align-items: center;
     gap: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    padding: 0.5rem;
+    margin: -0.5rem;
+    border-radius: 0.8rem;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            background: #252527;
+        }
+    }
 `;
 
 const AuthorImage = styled.img`
@@ -537,6 +557,18 @@ const CommentAuthor = styled.div`
     align-items: center;
     gap: 1rem;
     margin-bottom: 0.8rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    padding: 0.5rem;
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+    border-radius: 0.8rem;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            background: #1a1a1a;
+        }
+    }
 `;
 
 const CommentAuthorImage = styled.img`

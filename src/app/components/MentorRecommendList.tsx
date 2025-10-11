@@ -40,6 +40,7 @@ export default function MentorRecommendList({
                 {mentors.map((mentor) => (
                     <SwiperSlide key={mentor.id}>
                         <MentorRecommendCard
+                            id={mentor.id}
                             profileImage={mentor.profileImage}
                             username={mentor.username}
                             rate={mentor.rate}
@@ -57,9 +58,10 @@ export default function MentorRecommendList({
 
 const MentorWrapper = styled.div`
     width: 100%;
+    max-width: 78rem;
 `;
 
 const StyledSwiper = styled(Swiper)`
     width: 100%;
-    padding: 0 2rem 1rem;
+    padding: 0.5rem 2rem 1rem;
 `;

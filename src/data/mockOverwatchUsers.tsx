@@ -433,4 +433,25 @@ export const mockOverwatchUsers: OverwatchUser[] = [
         description: '복사 능력으로 상황에 맞는 플레이를 선보입니다',
         game: '오버워치2',
     },
+    // 커뮤니티 작성자 추가
+    {
+        id: 21,
+        profileImage: '/overwatch/profile-overwatch-1.png',
+        username: '수영하는파이리',
+        gameId: '#PIRI021',
+        position: <DamageIcon width={16} height={16} />,
+        tier: '다이아몬드',
+        rank: 'D2',
+        winRate: 58,
+        kda: 2.34,
+        recentChampions: [
+            '/overwatch/hero-tracer.png',
+            '/overwatch/hero-genji.png',
+            '/overwatch/hero-sombra.png',
+        ],
+        gameStyles: ['전략적인', '신중한 플레이', '현실적인'],
+        communicationStyles: ['채팅 위주', '직설적인', '차분한'],
+        description: '예전 오버워치가 그리운 베테랑 유저입니다',
+        game: '오버워치2',
+    },
 ];
