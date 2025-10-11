@@ -68,6 +68,9 @@ export default function QuickMatchPage() {
         setIsLoading(true);
         setProgress(100);
 
+        // 새로운 매칭 시작 시 이전 매칭 리스트 초기화
+        localStorage.removeItem('quickMatchedUsers');
+
         // 매칭 조건에 따라 사용자 필터링
         const gameUsers = matchData.game
             ? getUsersByGame(getGameNameById(matchData.game))

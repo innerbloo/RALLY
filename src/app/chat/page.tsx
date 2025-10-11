@@ -22,7 +22,20 @@ export default function ChatPage() {
             localStorage.getItem('chatMessages') || '{}',
         );
 
-        const updatedRooms = mockChatRooms.map((room) => {
+        // localStorage에서 저장된 채팅방 목록 가져오기
+        const storedRooms = JSON.parse(
+            localStorage.getItem('chatRooms') || '[]',
+        ) as ChatRoom[];
+
+        // mockChatRooms와 localStorage chatRooms 병합 (중복 제거)
+        const allRooms = [...mockChatRooms];
+        storedRooms.forEach((storedRoom) => {
+            if (!allRooms.find((room) => room.id === storedRoom.id)) {
+                allRooms.push(storedRoom);
+            }
+        });
+
+        const updatedRooms = allRooms.map((room) => {
             // localStorage에 저장된 메시지가 있으면 해당 메시지 사용
             const roomMessages: Message[] = storedMessages[room.id] || mockMessages[room.id] || [];
 

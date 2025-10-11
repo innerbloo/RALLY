@@ -24,7 +24,7 @@ import styled from '@emotion/styled';
 import MessageBubble from '@/app/components/MessageBubble';
 import MessageInput from '@/app/components/MessageInput';
 import TypingIndicator from '@/app/components/TypingIndicator';
-import { Message, mockChatRooms, mockMessages } from '@/data/chatMockData';
+import { Message, mockChatRooms, mockMessages, ChatRoom } from '@/data/chatMockData';
 
 export default function ChatRoomPage() {
     const params = useParams();
@@ -32,8 +32,8 @@ export default function ChatRoomPage() {
     const roomId = Number(params.roomId);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    // 채팅방 정보 찾기
-    const room = mockChatRooms.find((r) => r.id === roomId);
+    // 채팅방 정보 상태
+    const [room, setRoom] = useState<ChatRoom | null>(null);
 
     // 메시지 상태
     const [messages, setMessages] = useState<Message[]>([]);
@@ -43,6 +43,22 @@ export default function ChatRoomPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState<number[]>([]); // 메시지 ID 배열
     const [currentResultIndex, setCurrentResultIndex] = useState(0);
+
+    // 채팅방 정보 불러오기
+    useEffect(() => {
+        // mockChatRooms에서 찾기
+        let foundRoom = mockChatRooms.find((r) => r.id === roomId);
+
+        // localStorage에서도 찾기
+        if (!foundRoom) {
+            const storedRooms = JSON.parse(
+                localStorage.getItem('chatRooms') || '[]',
+            ) as ChatRoom[];
+            foundRoom = storedRooms.find((r) => r.id === roomId);
+        }
+
+        setRoom(foundRoom || null);
+    }, [roomId]);
 
     // localStorage에서 메시지 불러오기
     useEffect(() => {

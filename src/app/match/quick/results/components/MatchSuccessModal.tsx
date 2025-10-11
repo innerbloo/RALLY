@@ -28,6 +28,7 @@ interface MatchSuccessModalProps {
     displayTier?: string;
     displayRank?: string;
     onClose: () => void;
+    onChatClick?: () => void;
 }
 
 // 티어 이미지 매핑 함수
@@ -70,6 +71,7 @@ export default function MatchSuccessModal({
     displayTier,
     displayRank,
     onClose,
+    onChatClick,
 }: MatchSuccessModalProps) {
     const [isVisible, setIsVisible] = useState(false);
 
@@ -160,7 +162,16 @@ export default function MatchSuccessModal({
 
                 {/* 액션 버튼 */}
                 <ActionSection>
-                    <ChatButton onClick={handleClose}>💬 채팅하기</ChatButton>
+                    <ChatButton
+                        onClick={() => {
+                            if (onChatClick) {
+                                onChatClick();
+                            }
+                            handleClose();
+                        }}
+                    >
+                        💬 채팅하기
+                    </ChatButton>
                     <SecondaryButton onClick={handleClose}>
                         나중에 하기
                     </SecondaryButton>
