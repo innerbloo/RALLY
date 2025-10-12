@@ -1,7 +1,9 @@
 'use client';
 
 import Image from 'next/image';
+
 import styled from '@emotion/styled';
+
 import { GameUser } from '@/data/mockGameUsers';
 
 interface UserGameInfoProps {
@@ -11,16 +13,16 @@ interface UserGameInfoProps {
 export default function UserGameInfo({ user }: UserGameInfoProps) {
     const getRankImagePath = (game: string, tier: string): string => {
         const tierMap: { [key: string]: string } = {
-            '아이언': 'iron',
-            '브론즈': 'bronze',
-            '실버': 'silver',
-            '골드': 'gold',
-            '플래티넘': 'platinum',
-            '에메랄드': 'emerald',
-            '다이아몬드': 'diamond',
-            '마스터': 'master',
-            '그랜드마스터': 'grandmaster',
-            '챌린저': 'challenger'
+            아이언: 'iron',
+            브론즈: 'bronze',
+            실버: 'silver',
+            골드: 'gold',
+            플래티넘: 'platinum',
+            에메랄드: 'emerald',
+            다이아몬드: 'diamond',
+            마스터: 'master',
+            그랜드마스터: 'grandmaster',
+            챌린저: 'challenger',
         };
 
         const tierKey = tierMap[tier] || 'bronze';
@@ -51,7 +53,7 @@ export default function UserGameInfo({ user }: UserGameInfoProps) {
                             alt={`${user.tier} ${user.rank}`}
                         />
                         <RankText>
-                            <TierName>{user.tier}</TierName>
+                            {/*<TierName>{user.tier}</TierName>*/}
                             <RankName>{user.rank}</RankName>
                         </RankText>
                     </RankInfo>
@@ -60,13 +62,29 @@ export default function UserGameInfo({ user }: UserGameInfoProps) {
                 <StatsRow>
                     <StatItem>
                         <StatLabel>승률</StatLabel>
-                        <StatValue $color={user.winRate >= 60 ? '#22c55e' : user.winRate >= 50 ? '#f59e0b' : '#ef4444'}>
+                        <StatValue
+                            $color={
+                                user.winRate >= 60
+                                    ? '#22c55e'
+                                    : user.winRate >= 50
+                                      ? '#f59e0b'
+                                      : '#ef4444'
+                            }
+                        >
                             {user.winRate}%
                         </StatValue>
                     </StatItem>
                     <StatItem>
                         <StatLabel>KDA</StatLabel>
-                        <StatValue $color={user.kda >= 3 ? '#22c55e' : user.kda >= 2 ? '#f59e0b' : '#ef4444'}>
+                        <StatValue
+                            $color={
+                                user.kda >= 3
+                                    ? '#22c55e'
+                                    : user.kda >= 2
+                                      ? '#f59e0b'
+                                      : '#ef4444'
+                            }
+                        >
                             {user.kda.toFixed(2)}
                         </StatValue>
                     </StatItem>
@@ -95,14 +113,30 @@ export default function UserGameInfo({ user }: UserGameInfoProps) {
                         <PositionBadge>
                             {user.position}
                             <PositionText>
-                                {'positionId' in user && user.positionId === 'top' && '탑'}
-                                {'positionId' in user && user.positionId === 'jungle' && '정글'}
-                                {'positionId' in user && user.positionId === 'mid' && '미드'}
-                                {'positionId' in user && user.positionId === 'adc' && '원딜'}
-                                {'positionId' in user && user.positionId === 'support' && '서포터'}
-                                {'roleId' in user && user.roleId === 'tank' && '탱커'}
-                                {'roleId' in user && user.roleId === 'damage' && '딜러'}
-                                {'roleId' in user && user.roleId === 'support' && '지원'}
+                                {'positionId' in user &&
+                                    user.positionId === 'top' &&
+                                    '탑'}
+                                {'positionId' in user &&
+                                    user.positionId === 'jungle' &&
+                                    '정글'}
+                                {'positionId' in user &&
+                                    user.positionId === 'mid' &&
+                                    '미드'}
+                                {'positionId' in user &&
+                                    user.positionId === 'adc' &&
+                                    '원딜'}
+                                {'positionId' in user &&
+                                    user.positionId === 'support' &&
+                                    '서포터'}
+                                {'roleId' in user &&
+                                    user.roleId === 'tank' &&
+                                    '탱커'}
+                                {'roleId' in user &&
+                                    user.roleId === 'damage' &&
+                                    '딜러'}
+                                {'roleId' in user &&
+                                    user.roleId === 'support' &&
+                                    '지원'}
                             </PositionText>
                         </PositionBadge>
                     </PositionSection>
@@ -149,7 +183,8 @@ const GameName = styled.h4`
 const RankInfo = styled.div`
     display: flex;
     align-items: center;
-    gap: 1rem;
+    flex-direction: column;
+    //gap: 1rem;
 `;
 
 const RankImage = styled(Image)`

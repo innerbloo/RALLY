@@ -48,6 +48,7 @@ const SpotlightOverlay = styled.div<{ $isVisible: boolean }>`
     opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
     transition: opacity 0.3s ease;
     pointer-events: ${({ $isVisible }) => ($isVisible ? 'auto' : 'none')};
+    max-height: 100dvh;
 
     /* Spotlight 효과 - 버튼 영역만 밝게 */
     /* 데스크톱: 중앙 800px 컨테이너 기준 오른쪽, 버튼은 bottom: 8rem */

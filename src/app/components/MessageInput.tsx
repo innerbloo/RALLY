@@ -1,7 +1,7 @@
 'use client';
 
 import { Send } from 'lucide-react';
-import { forwardRef, KeyboardEvent, useState } from 'react';
+import { forwardRef, KeyboardEvent, MouseEvent, TouchEvent, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -19,6 +19,11 @@ const MessageInput = forwardRef<HTMLTextAreaElement, MessageInputProps>(
             onSendMessage(message.trim());
             setMessage('');
         }
+    };
+
+    const handleButtonMouseDown = (e: MouseEvent<HTMLButtonElement> | TouchEvent<HTMLButtonElement>) => {
+        // iOS에서 버튼 클릭 시 input blur 방지
+        e.preventDefault();
     };
 
     const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -45,6 +50,8 @@ const MessageInput = forwardRef<HTMLTextAreaElement, MessageInputProps>(
                     />
                     <SendButton
                         onClick={handleSend}
+                        onMouseDown={handleButtonMouseDown}
+                        onTouchStart={handleButtonMouseDown}
                         disabled={!message.trim()}
                         $hasContent={!!message.trim()}
                     >

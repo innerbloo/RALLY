@@ -99,8 +99,10 @@ export default function NewPostPage() {
         );
 
         // 로컬스토리지에 게시글 저장
+        const newPostId = Date.now();
         const newPost = {
-            id: Date.now(),
+            id: newPostId,
+            userId: 0, // 현재 유저 ID
             image: imagePreview,
             username: userProfile.nickname,
             profileImage: userProfile.profileImage,
@@ -122,7 +124,7 @@ export default function NewPostPage() {
         localStorage.setItem('myPosts', JSON.stringify(myPosts));
 
         toast.success('게시글이 작성되었습니다!');
-        router.push('/community');
+        router.push(`/community/${newPostId}`);
     };
 
     return (
