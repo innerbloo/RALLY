@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(npm run build:*)",
-      "Bash(echo $?)"
+      "Bash(echo $?)",
+      "WebSearch",
+      "Bash(npm run lint)"
     ],
     "deny": [],
     "ask": []

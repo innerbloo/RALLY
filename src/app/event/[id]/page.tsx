@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import styled from '@emotion/styled';
@@ -14,6 +14,25 @@ export default function EventDetailPage() {
     const router = useRouter();
     const eventId = Number(params.id);
     const event = getEventById(eventId);
+    const [isDesktop, setIsDesktop] = useState(false);
+
+    // 데스크톱 환경 감지
+    useEffect(() => {
+        const checkDesktop = () => {
+            // 미디어 쿼리로 데스크톱 감지 (hover 지원 및 768px 이상)
+            const isDesktopDevice =
+                window.matchMedia('(hover: hover) and (pointer: fine)')
+                    .matches && window.innerWidth >= 768;
+            setIsDesktop(isDesktopDevice);
+        };
+
+        checkDesktop();
+        window.addEventListener('resize', checkDesktop);
+
+        return () => {
+            window.removeEventListener('resize', checkDesktop);
+        };
+    }, []);
 
     // 페이지 진입 시 스크롤 최상단 이동
     useEffect(() => {
@@ -37,11 +56,16 @@ export default function EventDetailPage() {
         });
     };
 
+    // 데스크톱 환경에서는 PC 전용 배너 사용
+    const bannerImage = isDesktop
+        ? event.bannerImage.replace('/banner', '/pc-banner')
+        : event.bannerImage;
+
     return (
         <DetailContainer>
             <BannerSection>
                 <BannerImage
-                    src={event.bannerImage}
+                    src={bannerImage}
                     alt={event.title}
                     width={800}
                     height={400}
@@ -125,7 +149,6 @@ const DetailContainer = styled.main`
 
 const BannerSection = styled.div`
     width: 100%;
-    aspect-ratio: 2 / 1;
     position: relative;
     background-color: #252527;
 `;

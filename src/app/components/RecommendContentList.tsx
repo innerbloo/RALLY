@@ -15,6 +15,7 @@ interface RecommendContentData {
     likes: number;
     views: number;
     game: string;
+    youtubeUrl: string;
 }
 
 interface RecommendContentListProps {
@@ -27,6 +28,7 @@ export default function RecommendContentList({ contents }: RecommendContentListP
             {contents.map((content) => (
                 <RecommendContentCard
                     key={content.id}
+                    id={content.id}
                     image={content.image}
                     title={content.title}
                     type={content.type}

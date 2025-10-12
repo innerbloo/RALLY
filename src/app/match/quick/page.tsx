@@ -1,8 +1,8 @@
 'use client';
 
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
 
 import GameSelection from './components/GameSelection';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -28,12 +28,21 @@ const initialData: QuickMatchData = {
     },
 };
 
-export default function QuickMatchPage() {
+function QuickMatchContent() {
     const [currentStep, setCurrentStep] = useState<QuickMatchStep>(1);
     const [matchData, setMatchData] = useState<QuickMatchData>(initialData);
     const [isLoading, setIsLoading] = useState(false);
     const { setProgress } = useQuickMatch();
     const router = useRouter();
+    const searchParams = useSearchParams();
+
+    // Read game parameter from URL and pre-select game
+    useEffect(() => {
+        const gameParam = searchParams.get('game');
+        if (gameParam && (gameParam === 'lol' || gameParam === 'tft' || gameParam === 'overwatch')) {
+            setMatchData((prev) => ({ ...prev, game: gameParam }));
+        }
+    }, [searchParams]);
 
     // Set initial progress on mount
     useEffect(() => {
@@ -235,9 +244,9 @@ export default function QuickMatchPage() {
 
     return (
         <QuickMatchContainer>
-            <QuickMatchContent>
+            <QuickMatchMain>
                 <StepContent>{renderStepContent()}</StepContent>
-            </QuickMatchContent>
+            </QuickMatchMain>
 
             <QuickMatchFooter>
                 <NavigationButton onClick={handlePrevious} $variant="secondary">
@@ -258,6 +267,14 @@ export default function QuickMatchPage() {
     );
 }
 
+export default function QuickMatchPage() {
+    return (
+        <Suspense fallback={<LoadingSpinner />}>
+            <QuickMatchContent />
+        </Suspense>
+    );
+}
+
 const QuickMatchContainer = styled.div`
     min-height: 100vh;
     background-color: #1a1a1a;
@@ -265,7 +282,7 @@ const QuickMatchContainer = styled.div`
     flex-direction: column;
 `;
 
-const QuickMatchContent = styled.main`
+const QuickMatchMain = styled.main`
     flex: 1;
     padding: 0 2rem;
     padding-top: calc(8rem + env(safe-area-inset-top));

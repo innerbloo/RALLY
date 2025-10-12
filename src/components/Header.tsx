@@ -419,17 +419,21 @@ const NotificationButton = styled.div`
 
 const NotificationBadge = styled.span`
     position: absolute;
-    top: 0.3rem;
-    right: 0.3rem;
-    background: #ef4444;
-    color: #ffffff;
+    top: 0.6rem;
+    right: 0.6rem;
+    min-width: 1.8rem;
+    height: 1.8rem;
+    padding: 0 0.4rem;
+    background: #4272ec;
+    border-radius: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 1rem;
-    font-weight: 600;
-    padding: 0.2rem 0.5rem;
-    border-radius: 1rem;
-    min-width: 1.6rem;
-    text-align: center;
-    line-height: 1.2;
+    font-weight: 700;
+    color: #ffffff;
+    border: 0.2rem solid #1a1a1a;
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.3);
 `;
 
 const NotificationDropdown = styled.div`

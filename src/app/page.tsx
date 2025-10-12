@@ -1,7 +1,9 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
@@ -19,6 +21,7 @@ import { mockPosts } from '@/data/communityMockData';
 
 export default function Home() {
     const [communityPosts, setCommunityPosts] = useState(mockPosts.slice(0, 5));
+    const router = useRouter();
 
     useEffect(() => {
         const myPosts = JSON.parse(localStorage.getItem('myPosts') || '[]');
@@ -26,66 +29,98 @@ export default function Home() {
         setCommunityPosts(allPosts.slice(0, 5));
     }, []);
 
+    const handleGameClick = (gameId: string | null) => {
+        if (gameId) {
+            router.push(`/match/quick?game=${gameId}`);
+        } else {
+            toast('준비중입니다', { id: 'game-unavailable' });
+        }
+    };
+
     return (
         <div>
             <HomeContainer>
                 <BannerSwiper />
                 <PopularGameSection>
-                    <h2>인기 게임</h2>
+                    <h2>빠른 매칭</h2>
                     <GameWrapper>
                         <li>
-                            <Image
-                                src={'/game1.png'}
-                                width={62}
-                                height={62}
-                                alt={'리그오브레전드'}
-                            />
-                            리그오브레전드
+                            <GameItem onClick={() => handleGameClick('lol')}>
+                                <IconWrapper>
+                                    <Image
+                                        src={'/game1.png'}
+                                        width={62}
+                                        height={62}
+                                        alt={'리그오브레전드'}
+                                    />
+                                </IconWrapper>
+                                리그오브레전드
+                            </GameItem>
                         </li>
                         <li>
-                            <Image
-                                src={'/game2.png'}
-                                width={62}
-                                height={62}
-                                alt={'전략적 팀 전투'}
-                            />
-                            전략적 팀 전투
+                            <GameItem onClick={() => handleGameClick('tft')}>
+                                <IconWrapper>
+                                    <Image
+                                        src={'/game2.png'}
+                                        width={62}
+                                        height={62}
+                                        alt={'전략적 팀 전투'}
+                                    />
+                                </IconWrapper>
+                                전략적 팀 전투
+                            </GameItem>
                         </li>
                         <li>
-                            <Image
-                                src={'/game3.png'}
-                                width={62}
-                                height={62}
-                                alt={'발로란트'}
-                            />
-                            발로란트
+                            <GameItem onClick={() => handleGameClick('overwatch')}>
+                                <IconWrapper>
+                                    <Image
+                                        src={'/game4.png'}
+                                        width={62}
+                                        height={62}
+                                        alt={'오버워치2'}
+                                    />
+                                </IconWrapper>
+                                오버워치2
+                            </GameItem>
                         </li>
                         <li>
-                            <Image
-                                src={'/game4.png'}
-                                width={62}
-                                height={62}
-                                alt={'오버워치2'}
-                            />
-                            오버워치2
+                            <GameItem onClick={() => handleGameClick(null)}>
+                                <IconWrapper>
+                                    <Image
+                                        src={'/game3.png'}
+                                        width={62}
+                                        height={62}
+                                        alt={'발로란트'}
+                                    />
+                                </IconWrapper>
+                                발로란트
+                            </GameItem>
                         </li>
                         <li>
-                            <Image
-                                src={'/game5.png'}
-                                width={62}
-                                height={62}
-                                alt={'배틀그라운드'}
-                            />
-                            배틀그라운드
+                            <GameItem onClick={() => handleGameClick(null)}>
+                                <IconWrapper>
+                                    <Image
+                                        src={'/game5.png'}
+                                        width={62}
+                                        height={62}
+                                        alt={'배틀그라운드'}
+                                    />
+                                </IconWrapper>
+                                배틀그라운드
+                            </GameItem>
                         </li>
                         <li>
-                            <Image
-                                src={'/game-more.png'}
-                                width={62}
-                                height={62}
-                                alt={'더보기'}
-                            />
-                            더보기
+                            <GameItem onClick={() => handleGameClick(null)}>
+                                <IconWrapper>
+                                    <Image
+                                        src={'/game-more.png'}
+                                        width={62}
+                                        height={62}
+                                        alt={'더보기'}
+                                    />
+                                </IconWrapper>
+                                더보기
+                            </GameItem>
                         </li>
                     </GameWrapper>
                 </PopularGameSection>
@@ -228,6 +263,8 @@ export default function Home() {
                                 likes: 1250,
                                 views: 15600,
                                 game: '리그오브레전드',
+                                youtubeUrl:
+                                    'https://www.youtube.com/embed/t3OvYcVzVzQ',
                             },
                             {
                                 id: 2,
@@ -240,6 +277,8 @@ export default function Home() {
                                 likes: 980,
                                 views: 12400,
                                 game: '오버워치2',
+                                youtubeUrl:
+                                    'https://www.youtube.com/embed/mtjgUGaZFGo',
                             },
                             {
                                 id: 3,
@@ -252,6 +291,8 @@ export default function Home() {
                                 likes: 756,
                                 views: 9800,
                                 game: '전략적 팀 전투',
+                                youtubeUrl:
+                                    'https://www.youtube.com/embed/xULj8NJPnzM',
                             },
                             {
                                 id: 4,
@@ -264,6 +305,8 @@ export default function Home() {
                                 likes: 1120,
                                 views: 14200,
                                 game: '발로란트',
+                                youtubeUrl:
+                                    'https://www.youtube.com/embed/V2DScN3-zqQ',
                             },
                         ]}
                     />
@@ -275,7 +318,7 @@ export default function Home() {
 
 const HomeContainer = styled.main`
     padding-top: calc(6rem + env(safe-area-inset-top));
-    padding-bottom: 6.65rem;
+    padding-bottom: calc(6.65rem + env(safe-area-inset-bottom));
 
     > section {
         margin: 0 0 3rem;
@@ -303,11 +346,34 @@ const GameWrapper = styled.ul`
 
     li {
         display: flex;
-        flex-direction: column;
+        justify-content: center;
         align-items: center;
-        gap: 0.5rem;
-        font-size: 1.4rem;
-        font-weight: 500;
+    }
+`;
+
+const GameItem = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+    cursor: pointer;
+`;
+
+const IconWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 82px;
+    height: 82px;
+    border-radius: 1.6rem;
+    transition: background-color 0.2s ease;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            background-color: #252527;
+        }
     }
 `;
 

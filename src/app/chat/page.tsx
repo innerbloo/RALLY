@@ -134,19 +134,17 @@ export default function ChatPage() {
                     </SearchInputWrapper>
                 </SearchSection>
 
-                <GameFilterSection>
-                    <GameFilterList>
-                        {gameList.map((game) => (
-                            <GameFilterButton
-                                key={game}
-                                $active={selectedGame === game}
-                                onClick={() => setSelectedGame(game)}
-                            >
-                                {game}
-                            </GameFilterButton>
-                        ))}
-                    </GameFilterList>
-                </GameFilterSection>
+                <GameFilterList>
+                    {gameList.map((game) => (
+                        <GameFilterButton
+                            key={game}
+                            $active={selectedGame === game}
+                            onClick={() => setSelectedGame(game)}
+                        >
+                            {game}
+                        </GameFilterButton>
+                    ))}
+                </GameFilterList>
                 <FilterSection>
                     <FilterGroup>
                         <FilterButton
@@ -176,7 +174,7 @@ export default function ChatPage() {
 
 const ChatContainer = styled.main`
     padding-top: calc(6rem + env(safe-area-inset-top));
-    padding-bottom: 6.65rem;
+    padding-bottom: calc(6.65rem + env(safe-area-inset-bottom));
     background-color: #1a1a1a;
     min-height: 100vh;
 `;
@@ -280,10 +278,14 @@ const FilterButton = styled.button<{ $active: boolean }>`
     }
 `;
 
-const GameFilterSection = styled.div`
-    margin-bottom: 1.5rem;
+const GameFilterList = styled.div`
+    display: flex;
+    gap: 1rem;
     overflow-x: auto;
+    overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    margin-bottom: 1.5rem;
 
     @media (max-width: 480px) {
         margin: 0 -2rem 1.5rem;
@@ -291,14 +293,13 @@ const GameFilterSection = styled.div`
     }
 
     &::-webkit-scrollbar {
-        display: none;
+        display: none; /* Chrome, Safari, Edge */
     }
-`;
 
-const GameFilterList = styled.div`
-    display: flex;
-    gap: 1rem;
-    min-width: min-content;
+    /* Prevent buttons from shrinking */
+    > button {
+        flex-shrink: 0;
+    }
 `;
 
 const GameFilterButton = styled.button<{ $active: boolean }>`

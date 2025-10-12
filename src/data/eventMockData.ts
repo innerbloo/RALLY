@@ -45,8 +45,8 @@ export const eventMockData: { [key: number]: EventData } = {
         title: '듀오 찾고 리워드 받아가세요!',
         description: '매칭 5회 달성 시 네이버 포인트 100% 증정',
         bannerImage: '/banner2.png',
-        startDate: '2025-01-15',
-        endDate: '2025-02-28',
+        startDate: '2025-01-01',
+        endDate: '2025-12-31',
         content:
             'RALLY에서 듀오를 찾고 함께 게임하면 네이버 포인트를 드립니다! 매칭 5회만 완료하면 네이버 포인트 5,000원을 100% 증정합니다.',
         benefits: [
@@ -73,8 +73,8 @@ export const eventMockData: { [key: number]: EventData } = {
         title: '오늘만! 특별 매칭 이벤트',
         description: '총 상금 1,000만원 상당 혜택 (선착순 500명 한정)',
         bannerImage: '/banner3.png',
-        startDate: '2025-01-20',
-        endDate: '2025-01-20',
+        startDate: new Date().toISOString(),
+        endDate: new Date().toISOString(),
         content:
             '오늘 하루만 진행되는 특별 이벤트! 선착순 500명에게 푸짐한 경품을 드립니다. 서둘러 참여하세요!',
         benefits: [

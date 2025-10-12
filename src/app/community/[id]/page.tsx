@@ -217,7 +217,7 @@ export default function CommunityDetailPage() {
         // 로컬스토리지에서 프로필 정보 가져오기
         const userProfile = JSON.parse(
             localStorage.getItem('userProfile') ||
-                '{"nickname":"현재유저","profileImage":"/hsu.png","bio":""}',
+                '{"nickname":"한성대 즐겜러","profileImage":"/hsu.png","bio":""}',
         );
 
         const newCommentObj: Comment = {
@@ -333,7 +333,11 @@ export default function CommunityDetailPage() {
                 <CommentsList>
                     {post.comments.map((comment) => (
                         <CommentItem key={comment.id}>
-                            <CommentAuthor onClick={() => handleCommentAuthorClick(comment.userId)}>
+                            <CommentAuthor
+                                onClick={() =>
+                                    handleCommentAuthorClick(comment.userId)
+                                }
+                            >
                                 <CommentAuthorImage
                                     src={comment.profileImage}
                                     alt={comment.username}

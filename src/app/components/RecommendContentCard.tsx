@@ -5,6 +5,7 @@ import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Eye, Heart } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import styled from '@emotion/styled';
 
@@ -12,6 +13,7 @@ dayjs.extend(relativeTime);
 dayjs.locale('ko');
 
 interface RecommendContentCardProps {
+    id: number;
     image: string;
     title: string;
     type: 'guide' | 'tip' | 'strategy';
@@ -24,6 +26,7 @@ interface RecommendContentCardProps {
 }
 
 export default function RecommendContentCard({
+    id,
     image,
     title,
     type,
@@ -74,33 +77,35 @@ export default function RecommendContentCard({
     };
 
     return (
-        <CardContainer>
-            <ContentLeftSection>
-                <ContentHeader>
-                    <TypeBadge>{getTypeText()}</TypeBadge>
-                    <DifficultyBadge $color={getDifficultyColor()}>
-                        {getDifficultyText()}
-                    </DifficultyBadge>
-                </ContentHeader>
-                <ContentTitle>{title}</ContentTitle>
-                <ContentInfo>
-                    {`${author} • ${dayjs(createAt).fromNow()}`}
-                </ContentInfo>
-                <ContentStats>
-                    <StatItem>
-                        <Heart size={16} />
-                        {likes.toLocaleString()}
-                    </StatItem>
-                    <StatItem>
-                        <Eye size={16} />
-                        {views.toLocaleString()}
-                    </StatItem>
-                </ContentStats>
-            </ContentLeftSection>
-            <ContentRightSection>
-                <Image src={image} width={80} height={50} alt={title} />
-            </ContentRightSection>
-        </CardContainer>
+        <Link href={`/content/${id}`}>
+            <CardContainer>
+                <ContentLeftSection>
+                    <ContentHeader>
+                        <TypeBadge>{getTypeText()}</TypeBadge>
+                        <DifficultyBadge $color={getDifficultyColor()}>
+                            {getDifficultyText()}
+                        </DifficultyBadge>
+                    </ContentHeader>
+                    <ContentTitle>{title}</ContentTitle>
+                    <ContentInfo>
+                        {`${author} • ${dayjs(createAt).fromNow()}`}
+                    </ContentInfo>
+                    <ContentStats>
+                        <StatItem>
+                            <Heart size={16} />
+                            {likes.toLocaleString()}
+                        </StatItem>
+                        <StatItem>
+                            <Eye size={16} />
+                            {views.toLocaleString()}
+                        </StatItem>
+                    </ContentStats>
+                </ContentLeftSection>
+                <ContentRightSection>
+                    <Image src={image} width={80} height={50} alt={title} />
+                </ContentRightSection>
+            </CardContainer>
+        </Link>
     );
 }
 
@@ -110,6 +115,14 @@ const CardContainer = styled.li`
     align-items: center;
     padding: 1.8rem 2rem;
     border-bottom: 0.1rem solid #3f3f41;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            background-color: #252527;
+        }
+    }
 `;
 
 const ContentLeftSection = styled.div`

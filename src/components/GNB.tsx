@@ -3,8 +3,11 @@
 import { Home, MessageCircle, User, UserPlus, Users } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 
 import styled from '@emotion/styled';
+
+import { ChatRoom, mockChatRooms } from '@/data/chatMockData';
 
 interface MenuItemType {
     id: string;
@@ -56,6 +59,7 @@ const menuItems: MenuItemType[] = [
 
 export default function GNB() {
     const pathname = usePathname();
+    const [chatRooms, setChatRooms] = useState<ChatRoom[]>(mockChatRooms);
 
     const isActive = (path: string) => {
         if (path === '/') {
@@ -69,12 +73,115 @@ export default function GNB() {
         sessionStorage.setItem('showMatchTutorial', 'true');
     };
 
+    // localStorage에서 채팅방 데이터 로드
+    useEffect(() => {
+        const storedRooms = JSON.parse(
+            localStorage.getItem('chatRooms') || '[]',
+        ) as ChatRoom[];
+
+        // mockChatRooms와 localStorage chatRooms 병합 (중복 제거)
+        const allRooms = [...mockChatRooms];
+        storedRooms.forEach((storedRoom) => {
+            if (!allRooms.find((room) => room.id === storedRoom.id)) {
+                allRooms.push(storedRoom);
+            }
+        });
+
+        setChatRooms(allRooms);
+
+        // localStorage 변경 감지 (다른 탭/창에서 변경 시)
+        const handleStorageChange = () => {
+            const updatedRooms = JSON.parse(
+                localStorage.getItem('chatRooms') || '[]',
+            ) as ChatRoom[];
+            const mergedRooms = [...mockChatRooms];
+            updatedRooms.forEach((storedRoom) => {
+                if (!mergedRooms.find((room) => room.id === storedRoom.id)) {
+                    mergedRooms.push(storedRoom);
+                }
+            });
+            setChatRooms(mergedRooms);
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
+
+    // 읽지 않은 메시지 총 개수 계산
+    const totalUnreadCount = useMemo(() => {
+        return chatRooms.reduce((sum, room) => sum + room.unreadCount, 0);
+    }, [chatRooms]);
+
+    // iOS Safari 동적 브라우저 UI 대응
+    useEffect(() => {
+        const updateViewportHeight = () => {
+            if (window.visualViewport) {
+                const vh = window.visualViewport.height;
+                const vt = window.visualViewport.offsetTop;
+                const windowHeight = window.innerHeight;
+                const diff = windowHeight - vh;
+
+                // 디버깅용 로그 (개발 환경에서만)
+                if (process.env.NODE_ENV === 'development') {
+                    console.log('Viewport Debug:', {
+                        innerHeight: windowHeight,
+                        visualHeight: vh,
+                        visualTop: vt,
+                        offset: diff,
+                    });
+                }
+
+                // CSS 변수 업데이트
+                document.documentElement.style.setProperty(
+                    '--visual-viewport-offset',
+                    `${diff}px`,
+                );
+            }
+        };
+
+        // 초기 설정
+        updateViewportHeight();
+
+        // visualViewport 리스너 등록
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener(
+                'resize',
+                updateViewportHeight,
+            );
+            window.visualViewport.addEventListener(
+                'scroll',
+                updateViewportHeight,
+            );
+        }
+
+        // 페이지 스크롤도 감지 (폴백)
+        window.addEventListener('scroll', updateViewportHeight);
+        window.addEventListener('resize', updateViewportHeight);
+
+        return () => {
+            if (window.visualViewport) {
+                window.visualViewport.removeEventListener(
+                    'resize',
+                    updateViewportHeight,
+                );
+                window.visualViewport.removeEventListener(
+                    'scroll',
+                    updateViewportHeight,
+                );
+            }
+            window.removeEventListener('scroll', updateViewportHeight);
+            window.removeEventListener('resize', updateViewportHeight);
+        };
+    }, []);
+
     return (
         <GNBContainer>
             <GNBWrapper>
                 {menuItems.map((item) => {
                     const active = isActive(item.path);
                     const IconComponent = active ? item.activeIcon : item.icon;
+                    const showBadge =
+                        item.id === 'chat' && totalUnreadCount > 0;
 
                     return (
                         <GNBItem key={item.id}>
@@ -89,6 +196,13 @@ export default function GNB() {
                                 <GNBLink $active={active}>
                                     <IconWrapper>
                                         <IconComponent size={item.size ?? 20} />
+                                        {showBadge && (
+                                            <UnreadBadge>
+                                                {totalUnreadCount > 99
+                                                    ? '99+'
+                                                    : totalUnreadCount}
+                                            </UnreadBadge>
+                                        )}
                                     </IconWrapper>
                                     <GNBLabel $active={active}>
                                         {item.label}
@@ -105,7 +219,7 @@ export default function GNB() {
 
 const GNBContainer = styled.nav`
     position: fixed;
-    bottom: 0;
+    bottom: var(--visual-viewport-offset, 0px);
     left: 50%;
     transform: translateX(-50%);
     max-width: 800px;
@@ -113,7 +227,12 @@ const GNBContainer = styled.nav`
     z-index: 1000;
     background: #1a1a1a;
     border-top: 1px solid #3f3f41;
-    padding-bottom: calc(env(safe-area-inset-bottom) - 0.5rem);
+    padding-bottom: max(calc(env(safe-area-inset-bottom) - 0.5rem), 0.5rem);
+    will-change: bottom;
+
+    /* iOS Safari 최적화 */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 `;
 
 const GNBWrapper = styled.ul`
@@ -154,6 +273,7 @@ const GNBLink = styled.div<{ $active: boolean }>`
 `;
 
 const IconWrapper = styled.div`
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -163,6 +283,25 @@ const IconWrapper = styled.div`
         height: 2rem;
         text-align: center;
     }
+`;
+
+const UnreadBadge = styled.div`
+    position: absolute;
+    top: -0.6rem;
+    right: -0.8rem;
+    min-width: 1.8rem;
+    height: 1.8rem;
+    padding: 0 0.4rem;
+    background: #4272ec;
+    border-radius: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+    border: 0.2rem solid #1a1a1a;
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.3);
 `;
 
 const GNBLabel = styled.span<{ $active: boolean }>`

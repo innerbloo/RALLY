@@ -345,7 +345,7 @@ export default function MatchPage() {
 
 const MatchContainer = styled.main`
     padding-top: calc(6rem + env(safe-area-inset-top));
-    padding-bottom: 6.65rem;
+    padding-bottom: calc(6.65rem + env(safe-area-inset-bottom));
     background-color: #1a1a1a;
     min-height: 100vh;
 `;

@@ -95,7 +95,7 @@ export default function NewPostPage() {
         // 로컬스토리지에서 프로필 정보 가져오기
         const userProfile = JSON.parse(
             localStorage.getItem('userProfile') ||
-                '{"nickname":"현재유저","profileImage":"/hsu.png","bio":""}',
+                '{"nickname":"한성대 즐겜러","profileImage":"/hsu.png","bio":""}',
         );
 
         // 로컬스토리지에 게시글 저장
@@ -124,7 +124,7 @@ export default function NewPostPage() {
         localStorage.setItem('myPosts', JSON.stringify(myPosts));
 
         toast.success('게시글이 작성되었습니다!');
-        router.push(`/community/${newPostId}`);
+        router.replace(`/community/${newPostId}`);
     };
 
     return (
@@ -178,9 +178,7 @@ export default function NewPostPage() {
                         onChange={(e) => setTitle(e.target.value)}
                         maxLength={100}
                     />
-                    <CharacterCount>
-                        {title.length} / 100
-                    </CharacterCount>
+                    <CharacterCount>{title.length} / 100</CharacterCount>
                 </FormSection>
 
                 <FormSection>
@@ -229,9 +227,7 @@ export default function NewPostPage() {
                         onChange={(e) => setContent(e.target.value)}
                         maxLength={2000}
                     />
-                    <CharacterCount>
-                        {content.length} / 2000
-                    </CharacterCount>
+                    <CharacterCount>{content.length} / 2000</CharacterCount>
                 </FormSection>
 
                 <FormSection>
@@ -243,7 +239,10 @@ export default function NewPostPage() {
                             value={tagInput}
                             onChange={(e) => setTagInput(e.target.value)}
                             onKeyDown={(e) => {
-                                if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+                                if (
+                                    e.key === 'Enter' &&
+                                    !e.nativeEvent.isComposing
+                                ) {
                                     e.preventDefault();
                                     handleAddTag();
                                 }
@@ -274,9 +273,7 @@ export default function NewPostPage() {
                 </FormSection>
             </FormContent>
 
-            <SubmitButtonFixed onClick={handleSubmit}>
-                완료
-            </SubmitButtonFixed>
+            <SubmitButtonFixed onClick={handleSubmit}>완료</SubmitButtonFixed>
         </NewPostContainer>
     );
 }

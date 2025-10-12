@@ -25,7 +25,7 @@ export default function ProfileEditPage() {
         // localStorage에서 프로필 정보 불러오기
         const userProfile = JSON.parse(
             localStorage.getItem('userProfile') ||
-                '{"nickname":"현재유저","profileImage":"/hsu.png","bio":""}',
+                '{"nickname":"한성대 즐겜러","profileImage":"/hsu.png","bio":""}',
         );
 
         setNickname(userProfile.nickname);
@@ -134,9 +134,7 @@ export default function ProfileEditPage() {
                         onChange={(e) => setNickname(e.target.value)}
                         maxLength={20}
                     />
-                    <CharacterCount>
-                        {nickname.length} / 20
-                    </CharacterCount>
+                    <CharacterCount>{nickname.length} / 20</CharacterCount>
                 </FormSection>
 
                 <FormSection>
