@@ -8,7 +8,8 @@
       "Bash(git restore src/app/match/page.tsx)",
       "Bash(git reset HEAD src/app/match/)",
       "Bash(git checkout -- src/app/match/)",
-      "Bash(git clean -fd src/app/match/)"
+      "Bash(git clean -fd src/app/match/)",
+      "Bash(npm run dev)"
     ],
     "deny": [],
     "ask": []

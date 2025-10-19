@@ -9,6 +9,9 @@ import PositionLolJungle2 from '/public/lol/position-lol-jungle2.svg';
 import PositionLolMid2 from '/public/lol/position-lol-mid2.svg';
 import PositionLolSupport2 from '/public/lol/position-lol-support2.svg';
 import PositionLolTop2 from '/public/lol/position-lol-top2.svg';
+import PositionOverwatchDps2 from '/public/overwatch/position-overwatch-dps2.svg';
+import PositionOverwatchSupport2 from '/public/overwatch/position-overwatch-support2.svg';
+import PositionOverwatchTank2 from '/public/overwatch/position-overwatch-tank2.svg';
 
 import styled from '@emotion/styled';
 
@@ -51,24 +54,86 @@ const lolPositions: PositionOption[] = [
     },
 ];
 
+const overwatchRoles: PositionOption[] = [
+    {
+        id: 'tank',
+        name: '탱커',
+        icon: 'PositionOverwatchTank2',
+    },
+    {
+        id: 'damage',
+        name: '딜러',
+        icon: 'PositionOverwatchDps2',
+    },
+    {
+        id: 'support',
+        name: '지원',
+        icon: 'PositionOverwatchSupport2',
+    },
+    {
+        id: 'all',
+        name: '역할 전체',
+        icon: 'PositionLolAll',
+    },
+];
+
 export default function PositionSelection({
     selectedGame,
     desiredPositions,
     onDesiredPositionsChange,
 }: PositionSelectionProps) {
     const [hasScrolledToFooter, setHasScrolledToFooter] = useState(false);
-    if (selectedGame !== 'lol') {
+
+    // TFT는 포지션이 없으므로 자동으로 진행
+    if (selectedGame === 'tft') {
+        // TFT는 포지션 선택이 필요 없으므로 'all'로 자동 설정
+        if (desiredPositions.length === 0) {
+            onDesiredPositionsChange(['all']);
+
+            // 자동으로 footer로 스크롤
+            setTimeout(() => {
+                const footer = document.querySelector('footer');
+                if (footer) {
+                    const headerHeight = 140;
+                    const footerTop = footer.getBoundingClientRect().top + window.scrollY;
+                    const targetScroll = Math.max(0, footerTop - window.innerHeight + footer.offsetHeight + headerHeight);
+
+                    window.scrollTo({
+                        top: targetScroll,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 300);
+        }
+
+        return (
+            <NotSupportedMessage>
+                <MessageTitle>전략적 팀 전투</MessageTitle>
+                <MessageDescription>
+                    TFT는 포지션 선택이 필요하지 않습니다.
+                    <br />
+                    다음 단계로 진행해주세요!
+                </MessageDescription>
+            </NotSupportedMessage>
+        );
+    }
+
+    if (selectedGame !== 'lol' && selectedGame !== 'overwatch') {
         return (
             <NotSupportedMessage>
                 <MessageTitle>준비 중인 기능입니다</MessageTitle>
                 <MessageDescription>
-                    현재는 리그오브레전드만 지원됩니다.
+                    현재는 리그오브레전드, 전략적 팀 전투, 오버워치2만 지원됩니다.
                     <br />
                     다른 게임은 곧 지원될 예정입니다.
                 </MessageDescription>
             </NotSupportedMessage>
         );
     }
+
+    // 게임에 따라 포지션/역할 목록 선택
+    const isOverwatch = selectedGame === 'overwatch';
+    const positions = isOverwatch ? overwatchRoles : lolPositions;
 
     const getPositionIcon = (iconName: string) => {
         const iconProps = { width: 20, height: 20 };
@@ -87,6 +152,12 @@ export default function PositionSelection({
                 return <PositionLolAdc2 {...iconProps} />;
             case 'PositionLolSupport2':
                 return <PositionLolSupport2 {...iconProps} />;
+            case 'PositionOverwatchTank2':
+                return <PositionOverwatchTank2 {...iconProps} />;
+            case 'PositionOverwatchDps2':
+                return <PositionOverwatchDps2 {...iconProps} />;
+            case 'PositionOverwatchSupport2':
+                return <PositionOverwatchSupport2 {...iconProps} />;
             default:
                 return null;
         }
@@ -150,13 +221,17 @@ export default function PositionSelection({
     return (
         <PositionSelectionContainer>
             <Section>
-                <SectionTitle>원하는 듀오 포지션</SectionTitle>
+                <SectionTitle>
+                    {isOverwatch ? '원하는 듀오 역할' : '원하는 듀오 포지션'}
+                </SectionTitle>
                 <SectionDescription>
-                    함께 플레이하고 싶은 포지션을 선택해주세요
+                    {isOverwatch
+                        ? '함께 플레이하고 싶은 역할을 선택해주세요'
+                        : '함께 플레이하고 싶은 포지션을 선택해주세요'}
                 </SectionDescription>
 
                 <PositionGrid>
-                    {lolPositions.map((position) => (
+                    {positions.map((position) => (
                         <PositionCard
                             key={position.id}
                             $active={desiredPositions.includes(position.id)}

@@ -270,26 +270,30 @@ export default function MatchCard({
                     </TierBadge>
                 </UserHeaderSection>
 
-                <StatsSection>
+                <StatsSection $isSingleStat={user.game === '전략적 팀 전투'}>
                     <StatItem>
                         <StatLabel>승률</StatLabel>
                         <StatValue $type="winrate" $value={user.winRate}>
                             {user.winRate}%
                         </StatValue>
                     </StatItem>
-                    <StatItem>
-                        <StatLabel>KDA</StatLabel>
-                        <StatValue $type="kda" $value={user.kda}>
-                            {user.kda}
-                        </StatValue>
-                    </StatItem>
+                    {user.game !== '전략적 팀 전투' && (
+                        <StatItem>
+                            <StatLabel>KDA</StatLabel>
+                            <StatValue $type="kda" $value={user.kda}>
+                                {user.kda}
+                            </StatValue>
+                        </StatItem>
+                    )}
                 </StatsSection>
 
                 <Description>{user.description}</Description>
 
-                {/* 최근 선호 챔피언 */}
+                {/* 최근 선호 챔피언/시너지 */}
                 <StyleSection>
-                    <SectionTitle>최근 선호 챔피언</SectionTitle>
+                    <SectionTitle>
+                        {user.game === '전략적 팀 전투' ? '최근 선호 시너지' : '최근 선호 챔피언'}
+                    </SectionTitle>
                     <ChampionList>
                         {user.recentChampions
                             .slice(0, 3)
@@ -300,6 +304,7 @@ export default function MatchCard({
                                         alt={getChampionNameFromPath(champion)}
                                         width={32}
                                         height={32}
+                                        $isSynergy={user.game === '전략적 팀 전투'}
                                     />
                                     <ChampionName>
                                         {getChampionNameFromPath(champion)}
@@ -531,9 +536,9 @@ const TierName = styled.span`
     line-height: 1;
 `;
 
-const StatsSection = styled.div`
+const StatsSection = styled.div<{ $isSingleStat?: boolean }>`
     display: flex;
-    justify-content: space-around;
+    justify-content: ${({ $isSingleStat }) => ($isSingleStat ? 'center' : 'space-around')};
     margin-bottom: 1rem;
     padding: 0.8rem;
     background-color: #1f1f21;
@@ -644,10 +649,12 @@ const ChampionItem = styled.div`
     flex: 1;
 `;
 
-const ChampionImage = styled(Image)`
+const ChampionImage = styled(Image)<{ $isSynergy?: boolean }>`
     border-radius: 50%;
     border: 0.1rem solid #4272ec;
     object-fit: cover;
+    padding: ${({ $isSynergy }) => ($isSynergy ? '0.4rem' : '0')};
+    background-color: ${({ $isSynergy }) => ($isSynergy ? 'rgba(255, 255, 255, 0.1)' : 'transparent')};
 `;
 
 const ChampionName = styled.span`

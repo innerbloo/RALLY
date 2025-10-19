@@ -157,6 +157,7 @@ export default function UserProfilePage() {
                     rating={userData.rating || 0}
                     winRate={userData.winRate}
                     kda={userData.kda}
+                    game={userData.game}
                 />
 
                 <UserGameInfo user={userData} />

@@ -8,11 +8,12 @@ import styled from '@emotion/styled';
 import type { TierOption } from '../types/quickMatch';
 
 interface TierSelectionProps {
+    selectedGame: string | null;
     desiredTier: string | null;
     onDesiredTierChange: (tierId: string) => void;
 }
 
-const tierOptions: TierOption[] = [
+const lolTierOptions: TierOption[] = [
     {
         id: 'unranked',
         name: '언랭크',
@@ -81,10 +82,66 @@ const tierOptions: TierOption[] = [
     },
 ];
 
+const overwatchTierOptions: TierOption[] = [
+    {
+        id: 'bronze',
+        name: '브론즈',
+        icon: '/overwatch/rank-overwatch-bronze.webp',
+        subTiers: [],
+    },
+    {
+        id: 'silver',
+        name: '실버',
+        icon: '/overwatch/rank-overwatch-silver.webp',
+        subTiers: [],
+    },
+    {
+        id: 'gold',
+        name: '골드',
+        icon: '/overwatch/rank-overwatch-gold.webp',
+        subTiers: [],
+    },
+    {
+        id: 'platinum',
+        name: '플래티넘',
+        icon: '/overwatch/rank-overwatch-platinum.webp',
+        subTiers: [],
+    },
+    {
+        id: 'diamond',
+        name: '다이아몬드',
+        icon: '/overwatch/rank-overwatch-diamond.webp',
+        subTiers: [],
+    },
+    {
+        id: 'master',
+        name: '마스터',
+        icon: '/overwatch/rank-overwatch-master.webp',
+        subTiers: [],
+    },
+    {
+        id: 'grandmaster',
+        name: '그랜드마스터',
+        icon: '/overwatch/rank-overwatch-grandmaster.webp',
+        subTiers: [],
+    },
+    {
+        id: '500',
+        name: '상위 500위',
+        icon: '/overwatch/rank-overwatch-500.webp',
+        subTiers: [],
+    },
+];
+
 export default function TierSelection({
+    selectedGame,
     desiredTier,
     onDesiredTierChange,
 }: TierSelectionProps) {
+    // 게임에 따라 티어 옵션 선택
+    const isOverwatch = selectedGame === 'overwatch';
+    const tierOptions = isOverwatch ? overwatchTierOptions : lolTierOptions;
+
     const handleTierSelect = (tierId: string) => {
         onDesiredTierChange(tierId);
 

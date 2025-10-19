@@ -46,15 +46,30 @@ function QuickMatchContent() {
 
     // Set initial progress on mount
     useEffect(() => {
-        setProgress((currentStep / 5) * 100);
+        const isTFT = matchData.game === 'tft';
+        const totalSteps = isTFT ? 4 : 5; // TFT has 4 steps (no position selection)
+        const actualStep = isTFT && currentStep > 2 ? currentStep - 1 : currentStep;
+        setProgress((actualStep / totalSteps) * 100);
         return () => setProgress(0); // Clear progress on unmount
-    }, [currentStep, setProgress]);
+    }, [currentStep, setProgress, matchData.game]);
 
     const handleNext = () => {
+        const isTFT = matchData.game === 'tft';
+
         if (currentStep < 5) {
-            const nextStep = (currentStep + 1) as QuickMatchStep;
+            let nextStep = (currentStep + 1) as QuickMatchStep;
+
+            // Skip position selection (step 2) for TFT
+            if (isTFT && currentStep === 1) {
+                nextStep = 3 as QuickMatchStep;
+                // Auto-set position to 'all' for TFT
+                updateMatchData({ desiredPositions: ['all'] });
+            }
+
             setCurrentStep(nextStep);
-            setProgress((nextStep / 5) * 100);
+            const totalSteps = isTFT ? 4 : 5;
+            const actualStep = isTFT && nextStep > 2 ? nextStep - 1 : nextStep;
+            setProgress((actualStep / totalSteps) * 100);
             window.scrollTo(0, 0);
         } else {
             handleStartMatching();
@@ -62,10 +77,20 @@ function QuickMatchContent() {
     };
 
     const handlePrevious = () => {
+        const isTFT = matchData.game === 'tft';
+
         if (currentStep > 1) {
-            const prevStep = (currentStep - 1) as QuickMatchStep;
+            let prevStep = (currentStep - 1) as QuickMatchStep;
+
+            // Skip position selection (step 2) for TFT
+            if (isTFT && currentStep === 3) {
+                prevStep = 1 as QuickMatchStep;
+            }
+
             setCurrentStep(prevStep);
-            setProgress((prevStep / 5) * 100);
+            const totalSteps = isTFT ? 4 : 5;
+            const actualStep = isTFT && prevStep > 2 ? prevStep - 1 : prevStep;
+            setProgress((actualStep / totalSteps) * 100);
             window.scrollTo(0, 0);
         } else {
             setProgress(0);
@@ -86,10 +111,21 @@ function QuickMatchContent() {
             : [];
 
         const filteredUsers = gameUsers.filter((user) => {
-            // 포지션 매칭
+            // 포지션/역할 매칭
             if (matchData.desiredPositions.length > 0 && !matchData.desiredPositions.includes('all')) {
                 const positionId = 'positionId' in user ? user.positionId : undefined;
-                if (!positionId || !matchData.desiredPositions.includes(positionId)) {
+                const roleId = 'roleId' in user ? user.roleId : undefined;
+
+                // LOL: positionId로 필터링, Overwatch: roleId로 필터링
+                if (positionId) {
+                    if (!matchData.desiredPositions.includes(positionId)) {
+                        return false;
+                    }
+                } else if (roleId) {
+                    if (!matchData.desiredPositions.includes(roleId)) {
+                        return false;
+                    }
+                } else {
                     return false;
                 }
             }
@@ -149,11 +185,14 @@ function QuickMatchContent() {
     };
 
     const canProceed = () => {
+        const isTFT = matchData.game === 'tft';
+
         switch (currentStep) {
             case 1:
                 return matchData.game !== null;
             case 2:
-                return matchData.desiredPositions.length > 0;
+                // TFT doesn't need position selection
+                return isTFT || matchData.desiredPositions.length > 0;
             case 3:
                 return matchData.desiredTier !== null;
             case 4:
@@ -190,6 +229,7 @@ function QuickMatchContent() {
             case 3:
                 return (
                     <TierSelection
+                        selectedGame={matchData.game}
                         desiredTier={matchData.desiredTier}
                         onDesiredTierChange={(tier) =>
                             updateMatchData({ desiredTier: tier })

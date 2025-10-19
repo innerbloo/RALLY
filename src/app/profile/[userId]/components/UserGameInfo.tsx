@@ -27,12 +27,10 @@ export default function UserGameInfo({ user }: UserGameInfoProps) {
 
         const tierKey = tierMap[tier] || 'bronze';
 
-        if (game === '리그오브레전드') {
+        if (game === '리그오브레전드' || game === '전략적 팀 전투') {
             return `/lol/rank-lol-${tierKey}.webp`;
         } else if (game === '오버워치2') {
-            return `/overwatch/rank-ow-${tierKey}.png`;
-        } else if (game === '전략적 팀 전투') {
-            return `/tft/rank-tft-${tierKey}.webp`;
+            return `/overwatch/rank-overwatch-${tierKey}.webp`;
         }
 
         return `/lol/rank-lol-bronze.webp`;
@@ -74,42 +72,61 @@ export default function UserGameInfo({ user }: UserGameInfoProps) {
                             {user.winRate}%
                         </StatValue>
                     </StatItem>
-                    <StatItem>
-                        <StatLabel>KDA</StatLabel>
-                        <StatValue
-                            $color={
-                                user.kda >= 3
-                                    ? '#22c55e'
-                                    : user.kda >= 2
-                                      ? '#f59e0b'
-                                      : '#ef4444'
-                            }
-                        >
-                            {user.kda.toFixed(2)}
-                        </StatValue>
-                    </StatItem>
+                    {user.game !== '전략적 팀 전투' && (
+                        <StatItem>
+                            <StatLabel>KDA</StatLabel>
+                            <StatValue
+                                $color={
+                                    user.kda >= 3
+                                        ? '#22c55e'
+                                        : user.kda >= 2
+                                          ? '#f59e0b'
+                                          : '#ef4444'
+                                }
+                            >
+                                {user.kda.toFixed(2)}
+                            </StatValue>
+                        </StatItem>
+                    )}
                 </StatsRow>
 
                 {user.recentChampions && user.recentChampions.length > 0 && (
                     <ChampionSection>
-                        <SubTitle>최근 플레이한 챔피언</SubTitle>
+                        <SubTitle>
+                            {user.game === '전략적 팀 전투' ? '최근 선호 시너지' : '최근 플레이한 챔피언'}
+                        </SubTitle>
                         <ChampionList>
-                            {user.recentChampions.map((champion, index) => (
-                                <ChampionImage
-                                    key={index}
-                                    src={champion}
-                                    width={40}
-                                    height={40}
-                                    alt="챔피언"
-                                />
-                            ))}
+                            {user.recentChampions.map((champion, index) => {
+                                const getSynergyName = (path: string) => {
+                                    const fileName = path.split('/').pop() || '';
+                                    const nameWithoutExtension = fileName.replace('.png', '');
+                                    return nameWithoutExtension.replace('synergy-', '');
+                                };
+
+                                return (
+                                    <ChampionItem key={index}>
+                                        <ChampionImage
+                                            src={champion}
+                                            width={40}
+                                            height={40}
+                                            alt={user.game === '전략적 팀 전투' ? '시너지' : '챔피언'}
+                                            $isSynergy={user.game === '전략적 팀 전투'}
+                                        />
+                                        {user.game === '전략적 팀 전투' && (
+                                            <SynergyName>{getSynergyName(champion)}</SynergyName>
+                                        )}
+                                    </ChampionItem>
+                                );
+                            })}
                         </ChampionList>
                     </ChampionSection>
                 )}
 
                 {'position' in user && user.position && (
                     <PositionSection>
-                        <SubTitle>주 포지션</SubTitle>
+                        <SubTitle>
+                            {user.game === '오버워치2' ? '주 역할' : '주 포지션'}
+                        </SubTitle>
                         <PositionBadge>
                             {user.position}
                             <PositionText>
@@ -244,12 +261,28 @@ const SubTitle = styled.h5`
 
 const ChampionList = styled.div`
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
 `;
 
-const ChampionImage = styled(Image)`
-    border-radius: 0.8rem;
+const ChampionItem = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+`;
+
+const ChampionImage = styled(Image)<{ $isSynergy?: boolean }>`
+    border-radius: ${({ $isSynergy }) => ($isSynergy ? '50%' : '0.8rem')};
     border: 0.1rem solid #3f3f41;
+    padding: ${({ $isSynergy }) => ($isSynergy ? '0.5rem' : '0')};
+    background-color: ${({ $isSynergy }) => ($isSynergy ? 'rgba(255, 255, 255, 0.1)' : 'transparent')};
+`;
+
+const SynergyName = styled.span`
+    font-size: 1.1rem;
+    color: #cccccc;
+    font-weight: 500;
+    text-align: center;
 `;
 
 const PositionSection = styled.div``;

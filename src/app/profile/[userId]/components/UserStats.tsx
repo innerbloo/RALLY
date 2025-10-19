@@ -8,11 +8,14 @@ interface UserStatsProps {
     rating: number;
     winRate: number;
     kda: number;
+    game: string;
 }
 
-export default function UserStats({ matchCount, rating, winRate, kda }: UserStatsProps) {
+export default function UserStats({ matchCount, rating, winRate, kda, game }: UserStatsProps) {
+    const isTFT = game === '전략적 팀 전투';
+
     return (
-        <StatsContainer>
+        <StatsContainer $isTFT={isTFT}>
             <StatCard>
                 <IconWrapper $color="#4272ec">
                     <Users size={20} />
@@ -43,26 +46,28 @@ export default function UserStats({ matchCount, rating, winRate, kda }: UserStat
                 </StatInfo>
             </StatCard>
 
-            <StatCard>
-                <IconWrapper $color="#ef4444">
-                    <Trophy size={20} />
-                </IconWrapper>
-                <StatInfo>
-                    <StatValue>{kda.toFixed(2)}</StatValue>
-                    <StatLabel>KDA</StatLabel>
-                </StatInfo>
-            </StatCard>
+            {!isTFT && (
+                <StatCard>
+                    <IconWrapper $color="#ef4444">
+                        <Trophy size={20} />
+                    </IconWrapper>
+                    <StatInfo>
+                        <StatValue>{kda.toFixed(2)}</StatValue>
+                        <StatLabel>KDA</StatLabel>
+                    </StatInfo>
+                </StatCard>
+            )}
         </StatsContainer>
     );
 }
 
-const StatsContainer = styled.div`
+const StatsContainer = styled.div<{ $isTFT: boolean }>`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.2rem;
 
     @media (min-width: 768px) {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: ${({ $isTFT }) => ($isTFT ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)')};
     }
 `;
 
