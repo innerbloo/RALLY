@@ -17,6 +17,28 @@ export const metadata: Metadata = {
     title: 'Rally - 듀오 매칭의 새로운 기준',
     description: '실시간 듀오 매칭 서비스',
     manifest: '/manifest.json',
+    openGraph: {
+        title: 'Rally - 듀오 매칭의 새로운 기준',
+        description: '실시간 듀오 매칭 서비스',
+        url: 'https://rally.com',
+        siteName: 'Rally',
+        images: [
+            {
+                url: '/og_image.png',
+                width: 1200,
+                height: 630,
+                alt: 'Rally - 듀오 매칭의 새로운 기준',
+            },
+        ],
+        locale: 'ko_KR',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Rally - 듀오 매칭의 새로운 기준',
+        description: '실시간 듀오 매칭 서비스',
+        images: ['/og_image.png'],
+    },
     other: {
         'mobile-web-app-capable': 'yes',
         'apple-mobile-web-app-capable': 'yes',
