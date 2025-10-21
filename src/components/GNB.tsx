@@ -3,7 +3,7 @@
 import { Home, MessageCircle, User, UserPlus, Users } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -60,6 +60,8 @@ const menuItems: MenuItemType[] = [
 export default function GNB() {
     const pathname = usePathname();
     const [chatRooms, setChatRooms] = useState<ChatRoom[]>(mockChatRooms);
+    const [isInputFocused, setIsInputFocused] = useState(false);
+    const focusOutTimerRef = useRef<NodeJS.Timeout | null>(null);
 
     const isActive = (path: string) => {
         if (path === '/') {
@@ -111,6 +113,61 @@ export default function GNB() {
     const totalUnreadCount = useMemo(() => {
         return chatRooms.reduce((sum, room) => sum + room.unreadCount, 0);
     }, [chatRooms]);
+
+    // Input 포커스 감지 (모바일에서만 GNB 숨김)
+    useEffect(() => {
+        // 모바일 디바이스 감지
+        const isMobileDevice = () => {
+            const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+            return /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+        };
+
+        // 모바일이 아니면 early return
+        if (!isMobileDevice()) {
+            return;
+        }
+
+        const handleFocusIn = (e: FocusEvent) => {
+            const target = e.target as HTMLElement;
+            if (
+                target.tagName === 'INPUT' ||
+                target.tagName === 'TEXTAREA'
+            ) {
+                // 이전에 설정된 타이머가 있으면 취소
+                if (focusOutTimerRef.current) {
+                    clearTimeout(focusOutTimerRef.current);
+                    focusOutTimerRef.current = null;
+                }
+                setIsInputFocused(true);
+            }
+        };
+
+        const handleFocusOut = (e: FocusEvent) => {
+            const target = e.target as HTMLElement;
+            if (
+                target.tagName === 'INPUT' ||
+                target.tagName === 'TEXTAREA'
+            ) {
+                // 1초 후에 GNB 다시 표시
+                focusOutTimerRef.current = setTimeout(() => {
+                    setIsInputFocused(false);
+                    focusOutTimerRef.current = null;
+                }, 1000);
+            }
+        };
+
+        document.addEventListener('focusin', handleFocusIn);
+        document.addEventListener('focusout', handleFocusOut);
+
+        return () => {
+            document.removeEventListener('focusin', handleFocusIn);
+            document.removeEventListener('focusout', handleFocusOut);
+            // cleanup 시 타이머 정리
+            if (focusOutTimerRef.current) {
+                clearTimeout(focusOutTimerRef.current);
+            }
+        };
+    }, []);
 
     // iOS Safari 동적 브라우저 UI 대응
     useEffect(() => {
@@ -173,6 +230,9 @@ export default function GNB() {
             window.removeEventListener('resize', updateViewportHeight);
         };
     }, []);
+
+    // Input 포커스 시 GNB 렌더링 중단
+    if (isInputFocused) return null;
 
     return (
         <GNBContainer>

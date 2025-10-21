@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -23,13 +23,34 @@ const communicationStyleFilters = {
 
 export default function StyleFilter({ selectedFilters, onFilterChange }: StyleFilterProps) {
     const [expandedSections, setExpandedSections] = useState<string[]>([]);
+    const sectionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
     const toggleSection = (section: string) => {
+        const isExpanding = !expandedSections.includes(section);
+
         setExpandedSections(prev =>
             prev.includes(section)
                 ? prev.filter(s => s !== section)
                 : [...prev, section]
         );
+
+        // 섹션을 펼칠 때만 스크롤
+        if (isExpanding) {
+            setTimeout(() => {
+                const element = sectionRefs.current[section];
+                if (element) {
+                    const headerHeight = 60 + parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-top') || '0');
+                    const elementRect = element.getBoundingClientRect();
+                    const absoluteElementTop = elementRect.top + window.pageYOffset;
+                    const middle = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2) + headerHeight;
+
+                    window.scrollTo({
+                        top: middle,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 100);
+        }
     };
 
     const toggleFilter = (filter: string) => {
@@ -52,14 +73,19 @@ export default function StyleFilter({ selectedFilters, onFilterChange }: StyleFi
 
     const renderFilterSection = (title: string, filters: Record<string, string[]>, type: 'game' | 'communication') => {
         return (
-            <FilterSection key={title}>
+            <FilterSection
+                key={title}
+                ref={(el) => {
+                    sectionRefs.current[title] = el;
+                }}
+            >
                 <SectionHeader onClick={() => toggleSection(title)}>
                     <SectionTitle>{title}</SectionTitle>
                     <ToggleIcon $expanded={expandedSections.includes(title)}>
                         ▼
                     </ToggleIcon>
                 </SectionHeader>
-                
+
                 {expandedSections.includes(title) && (
                     <FilterContent>
                         {Object.entries(filters).map(([category, categoryFilters]) => (

@@ -415,13 +415,31 @@ const GameFilterContainer = styled.div`
 const GameFilterList = styled.div`
     display: flex;
     gap: 1rem;
-    flex-wrap: wrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+
+    @media (max-width: 480px) {
+        margin: 0 -2rem;
+        padding: 0 2rem;
+    }
+
+    &::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Edge */
+    }
+
+    /* Prevent buttons from shrinking */
+    > button {
+        flex-shrink: 0;
+    }
 `;
 
 const GameFilterButton = styled.button<{ $active: boolean }>`
     padding: 0.8rem 1.6rem;
     font-size: 1.4rem;
     font-weight: 500;
+    white-space: nowrap;
     border: 0.1rem solid ${({ $active }) => ($active ? '#4272ec' : '#3f3f41')};
     border-radius: 2rem;
     background-color: ${({ $active }) => ($active ? '#4272ec' : 'transparent')};

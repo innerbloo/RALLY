@@ -121,7 +121,12 @@ export default function GameAddPage() {
     ];
 
     const gameStyleOptions = {
-        '전투 스타일': ['공격적인', '수비적인', '팀 중심형', '혼자 플레이 선호'],
+        '전투 스타일': [
+            '공격적인',
+            '수비적인',
+            '팀 중심형',
+            '혼자 플레이 선호',
+        ],
         '게임 진행 스타일': [
             '빠른 템포 선호',
             '신중한 플레이',
@@ -426,129 +431,111 @@ export default function GameAddPage() {
                 {/* 랭크 선택 */}
                 {showRankSection() && (
                     <FormSection>
-                            <SectionLabel>
-                                랭크 선택 <Required>*</Required>
-                            </SectionLabel>
-                            <InfoText>현재 랭크를 선택해주세요</InfoText>
-                            <TierGrid>
-                                {currentGameData?.ranks.map((rank) => (
-                                    <TierCard
-                                        key={rank}
-                                        $active={selectedRank?.main === rank}
-                                        onClick={() =>
-                                            setSelectedRank({
-                                                main: rank,
-                                                sub: hasTiers(rank)
-                                                    ? 4
-                                                    : undefined,
-                                            })
-                                        }
-                                    >
-                                        <TierIcon>
-                                            <Image
-                                                src={getRankImagePath(
-                                                    selectedGame,
-                                                    rank,
-                                                )}
-                                                width={50}
-                                                height={50}
-                                                alt={rank}
-                                            />
-                                        </TierIcon>
-                                        <TierName>{rank}</TierName>
-                                    </TierCard>
-                                ))}
-                            </TierGrid>
+                        <SectionLabel>
+                            랭크 선택 <Required>*</Required>
+                        </SectionLabel>
+                        <InfoText>현재 랭크를 선택해주세요</InfoText>
+                        <TierGrid>
+                            {currentGameData?.ranks.map((rank) => (
+                                <TierCard
+                                    key={rank}
+                                    $active={selectedRank?.main === rank}
+                                    onClick={() =>
+                                        setSelectedRank({
+                                            main: rank,
+                                            sub: hasTiers(rank) ? 4 : undefined,
+                                        })
+                                    }
+                                >
+                                    <TierIcon>
+                                        <Image
+                                            src={getRankImagePath(
+                                                selectedGame,
+                                                rank,
+                                            )}
+                                            width={50}
+                                            height={50}
+                                            alt={rank}
+                                        />
+                                    </TierIcon>
+                                    <TierName>{rank}</TierName>
+                                </TierCard>
+                            ))}
+                        </TierGrid>
 
-                            {selectedRank && hasTiers(selectedRank.main) && (
-                                <>
-                                    <SubTierLabel>티어 선택</SubTierLabel>
-                                    <SubTierGrid>
-                                        {[1, 2, 3, 4].map((tier) => (
-                                            <SubTierButton
-                                                key={tier}
-                                                $active={
-                                                    selectedRank.sub === tier
-                                                }
-                                                onClick={() =>
-                                                    setSelectedRank({
-                                                        ...selectedRank,
-                                                        sub: tier,
-                                                    })
-                                                }
-                                            >
-                                                {tier}
-                                            </SubTierButton>
-                                        ))}
-                                    </SubTierGrid>
-                                </>
-                            )}
+                        {selectedRank && hasTiers(selectedRank.main) && (
+                            <>
+                                <SubTierLabel>티어 선택</SubTierLabel>
+                                <SubTierGrid>
+                                    {[1, 2, 3, 4].map((tier) => (
+                                        <SubTierButton
+                                            key={tier}
+                                            $active={selectedRank.sub === tier}
+                                            onClick={() =>
+                                                setSelectedRank({
+                                                    ...selectedRank,
+                                                    sub: tier,
+                                                })
+                                            }
+                                        >
+                                            {tier}
+                                        </SubTierButton>
+                                    ))}
+                                </SubTierGrid>
+                            </>
+                        )}
                     </FormSection>
                 )}
 
                 {/* 포지션 선택 */}
                 {showPositionSection() && (
                     <FormSection>
-                                    <SectionLabel>
-                                        포지션 선택 <Required>*</Required>
-                                    </SectionLabel>
-                                    <InfoText>
-                                        주로 플레이하는 포지션을 선택하세요
-                                        (복수 선택 가능)
-                                    </InfoText>
-                                    <PositionGrid>
-                                        {currentGameData?.positions.map(
-                                            (position) => {
-                                                const iconPath =
-                                                    getPositionIconPath(
-                                                        selectedGame,
-                                                        position,
-                                                    );
-                                                return (
-                                                    <PositionCard
-                                                        key={position}
-                                                        $active={selectedPositions.includes(
-                                                            position,
-                                                        )}
-                                                        onClick={() =>
-                                                            handlePositionToggle(
-                                                                position,
-                                                            )
-                                                        }
-                                                    >
-                                                        <PositionIconBg>
-                                                            {iconPath ? (
-                                                                <Image
-                                                                    src={
-                                                                        iconPath
-                                                                    }
-                                                                    width={32}
-                                                                    height={32}
-                                                                    alt={
-                                                                        position
-                                                                    }
-                                                                />
-                                                            ) : (
-                                                                position.charAt(
-                                                                    0,
-                                                                )
-                                                            )}
-                                                        </PositionIconBg>
-                                                        <PositionName>
-                                                            {position}
-                                                        </PositionName>
-                                                        {selectedPositions.includes(
-                                                            position,
-                                                        ) && (
-                                                            <SelectedIndicator>
-                                                                ✓
-                                                            </SelectedIndicator>
-                                                        )}
-                                                    </PositionCard>
-                                                );
-                                            },
+                        <SectionLabel>
+                            포지션 선택 <Required>*</Required>
+                        </SectionLabel>
+                        <InfoText>
+                            주로 플레이하는 포지션을 선택하세요 (복수 선택 가능)
+                        </InfoText>
+                        <PositionGrid>
+                            {currentGameData?.positions.map((position) => {
+                                const iconPath = getPositionIconPath(
+                                    selectedGame,
+                                    position,
+                                );
+                                return (
+                                    <PositionCard
+                                        key={position}
+                                        $active={selectedPositions.includes(
+                                            position,
                                         )}
-                                    </PositionGrid>
+                                        onClick={() =>
+                                            handlePositionToggle(position)
+                                        }
+                                    >
+                                        <PositionIconBg>
+                                            {iconPath ? (
+                                                <Image
+                                                    src={iconPath}
+                                                    width={32}
+                                                    height={32}
+                                                    alt={position}
+                                                />
+                                            ) : (
+                                                position.charAt(0)
+                                            )}
+                                        </PositionIconBg>
+                                        <PositionName>{position}</PositionName>
+                                        {selectedPositions.includes(
+                                            position,
+                                        ) && (
+                                            <SelectedIndicator>
+                                                ✓
+                                            </SelectedIndicator>
+                                        )}
+                                    </PositionCard>
+                                );
+                            })}
+                        </PositionGrid>
                     </FormSection>
                 )}
 
@@ -564,7 +551,9 @@ export default function GameAddPage() {
                             {Object.entries(gameStyleOptions).map(
                                 ([category, items]) => (
                                     <StyleCategorySection key={category}>
-                                        <CategoryTitle>{category}</CategoryTitle>
+                                        <CategoryTitle>
+                                            {category}
+                                        </CategoryTitle>
                                         <StyleTagGrid>
                                             {items.map((item) => (
                                                 <StyleTag
@@ -599,12 +588,15 @@ export default function GameAddPage() {
                                 커뮤니케이션 스타일 (선택)
                             </SectionLabel>
                             <InfoText>
-                                선호하는 소통 방식을 선택해주세요 (다중 선택 가능)
+                                선호하는 소통 방식을 선택해주세요 (다중 선택
+                                가능)
                             </InfoText>
                             {Object.entries(communicationStyleOptions).map(
                                 ([category, items]) => (
                                     <StyleCategorySection key={category}>
-                                        <CategoryTitle>{category}</CategoryTitle>
+                                        <CategoryTitle>
+                                            {category}
+                                        </CategoryTitle>
                                         <StyleTagGrid>
                                             {items.map((item) => (
                                                 <StyleTag
@@ -660,7 +652,7 @@ const AddGameContainer = styled.div`
 const AddGameContent = styled.main`
     flex: 1;
     padding: 0 2rem;
-    padding-top: calc(8rem + env(safe-area-inset-top));
+    padding-top: calc(10rem + env(safe-area-inset-top));
     padding-bottom: 2rem;
 `;
 

@@ -236,6 +236,7 @@ export default function Header() {
                                     <Link
                                         href={notification.link}
                                         key={notification.id}
+                                        onClick={() => setIsNotificationOpen(false)}
                                     >
                                         <NotificationItem
                                             $isRead={notification.isRead}

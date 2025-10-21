@@ -15,7 +15,7 @@ import { QuickMatchData, QuickMatchStep } from './types/quickMatch';
 import styled from '@emotion/styled';
 
 import { useQuickMatch } from '@/contexts/QuickMatchContext';
-import { getUsersByGame, getGameNameById } from '@/data/mockGameUsers';
+import { getGameNameById, getUsersByGame } from '@/data/mockGameUsers';
 
 const initialData: QuickMatchData = {
     game: null,
@@ -39,7 +39,12 @@ function QuickMatchContent() {
     // Read game parameter from URL and pre-select game
     useEffect(() => {
         const gameParam = searchParams.get('game');
-        if (gameParam && (gameParam === 'lol' || gameParam === 'tft' || gameParam === 'overwatch')) {
+        if (
+            gameParam &&
+            (gameParam === 'lol' ||
+                gameParam === 'tft' ||
+                gameParam === 'overwatch')
+        ) {
             setMatchData((prev) => ({ ...prev, game: gameParam }));
         }
     }, [searchParams]);
@@ -48,7 +53,8 @@ function QuickMatchContent() {
     useEffect(() => {
         const isTFT = matchData.game === 'tft';
         const totalSteps = isTFT ? 4 : 5; // TFT has 4 steps (no position selection)
-        const actualStep = isTFT && currentStep > 2 ? currentStep - 1 : currentStep;
+        const actualStep =
+            isTFT && currentStep > 2 ? currentStep - 1 : currentStep;
         setProgress((actualStep / totalSteps) * 100);
         return () => setProgress(0); // Clear progress on unmount
     }, [currentStep, setProgress, matchData.game]);
@@ -112,8 +118,12 @@ function QuickMatchContent() {
 
         const filteredUsers = gameUsers.filter((user) => {
             // 포지션/역할 매칭
-            if (matchData.desiredPositions.length > 0 && !matchData.desiredPositions.includes('all')) {
-                const positionId = 'positionId' in user ? user.positionId : undefined;
+            if (
+                matchData.desiredPositions.length > 0 &&
+                !matchData.desiredPositions.includes('all')
+            ) {
+                const positionId =
+                    'positionId' in user ? user.positionId : undefined;
                 const roleId = 'roleId' in user ? user.roleId : undefined;
 
                 // LOL: positionId로 필터링, Overwatch: roleId로 필터링
@@ -149,14 +159,17 @@ function QuickMatchContent() {
             challenger: { abbr: 'C' },
         };
 
-        const tierKey = matchData.desiredTier?.match(/^[a-z]+/i)?.[0]?.toLowerCase() || '';
+        const tierKey =
+            matchData.desiredTier?.match(/^[a-z]+/i)?.[0]?.toLowerCase() || '';
         const tierInfo = tierMap[tierKey];
 
         // 유저별 고정 랭크 생성 (1-4 랜덤하게 할당)
         const userRanksMap: { [key: number]: string } = {};
         selectedUsers.forEach((user) => {
             const rankNum = Math.floor(Math.random() * 4) + 1;
-            userRanksMap[user.id] = tierInfo ? `${tierInfo.abbr}${rankNum}` : '';
+            userRanksMap[user.id] = tierInfo
+                ? `${tierInfo.abbr}${rankNum}`
+                : '';
         });
 
         // 3초 로딩 시뮬레이션
@@ -172,7 +185,7 @@ function QuickMatchContent() {
             commStyles: JSON.stringify(
                 matchData.desiredStyles.communicationStyles,
             ),
-            userIds: JSON.stringify(selectedUsers.map(u => u.id)),
+            userIds: JSON.stringify(selectedUsers.map((u) => u.id)),
             userRanks: JSON.stringify(userRanksMap),
         });
 
@@ -325,7 +338,7 @@ const QuickMatchContainer = styled.div`
 const QuickMatchMain = styled.main`
     flex: 1;
     padding: 0 2rem;
-    padding-top: calc(8rem + env(safe-area-inset-top));
+    padding-top: calc(10rem + env(safe-area-inset-top));
     display: flex;
     flex-direction: column;
 `;
