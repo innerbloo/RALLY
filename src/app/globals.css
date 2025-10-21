@@ -1,5 +1,7 @@
 html {
     height: 100%;
+    background: #1f1f21;
+    overflow-y: auto;
 }
 
 html,
@@ -20,6 +22,7 @@ body::-webkit-scrollbar {
 }
 
 body {
+  min-height: 100vh;
   font-size: 1.6rem;
   color: #F5F5F5;
   background: #1A1B1E;
@@ -28,6 +31,15 @@ body {
   font-family: var(--font-pretendard), -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Desktop Shadow Effect */
+@media (min-width: 801px) {
+  body {
+    box-shadow:
+      0 0 40px rgba(0, 0, 0, 0.5),
+      0 20px 60px rgba(0, 0, 0, 0.3);
+  }
 }
 
 ul, ol, li {

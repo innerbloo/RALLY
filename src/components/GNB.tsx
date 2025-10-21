@@ -118,7 +118,7 @@ export default function GNB() {
     useEffect(() => {
         // 모바일 디바이스 감지
         const isMobileDevice = () => {
-            const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+            const userAgent = navigator.userAgent || navigator.vendor;
             return /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
         };
 
