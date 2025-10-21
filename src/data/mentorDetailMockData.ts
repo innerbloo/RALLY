@@ -91,8 +91,7 @@ export const mentorDetailMockData: { [key: number]: MentorDetail } = {
                 type: 'VOD 분석',
                 price: 20000,
                 duration: 30,
-                description:
-                    '녹화된 게임 영상을 분석하여 개선점과 피드백 제공',
+                description: '녹화된 게임 영상을 분석하여 개선점과 피드백 제공',
             },
         ],
         curriculum: [
@@ -122,7 +121,7 @@ export const mentorDetailMockData: { [key: number]: MentorDetail } = {
             {
                 id: 2,
                 reviewerId: 2,
-                reviewerName: 'ShadowHunter',
+                reviewerName: '그림자사냥꾼',
                 reviewerImage: '/lol/profile-lol-2.png',
                 rating: 5,
                 comment:
@@ -173,8 +172,7 @@ export const mentorDetailMockData: { [key: number]: MentorDetail } = {
                 type: '1:1 개인 코칭',
                 price: 35000,
                 duration: 60,
-                description:
-                    '실시간 게임 분석 + 영웅별 운용법 + 포지셔닝 코칭',
+                description: '실시간 게임 분석 + 영웅별 운용법 + 포지셔닝 코칭',
             },
             {
                 type: '팀 코칭',
@@ -336,9 +334,7 @@ export const mentorDetailMockData: { [key: number]: MentorDetail } = {
     },
 };
 
-export const getMentorDetailById = (
-    id: number,
-): MentorDetail | undefined => {
+export const getMentorDetailById = (id: number): MentorDetail | undefined => {
     return mentorDetailMockData[id];
 };
 

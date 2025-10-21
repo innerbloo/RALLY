@@ -32,8 +32,24 @@ interface MatchSuccessModalProps {
 }
 
 // 티어 이미지 매핑 함수
-const getTierImage = (tier: string): string => {
-    const tierImageMap: { [key: string]: string } = {
+const getTierImage = (tier: string, game: string): string => {
+    // 오버워치인 경우
+    if (game === '오버워치2') {
+        const overwatchTierMap: { [key: string]: string } = {
+            브론즈: '/overwatch/rank-overwatch-bronze.webp',
+            실버: '/overwatch/rank-overwatch-silver.webp',
+            골드: '/overwatch/rank-overwatch-gold.webp',
+            플래티넘: '/overwatch/rank-overwatch-platinum.webp',
+            다이아몬드: '/overwatch/rank-overwatch-diamond.webp',
+            마스터: '/overwatch/rank-overwatch-master.webp',
+            그랜드마스터: '/overwatch/rank-overwatch-grandmaster.webp',
+            '상위 500위': '/overwatch/rank-overwatch-500.webp',
+        };
+        return overwatchTierMap[tier] || '/overwatch/rank-overwatch-bronze.webp';
+    }
+
+    // 리그오브레전드, TFT인 경우
+    const lolTierMap: { [key: string]: string } = {
         아이언: '/lol/rank-lol-iron.webp',
         브론즈: '/lol/rank-lol-bronze.webp',
         실버: '/lol/rank-lol-silver.webp',
@@ -45,7 +61,7 @@ const getTierImage = (tier: string): string => {
         그랜드마스터: '/lol/rank-lol-grandmaster.webp',
         챌린저: '/lol/rank-lol-challenger.webp',
     };
-    return tierImageMap[tier] || '/lol/rank-lol-unranked.webp';
+    return lolTierMap[tier] || '/lol/rank-lol-unranked.webp';
 };
 
 // 포지션 이름 가져오기 함수
@@ -134,6 +150,7 @@ export default function MatchSuccessModal({
                                 <TierImage
                                     src={getTierImage(
                                         displayTier || user.tier,
+                                        user.game,
                                     )}
                                     alt={`${displayTier || user.tier} 티어`}
                                     width={28}
@@ -353,6 +370,7 @@ const PositionBadge = styled.div`
     svg {
         width: 1.8rem;
         height: 1.8rem;
+        flex-shrink: 0;
         color: #e5e7eb;
     }
 `;

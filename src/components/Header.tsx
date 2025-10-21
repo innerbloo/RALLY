@@ -2,6 +2,7 @@
 
 import { Bell, ChevronDown, ChevronLeft, Search, UserPlus } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -22,6 +23,7 @@ interface Notification {
     message: string;
     time: string;
     isRead: boolean;
+    link: string;
 }
 
 const mockUserStatus: UserStatus = {
@@ -38,6 +40,7 @@ const mockNotifications: Notification[] = [
         message: '멋졌으면 핑찍어님이 듀오 요청을 보냈습니다.',
         time: '방금 전',
         isRead: false,
+        link: '/profile/1',
     },
     {
         id: 2,
@@ -46,6 +49,7 @@ const mockNotifications: Notification[] = [
         message: '채팅방에 새 메시지가 있습니다.',
         time: '5분 전',
         isRead: false,
+        link: '/chat',
     },
 ];
 
@@ -81,6 +85,26 @@ export default function Header() {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    // 외부 클릭 시 알림 드롭다운 닫기
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as HTMLElement;
+            // 알림 버튼이나 드롭다운 내부 클릭이 아닌 경우에만 닫기
+            if (!target.closest('[data-notification-button]') &&
+                !target.closest('[data-notification-dropdown]')) {
+                setIsNotificationOpen(false);
+            }
+        };
+
+        if (isNotificationOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isNotificationOpen]);
 
     const getStatusColor = (status: UserStatus['matchingStatus']) => {
         switch (status) {
@@ -191,6 +215,7 @@ export default function Header() {
 
                     {/* 알림 */}
                     <NotificationButton
+                        data-notification-button
                         onClick={() => {
                             setIsNotificationOpen(!isNotificationOpen);
                             setIsGameSelectOpen(false);
@@ -202,25 +227,32 @@ export default function Header() {
                         )}
 
                         {isNotificationOpen && (
-                            <NotificationDropdown>
+                            <NotificationDropdown
+                                data-notification-dropdown
+                                onClick={(e) => e.stopPropagation()}
+                            >
                                 <NotificationHeader>알림</NotificationHeader>
                                 {mockNotifications.map((notification) => (
-                                    <NotificationItem
+                                    <Link
+                                        href={notification.link}
                                         key={notification.id}
-                                        $isRead={notification.isRead}
                                     >
-                                        <NotificationContent>
-                                            <NotificationTitle>
-                                                {notification.title}
-                                            </NotificationTitle>
-                                            <NotificationMessage>
-                                                {notification.message}
-                                            </NotificationMessage>
-                                        </NotificationContent>
-                                        <NotificationTime>
-                                            {notification.time}
-                                        </NotificationTime>
-                                    </NotificationItem>
+                                        <NotificationItem
+                                            $isRead={notification.isRead}
+                                        >
+                                            <NotificationContent>
+                                                <NotificationTitle>
+                                                    {notification.title}
+                                                </NotificationTitle>
+                                                <NotificationMessage>
+                                                    {notification.message}
+                                                </NotificationMessage>
+                                            </NotificationContent>
+                                            <NotificationTime>
+                                                {notification.time}
+                                            </NotificationTime>
+                                        </NotificationItem>
+                                    </Link>
                                 ))}
                             </NotificationDropdown>
                         )}

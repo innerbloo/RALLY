@@ -36,13 +36,33 @@ export default function UserGameInfo({ user }: UserGameInfoProps) {
         return `/lol/rank-lol-bronze.webp`;
     };
 
+    const getGameIconPath = (game: string): string => {
+        const gameIconMap: { [key: string]: string } = {
+            '리그오브레전드': '/game1.png',
+            '전략적 팀 전투': '/game2.png',
+            '발로란트': '/game3.png',
+            '오버워치2': '/game4.png',
+            '배틀그라운드': '/game5.png',
+        };
+
+        return gameIconMap[game] || '/game1.png';
+    };
+
     return (
         <InfoContainer>
             <SectionTitle>게임 정보</SectionTitle>
 
             <GameCard>
                 <GameHeader>
-                    <GameName>{user.game}</GameName>
+                    <GameTitleSection>
+                        <GameIcon
+                            src={getGameIconPath(user.game)}
+                            width={36}
+                            height={36}
+                            alt={user.game}
+                        />
+                        <GameName>{user.game}</GameName>
+                    </GameTitleSection>
                     <RankInfo>
                         <RankImage
                             src={getRankImagePath(user.game, user.tier)}
@@ -190,6 +210,18 @@ const GameHeader = styled.div`
     border-bottom: 0.1rem solid #3f3f41;
 `;
 
+const GameTitleSection = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+`;
+
+const GameIcon = styled(Image)`
+    border-radius: 0.8rem;
+    object-fit: contain;
+    flex-shrink: 0;
+`;
+
 const GameName = styled.h4`
     font-size: 1.8rem;
     font-weight: 600;
@@ -271,11 +303,14 @@ const ChampionItem = styled.div`
     gap: 0.5rem;
 `;
 
-const ChampionImage = styled(Image)<{ $isSynergy?: boolean }>`
+const ChampionImage = styled(Image, {
+    shouldForwardProp: (prop) => prop !== '$isSynergy',
+})<{ $isSynergy?: boolean }>`
     border-radius: ${({ $isSynergy }) => ($isSynergy ? '50%' : '0.8rem')};
     border: 0.1rem solid #3f3f41;
     padding: ${({ $isSynergy }) => ($isSynergy ? '0.5rem' : '0')};
-    background-color: ${({ $isSynergy }) => ($isSynergy ? 'rgba(255, 255, 255, 0.1)' : 'transparent')};
+    background-color: ${({ $isSynergy }) =>
+        $isSynergy ? 'rgba(255, 255, 255, 0.1)' : 'transparent'};
 `;
 
 const SynergyName = styled.span`
@@ -298,6 +333,7 @@ const PositionBadge = styled.div`
     svg {
         width: 2rem;
         height: 2rem;
+        flex-shrink: 0;
     }
 `;
 

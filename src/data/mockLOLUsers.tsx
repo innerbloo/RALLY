@@ -53,7 +53,7 @@ export const mockLOLUsers: LOLUser[] = [
     {
         id: 2,
         profileImage: '/lol/profile-lol-2.png',
-        username: 'ShadowHunter',
+        username: '그림자사냥꾼',
         gameId: '#SH001',
         position: <PositionLolJungle2 width={20} height={20} />,
         positionId: 'jungle',
@@ -97,7 +97,7 @@ export const mockLOLUsers: LOLUser[] = [
     {
         id: 4,
         profileImage: '/lol/profile-lol-4.png',
-        username: 'MidLaner',
+        username: '미드라이너',
         gameId: '#ML2023',
         position: <PositionLolMid2 width={20} height={20} />,
         positionId: 'mid',
@@ -145,7 +145,7 @@ export const mockLOLUsers: LOLUser[] = [
     {
         id: 6,
         profileImage: '/lol/profile-lol-6.png',
-        username: 'FlashBang',
+        username: '섬광탄',
         gameId: '#FB777',
         position: <PositionLolAdc2 width={20} height={20} />,
         positionId: 'adc',
@@ -189,7 +189,7 @@ export const mockLOLUsers: LOLUser[] = [
     {
         id: 8,
         profileImage: '/lol/profile-lol-8.png',
-        username: 'ProPlayer',
+        username: '프로게이머',
         gameId: '#PRO999',
         position: <PositionLolMid2 width={20} height={20} />,
         positionId: 'mid',
@@ -238,7 +238,7 @@ export const mockLOLUsers: LOLUser[] = [
     {
         id: 10,
         profileImage: '/lol/profile-lol-10.png',
-        username: 'CarryMaster',
+        username: '캐리마스터',
         gameId: '#CARRY10',
         position: <PositionLolAdc2 width={20} height={20} />,
         positionId: 'adc',
@@ -282,7 +282,7 @@ export const mockLOLUsers: LOLUser[] = [
     {
         id: 12,
         profileImage: '/lol/profile-lol-12.png',
-        username: 'TankMaster',
+        username: '탱커마스터',
         gameId: '#TANK99',
         position: <PositionLolTop2 width={20} height={20} />,
         positionId: 'top',
@@ -326,7 +326,7 @@ export const mockLOLUsers: LOLUser[] = [
     {
         id: 14,
         profileImage: '/lol/profile-lol-14.png',
-        username: 'SniperShot',
+        username: '저격의달인',
         gameId: '#SNIP14',
         position: <PositionLolAdc2 width={20} height={20} />,
         positionId: 'adc',
@@ -374,7 +374,7 @@ export const mockLOLUsers: LOLUser[] = [
     {
         id: 16,
         profileImage: '/lol/profile-lol-16.png',
-        username: 'Guardian',
+        username: '수호자',
         gameId: '#GUARD16',
         position: <PositionLolSupport2 width={20} height={20} />,
         positionId: 'support',
@@ -418,7 +418,7 @@ export const mockLOLUsers: LOLUser[] = [
     {
         id: 18,
         profileImage: '/lol/profile-lol-1.png',
-        username: 'Assassin',
+        username: '암살자',
         gameId: '#ASS018',
         position: <PositionLolMid2 width={20} height={20} />,
         positionId: 'mid',
@@ -466,7 +466,7 @@ export const mockLOLUsers: LOLUser[] = [
     {
         id: 20,
         profileImage: '/lol/profile-lol-3.png',
-        username: 'Marksman',
+        username: '저격수',
         gameId: '#MARK20',
         position: <PositionLolAdc2 width={20} height={20} />,
         positionId: 'adc',
@@ -533,7 +533,7 @@ export const mockLOLUsers: LOLUser[] = [
     {
         id: 23,
         profileImage: '/lol/profile-lol-3.png',
-        username: 'CarryGod',
+        username: '캐리신',
         gameId: '#CARRY23',
         position: <PositionLolMid2 width={20} height={20} />,
         positionId: 'mid',
@@ -577,7 +577,7 @@ export const mockLOLUsers: LOLUser[] = [
     {
         id: 25,
         profileImage: '/lol/profile-lol-5.png',
-        username: 'ADCMain',
+        username: '원딜메인',
         gameId: '#ADC025',
         position: <PositionLolAdc2 width={20} height={20} />,
         positionId: 'adc',

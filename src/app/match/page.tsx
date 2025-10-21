@@ -1,91 +1,19 @@
 'use client';
 
 import { Zap } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { ReactNode, useEffect, useState } from 'react';
-
-import PositionLolTop2 from '/public/lol/position-lol-top2.svg';
-import PositionOverwatchDPS2 from '/public/overwatch/position-overwatch-dps2.svg';
+import { useEffect, useMemo, useState } from 'react';
 
 import styled from '@emotion/styled';
 
 import MatchTutorial from '@/app/match/components/MatchTutorial';
 import StyleFilter from '@/app/match/components/StyleFilter';
+import { type BaseUser, getAllUsers } from '@/data/mockGameUsers';
 
-interface MatchUser {
-    id: number;
-    profileImage: string;
-    username: string;
-    gameId: string;
-    position?: ReactNode;
-    tier: string;
-    rank: string;
-    winRate: number;
-    kda: number;
-    recentChampions: string[];
-    gameStyles: string[];
-    communicationStyles: string[];
+interface MatchUser extends BaseUser {
     status: 'online' | 'offline' | 'in-game' | 'matching';
-    description: string;
-    registeredAt: string;
-    game: string;
 }
-
-const mockUsers: MatchUser[] = [
-    {
-        id: 1,
-        profileImage: '/lol/profile-lol-1.png',
-        username: '멋졌으면 핑찍어',
-        gameId: '#96327',
-        position: <PositionLolTop2 width={20} height={20} />,
-        tier: '에메랄드',
-        rank: 'E4',
-        winRate: 68,
-        kda: 1.85,
-        recentChampions: ['아트록스', '가렌', '다리우스'],
-        gameStyles: ['공격적인', '팀 중심형', '빠른 템포 선호'],
-        communicationStyles: ['마이크 필수', '편하게 대화하는', '욕 안 하는'],
-        status: 'online',
-        description: '디코하면서 같이 으쌰으쌰 하실분찾아요~',
-        registeredAt: '2025-09-13 14:30:00',
-        game: '리그오브레전드',
-    },
-    {
-        id: 2,
-        profileImage: '/lol/profile-lol-2.png',
-        username: '티 모',
-        gameId: '#TM1',
-        tier: '골드',
-        rank: 'G1',
-        winRate: 72,
-        kda: 2.14,
-        recentChampions: ['티모', '케넨', '티모'],
-        gameStyles: ['전략적인', '창의적인 플레이', '신중한 플레이'],
-        communicationStyles: ['채팅 위주', '차분한', '감정 조절 가능'],
-        status: 'matching',
-        description: '함께 할 듀오 파트너를 찾고있어요.',
-        registeredAt: '2025-09-13 13:45:00',
-        game: '전략적 팀 전투',
-    },
-    {
-        id: 3,
-        profileImage: '/overwatch/profile-overwatch-1.png',
-        username: '닮은 살걀',
-        gameId: '#32948',
-        position: <PositionOverwatchDPS2 width={18} height={20} />,
-        tier: '다이아몬드',
-        rank: 'D2',
-        winRate: 65,
-        kda: 2.45,
-        recentChampions: ['트레이서', '겐지', '리퍼'],
-        gameStyles: ['팀 중심형', '빠른 템포 선호', '리더형'],
-        communicationStyles: ['마이크 필수', '직설적인', '필요한 말만 하는'],
-        status: 'in-game',
-        description: '즐빡겜 듀오 구해요!',
-        registeredAt: '2025-09-13 12:20:00',
-        game: '오버워치2',
-    },
-];
 
 export default function MatchPage() {
     const [selectedGame, setSelectedGame] = useState<string>('전체');
@@ -93,7 +21,61 @@ export default function MatchPage() {
     const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
     const [isAtBottom, setIsAtBottom] = useState(false);
     const [showTutorial, setShowTutorial] = useState(false);
+    const [mockUsers, setMockUsers] = useState<MatchUser[]>([]);
+    const [visibleCount, setVisibleCount] = useState(10);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
     const router = useRouter();
+
+    // 클라이언트에서만 유저 상태 설정 (Hydration 에러 방지)
+    useEffect(() => {
+        const statuses: Array<'online' | 'offline' | 'in-game' | 'matching'> = [
+            'online',
+            'offline',
+            'in-game',
+            'matching',
+        ];
+        const usersWithStatus = getAllUsers().map((user) => ({
+            ...user,
+            status: statuses[Math.floor(Math.random() * statuses.length)],
+        }));
+        setMockUsers(usersWithStatus);
+    }, []);
+
+    // 티어 이미지 매핑 함수
+    const getTierImage = (tier: string, game: string): string => {
+        // 오버워치인 경우
+        if (game === '오버워치2') {
+            const overwatchTierMap: { [key: string]: string } = {
+                브론즈: '/overwatch/rank-overwatch-bronze.webp',
+                실버: '/overwatch/rank-overwatch-silver.webp',
+                골드: '/overwatch/rank-overwatch-gold.webp',
+                플래티넘: '/overwatch/rank-overwatch-platinum.webp',
+                다이아몬드: '/overwatch/rank-overwatch-diamond.webp',
+                마스터: '/overwatch/rank-overwatch-master.webp',
+                그랜드마스터: '/overwatch/rank-overwatch-grandmaster.webp',
+                '상위 500위': '/overwatch/rank-overwatch-500.webp',
+            };
+            return (
+                overwatchTierMap[tier] ||
+                '/overwatch/rank-overwatch-bronze.webp'
+            );
+        }
+
+        // 리그오브레전드, TFT인 경우
+        const lolTierMap: { [key: string]: string } = {
+            아이언: '/lol/rank-lol-iron.webp',
+            브론즈: '/lol/rank-lol-bronze.webp',
+            실버: '/lol/rank-lol-silver.webp',
+            골드: '/lol/rank-lol-gold.webp',
+            플래티넘: '/lol/rank-lol-platinum.webp',
+            에메랄드: '/lol/rank-lol-emerald.webp',
+            다이아몬드: '/lol/rank-lol-diamond.webp',
+            마스터: '/lol/rank-lol-master.webp',
+            그랜드마스터: '/lol/rank-lol-grandmaster.webp',
+            챌린저: '/lol/rank-lol-challenger.webp',
+        };
+        return lolTierMap[tier] || '/lol/rank-lol-unranked.webp';
+    };
 
     const handleQuickMatch = () => {
         // 튜토리얼 활성화 중이면 튜토리얼 닫기
@@ -154,7 +136,29 @@ export default function MatchPage() {
         setShowTutorial(false);
     };
 
-    // 스크롤 바닥 감지
+    const filteredUsers = useMemo(() => {
+        return mockUsers.filter((user) => {
+            const gameFilter =
+                selectedGame === '전체' || user.game === selectedGame;
+            const searchFilter =
+                searchTerm === '' ||
+                user.username
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase()) ||
+                user.gameId.toLowerCase().includes(searchTerm.toLowerCase());
+            const styleFilter =
+                selectedFilters.length === 0 ||
+                selectedFilters.some(
+                    (filter) =>
+                        user.gameStyles.includes(filter) ||
+                        user.communicationStyles.includes(filter),
+                );
+
+            return gameFilter && searchFilter && styleFilter;
+        });
+    }, [mockUsers, selectedGame, searchTerm, selectedFilters]);
+
+    // 스크롤 바닥 감지 및 인피니트 스크롤
     useEffect(() => {
         const handleScroll = () => {
             const scrollTop = window.scrollY;
@@ -164,29 +168,35 @@ export default function MatchPage() {
             // 바닥에서 50px 이내면 버튼 숨김
             const atBottom = scrollTop + windowHeight >= documentHeight - 50;
             setIsAtBottom(atBottom);
+
+            // 인피니트 스크롤: 바닥에서 200px 이내이고, 로딩 중이 아니고, 더 불러올 유저가 있으면
+            if (
+                scrollTop + windowHeight >= documentHeight - 200 &&
+                !isLoadingMore &&
+                visibleCount < filteredUsers.length
+            ) {
+                setIsLoadingMore(true);
+                // 300ms 딜레이 후 10명 더 로드
+                setTimeout(() => {
+                    setVisibleCount((prev) => prev + 10);
+                    setIsLoadingMore(false);
+                }, 300);
+            }
         };
 
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    }, [isLoadingMore, visibleCount, filteredUsers.length]);
 
-    const filteredUsers = mockUsers.filter((user) => {
-        const gameFilter =
-            selectedGame === '전체' || user.game === selectedGame;
-        const searchFilter =
-            searchTerm === '' ||
-            user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            user.gameId.toLowerCase().includes(searchTerm.toLowerCase());
-        const styleFilter =
-            selectedFilters.length === 0 ||
-            selectedFilters.some(
-                (filter) =>
-                    user.gameStyles.includes(filter) ||
-                    user.communicationStyles.includes(filter),
-            );
+    // 필터 변경 시 visibleCount 초기화
+    useEffect(() => {
+        setVisibleCount(10);
+    }, [selectedGame, searchTerm, selectedFilters]);
 
-        return gameFilter && searchFilter && styleFilter;
-    });
+    // 표시할 유저 목록 (인피니트 스크롤)
+    const visibleUsers = useMemo(() => {
+        return filteredUsers.slice(0, visibleCount);
+    }, [filteredUsers, visibleCount]);
 
     return (
         <MatchContainer>
@@ -210,8 +220,8 @@ export default function MatchPage() {
                             '전체',
                             '리그오브레전드',
                             '전략적 팀 전투',
-                            '발로란트',
                             '오버워치2',
+                            '발로란트',
                             '배틀그라운드',
                         ].map((game) => (
                             <GameFilterButton
@@ -233,17 +243,19 @@ export default function MatchPage() {
 
             <UserListSection>
                 <ListHeader>
-                    <div>소환사 이름</div>
+                    <div>닉네임</div>
+                    <div>상태</div>
                     <div>티어</div>
                     <div>승률</div>
                     <div>KDA</div>
-                    <div>상태</div>
-                    <div>등록일시</div>
                     <div>액션</div>
                 </ListHeader>
                 <UserList>
-                    {filteredUsers.map((user) => (
-                        <UserRow key={user.id}>
+                    {visibleUsers.map((user) => (
+                        <UserRow
+                            key={user.id}
+                            onClick={() => router.push(`/profile/${user.id}`)}
+                        >
                             <UserNameCell>
                                 <UserProfileImage
                                     src={user.profileImage}
@@ -286,9 +298,22 @@ export default function MatchPage() {
                                     </UserTags>
                                 </UserNameContent>
                             </UserNameCell>
+                            <StatusCell>
+                                <StatusBadge $status={user.status}>
+                                    {user.status === 'online' && '온라인'}
+                                    {user.status === 'offline' && '오프라인'}
+                                    {user.status === 'in-game' && '게임중'}
+                                    {user.status === 'matching' && '매칭중'}
+                                </StatusBadge>
+                            </StatusCell>
                             <TierCell>
+                                <TierImage
+                                    src={getTierImage(user.tier, user.game)}
+                                    alt={user.tier}
+                                    width={32}
+                                    height={32}
+                                />
                                 <TierRank>{user.rank}</TierRank>
-                                <TierName>{user.tier}</TierName>
                             </TierCell>
                             <WinRateCell>
                                 <WinRateValue $rate={user.winRate}>
@@ -298,27 +323,7 @@ export default function MatchPage() {
                             <KDACell>
                                 <KDAValue $kda={user.kda}>{user.kda}</KDAValue>
                             </KDACell>
-                            <StatusCell>
-                                <StatusBadge $status={user.status}>
-                                    {user.status === 'online' && '온라인'}
-                                    {user.status === 'offline' && '오프라인'}
-                                    {user.status === 'in-game' && '게임중'}
-                                    {user.status === 'matching' && '매칭중'}
-                                </StatusBadge>
-                            </StatusCell>
-                            <TimeCell>
-                                <TimeText>
-                                    {new Date(
-                                        user.registeredAt,
-                                    ).toLocaleDateString('ko-KR', {
-                                        month: 'short',
-                                        day: 'numeric',
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                    })}
-                                </TimeText>
-                            </TimeCell>
-                            <ActionCell>
+                            <ActionCell onClick={(e) => e.stopPropagation()}>
                                 <ActionButtons>
                                     <MatchButton>듀오</MatchButton>
                                     <ChatButton>채팅</ChatButton>
@@ -327,6 +332,12 @@ export default function MatchPage() {
                         </UserRow>
                     ))}
                 </UserList>
+
+                {isLoadingMore && (
+                    <LoadingSpinner>
+                        <Spinner />
+                    </LoadingSpinner>
+                )}
             </UserListSection>
 
             <QuickMatchButton
@@ -432,14 +443,21 @@ const UserListSection = styled.section`
 
 const ListHeader = styled.div`
     display: grid;
-    grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1.2fr 1fr;
+    grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1fr;
     gap: 1rem;
-    padding: 1.5rem 2rem;
+    padding: 2rem;
     background-color: #252527;
     border-bottom: 0.1rem solid #3f3f41;
     font-size: 1.3rem;
     font-weight: 600;
     color: #939393;
+    align-items: center;
+
+    > div:not(:first-of-type) {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+    }
 
     @media (max-width: 768px) {
         display: none;
@@ -454,12 +472,13 @@ const UserList = styled.ul`
 
 const UserRow = styled.li`
     display: grid;
-    grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1.2fr 1fr;
+    grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1fr;
     gap: 1rem;
     align-items: center;
     padding: 2rem;
     border-bottom: 0.1rem solid #3f3f41;
     transition: background-color 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -507,6 +526,13 @@ const UserNameWithPosition = styled.div`
 const PositionIcon = styled.div`
     display: flex;
     align-items: center;
+    flex-shrink: 0;
+
+    svg {
+        width: 2rem;
+        height: 2rem;
+        flex-shrink: 0;
+    }
 `;
 
 const UserGameId = styled.div`
@@ -555,15 +581,15 @@ const TierCell = styled.div`
     }
 `;
 
+const TierImage = styled(Image)`
+    object-fit: contain;
+    flex-shrink: 0;
+`;
+
 const TierRank = styled.div`
     font-size: 1.4rem;
     font-weight: 700;
     color: #ffffff;
-`;
-
-const TierName = styled.div`
-    font-size: 1.1rem;
-    color: #939393;
 `;
 
 const WinRateCell = styled.div`
@@ -626,43 +652,21 @@ const StatusCell = styled.div`
 const StatusBadge = styled.span<{ $status: string }>`
     padding: 0.4rem 0.8rem;
     font-size: 1.1rem;
-    font-weight: 500;
+    font-weight: 600;
     border-radius: 1rem;
-    background-color: ${({ $status }) => {
+    background-color: transparent;
+    color: ${({ $status }) => {
         switch ($status) {
             case 'online':
                 return '#22c55e';
             case 'in-game':
                 return '#f59e0b';
             case 'matching':
-                return '#8b5cf6';
+                return '#4272ec';
             default:
                 return '#6b7280';
         }
     }};
-    color: #ffffff;
-`;
-
-const TimeCell = styled.div`
-    text-align: center;
-
-    @media (max-width: 768px) {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    @media (max-width: 768px) {
-        &::before {
-            content: '등록: ';
-            color: #939393;
-        }
-    }
-`;
-
-const TimeText = styled.div`
-    font-size: 1.2rem;
-    color: #939393;
 `;
 
 const ActionCell = styled.div`
@@ -690,6 +694,7 @@ const MatchButton = styled.button`
     border-radius: 1.5rem;
     cursor: pointer;
     transition: background-color 0.2s ease;
+    word-break: keep-all;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -714,6 +719,7 @@ const ChatButton = styled.button`
     border-radius: 1.5rem;
     cursor: pointer;
     transition: all 0.2s ease;
+    word-break: keep-all;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -842,5 +848,29 @@ const QuickMatchButton = styled.button<{
 
     svg {
         flex-shrink: 0;
+    }
+`;
+
+const LoadingSpinner = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    gap: 1rem;
+`;
+
+const Spinner = styled.div`
+    width: 3rem;
+    height: 3rem;
+    border: 0.3rem solid #3f3f41;
+    border-top-color: #4272ec;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
     }
 `;

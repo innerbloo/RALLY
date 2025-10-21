@@ -34,7 +34,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 102,
         profileImage: '/lol/profile-lol-2.png',
-        username: 'RerollKing',
+        username: '리롤왕',
         gameId: '#REROLL123',
         tier: '다이아몬드',
         rank: 'D1',
@@ -64,7 +64,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 104,
         profileImage: '/lol/profile-lol-4.png',
-        username: 'FlexPlayer',
+        username: '플렉스장인',
         gameId: '#FLEX789',
         tier: '플래티넘',
         rank: 'P2',
@@ -94,7 +94,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 106,
         profileImage: '/lol/profile-lol-6.png',
-        username: 'MetaSlave',
+        username: '메타노예',
         gameId: '#META111',
         tier: '골드',
         rank: 'G1',
@@ -109,7 +109,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 107,
         profileImage: '/lol/profile-lol-7.png',
-        username: 'CarryMaster',
+        username: '캐리마스터',
         gameId: '#CARRY121',
         tier: '다이아몬드',
         rank: 'D3',
@@ -124,7 +124,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 108,
         profileImage: '/lol/profile-lol-8.png',
-        username: 'TankMeta',
+        username: '탱커메타',
         gameId: '#TANK131',
         tier: '실버',
         rank: 'S2',
@@ -139,7 +139,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 109,
         profileImage: '/lol/profile-lol-9.png',
-        username: 'APCarryGod',
+        username: 'AP캐리신',
         gameId: '#APCARRY141',
         tier: '마스터',
         rank: 'M1',
@@ -154,7 +154,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 110,
         profileImage: '/lol/profile-lol-10.png',
-        username: 'ADCarryPro',
+        username: 'AD캐리프로',
         gameId: '#ADCARRY151',
         tier: '플래티넘',
         rank: 'P4',
@@ -169,7 +169,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 111,
         profileImage: '/lol/profile-lol-11.png',
-        username: 'SynergyHunter',
+        username: '시너지사냥꾼',
         gameId: '#SYNERGY161',
         tier: '에메랄드',
         rank: 'E1',
@@ -184,7 +184,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 112,
         profileImage: '/lol/profile-lol-12.png',
-        username: 'ItemMaster',
+        username: '아이템마스터',
         gameId: '#ITEM171',
         tier: '골드',
         rank: 'G3',
@@ -199,7 +199,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 113,
         profileImage: '/lol/profile-lol-13.png',
-        username: 'LateGameGod',
+        username: '후반게임신',
         gameId: '#LATEGAME181',
         tier: '다이아몬드',
         rank: 'D2',
@@ -214,7 +214,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 114,
         profileImage: '/lol/profile-lol-14.png',
-        username: 'EarlyAggro',
+        username: '초반강타자',
         gameId: '#EARLY191',
         tier: '실버',
         rank: 'S4',
@@ -229,7 +229,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 115,
         profileImage: '/lol/profile-lol-15.png',
-        username: 'MidGameKing',
+        username: '중반게임왕',
         gameId: '#MIDGAME201',
         tier: '플래티넘',
         rank: 'P1',
@@ -244,7 +244,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 116,
         profileImage: '/lol/profile-lol-16.png',
-        username: 'PerfectComp',
+        username: '완벽한조합',
         gameId: '#PERFECT211',
         tier: '마스터',
         rank: 'M4',
@@ -259,7 +259,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 117,
         profileImage: '/lol/profile-lol-17.png',
-        username: 'LuckyPlayer',
+        username: '럭키플레이어',
         gameId: '#LUCKY221',
         tier: '골드',
         rank: 'G2',
@@ -274,7 +274,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 118,
         profileImage: '/lol/profile-lol-18.png',
-        username: 'StableMeta',
+        username: '안정메타',
         gameId: '#STABLE231',
         tier: '에메랄드',
         rank: 'E4',
@@ -289,7 +289,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 119,
         profileImage: '/lol/profile-lol-19.png',
-        username: 'OffMetaGod',
+        username: '비주류신',
         gameId: '#OFFMETA241',
         tier: '다이아몬드',
         rank: 'D4',
@@ -304,7 +304,7 @@ export const mockTFTUsers: TFTUser[] = [
     {
         id: 120,
         profileImage: '/lol/profile-lol-20.png',
-        username: 'TierListSlave',
+        username: '티어표노예',
         gameId: '#TIERLIST251',
         tier: '플래티넘',
         rank: 'P3',

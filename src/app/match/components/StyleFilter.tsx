@@ -25,8 +25,8 @@ export default function StyleFilter({ selectedFilters, onFilterChange }: StyleFi
     const [expandedSections, setExpandedSections] = useState<string[]>([]);
 
     const toggleSection = (section: string) => {
-        setExpandedSections(prev => 
-            prev.includes(section) 
+        setExpandedSections(prev =>
+            prev.includes(section)
                 ? prev.filter(s => s !== section)
                 : [...prev, section]
         );
@@ -36,12 +36,18 @@ export default function StyleFilter({ selectedFilters, onFilterChange }: StyleFi
         const newFilters = selectedFilters.includes(filter)
             ? selectedFilters.filter(f => f !== filter)
             : [...selectedFilters, filter];
-        
+
         onFilterChange(newFilters);
     };
 
     const clearAllFilters = () => {
         onFilterChange([]);
+    };
+
+    // 필터 타입 판별 함수
+    const getFilterType = (filter: string): 'game' | 'communication' => {
+        const allGameFilters = Object.values(gameStyleFilters).flat();
+        return allGameFilters.includes(filter) ? 'game' : 'communication';
     };
 
     const renderFilterSection = (title: string, filters: Record<string, string[]>, type: 'game' | 'communication') => {
@@ -100,7 +106,11 @@ export default function StyleFilter({ selectedFilters, onFilterChange }: StyleFi
                     <SelectedTitle>선택된 필터:</SelectedTitle>
                     <SelectedFilterList>
                         {selectedFilters.map(filter => (
-                            <SelectedFilterTag key={filter} onClick={() => toggleFilter(filter)}>
+                            <SelectedFilterTag
+                                key={filter}
+                                $type={getFilterType(filter)}
+                                onClick={() => toggleFilter(filter)}
+                            >
                                 {filter}
                                 <RemoveIcon>×</RemoveIcon>
                             </SelectedFilterTag>
@@ -268,14 +278,14 @@ const SelectedFilterList = styled.div`
     gap: 0.8rem;
 `;
 
-const SelectedFilterTag = styled.button`
+const SelectedFilterTag = styled.button<{ $type: 'game' | 'communication' }>`
     display: flex;
     align-items: center;
     gap: 0.6rem;
     padding: 0.6rem 1.2rem;
     font-size: 1.2rem;
     font-weight: 500;
-    background-color: #4272ec;
+    background-color: ${({ $type }) => $type === 'game' ? '#4272ec' : '#22c55e'};
     color: #ffffff;
     border: none;
     border-radius: 1.5rem;
@@ -284,7 +294,7 @@ const SelectedFilterTag = styled.button`
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
-            background-color: #3a5fd9;
+            background-color: ${({ $type }) => $type === 'game' ? '#3a5fd9' : '#16a34a'};
         }
     }
 `;

@@ -38,8 +38,26 @@ interface MatchCardProps {
 }
 
 // 티어 이미지 매핑 함수
-const getTierImage = (tier: string): string => {
-    const tierImageMap: { [key: string]: string } = {
+const getTierImage = (tier: string, game: string): string => {
+    // 오버워치인 경우
+    if (game === '오버워치2') {
+        const overwatchTierMap: { [key: string]: string } = {
+            브론즈: '/overwatch/rank-overwatch-bronze.webp',
+            실버: '/overwatch/rank-overwatch-silver.webp',
+            골드: '/overwatch/rank-overwatch-gold.webp',
+            플래티넘: '/overwatch/rank-overwatch-platinum.webp',
+            다이아몬드: '/overwatch/rank-overwatch-diamond.webp',
+            마스터: '/overwatch/rank-overwatch-master.webp',
+            그랜드마스터: '/overwatch/rank-overwatch-grandmaster.webp',
+            '상위 500위': '/overwatch/rank-overwatch-500.webp',
+        };
+        return (
+            overwatchTierMap[tier] || '/overwatch/rank-overwatch-bronze.webp'
+        );
+    }
+
+    // 리그오브레전드, TFT인 경우
+    const lolTierMap: { [key: string]: string } = {
         아이언: '/lol/rank-lol-iron.webp',
         브론즈: '/lol/rank-lol-bronze.webp',
         실버: '/lol/rank-lol-silver.webp',
@@ -51,7 +69,7 @@ const getTierImage = (tier: string): string => {
         그랜드마스터: '/lol/rank-lol-grandmaster.webp',
         챌린저: '/lol/rank-lol-challenger.webp',
     };
-    return tierImageMap[tier] || '/lol/rank-lol-unranked.webp';
+    return lolTierMap[tier] || '/lol/rank-lol-unranked.webp';
 };
 
 // 포지션 이름 가져오기 함수
@@ -93,7 +111,7 @@ const getChampionNameFromPath = (imagePath: string): string => {
         Aatrox: '아트록스',
         Garen: '가렌',
         Gangplank: '갱플랭크',
-        Sion: '시온',
+        Sion: '사이온',
         Vayne: '베인',
         KhaZix: '카직스',
         Viego: '비에고',
@@ -169,14 +187,16 @@ export default function MatchCard({
         if (!tierInfo) return { tierName: user.tier, rank: user.rank };
 
         // 미리 할당된 랭크가 있으면 사용, 없으면 랜덤 생성 (폴백)
-        const displayRank = preAssignedRank || `${tierInfo.abbr}${Math.floor(Math.random() * 4) + 1}`;
+        const displayRank =
+            preAssignedRank ||
+            `${tierInfo.abbr}${Math.floor(Math.random() * 4) + 1}`;
 
         return { tierName: tierInfo.name, rank: displayRank };
     };
 
     const { tierName: displayTier, rank: displayRank } = useMemo(
         () => getDisplayTierInfo(selectedTier, assignedRank),
-        [selectedTier, assignedRank, user.id]
+        [selectedTier, assignedRank, user.id],
     );
 
     console.log('MatchCard 티어 변환:', {
@@ -189,10 +209,10 @@ export default function MatchCard({
 
     // 유저의 실제 스타일과 선택한 스타일을 병합 (중복 제거)
     const displayGameStyles = Array.from(
-        new Set([...selectedGameStyles, ...user.gameStyles])
+        new Set([...selectedGameStyles, ...user.gameStyles]),
     );
     const displayCommStyles = Array.from(
-        new Set([...selectedCommStyles, ...user.communicationStyles])
+        new Set([...selectedCommStyles, ...user.communicationStyles]),
     );
 
     console.log('MatchCard render:', {
@@ -225,12 +245,21 @@ export default function MatchCard({
                     $type={getOverlayType()!}
                     $opacity={getOverlayOpacity()}
                 >
-                    <OverlayIcon>
-                        {getOverlayType() === 'like' ? '❤️' : '❌'}
-                    </OverlayIcon>
-                    <OverlayText>
-                        {getOverlayType() === 'like' ? 'LIKE' : 'PASS'}
-                    </OverlayText>
+                    <OverlayContent>
+                        <OverlayIconCircle $type={getOverlayType()!}>
+                            <OverlayIcon>
+                                {getOverlayType() === 'like' ? '⚡' : '👋'}
+                            </OverlayIcon>
+                        </OverlayIconCircle>
+                        <OverlayText $type={getOverlayType()!}>
+                            {getOverlayType() === 'like' ? 'PICK' : 'SKIP'}
+                        </OverlayText>
+                        <OverlaySubText>
+                            {getOverlayType() === 'like'
+                                ? '함께 플레이!'
+                                : '다음에'}
+                        </OverlaySubText>
+                    </OverlayContent>
                 </DragOverlay>
             )}
 
@@ -259,7 +288,7 @@ export default function MatchCard({
                     </UserNameInfo>
                     <TierBadge>
                         <TierImage
-                            src={getTierImage(displayTier)}
+                            src={getTierImage(displayTier, user.game)}
                             alt={`${displayTier} 티어`}
                             width={24}
                             height={24}
@@ -292,7 +321,9 @@ export default function MatchCard({
                 {/* 최근 선호 챔피언/시너지 */}
                 <StyleSection>
                     <SectionTitle>
-                        {user.game === '전략적 팀 전투' ? '최근 선호 시너지' : '최근 선호 챔피언'}
+                        {user.game === '전략적 팀 전투'
+                            ? '최근 선호 시너지'
+                            : '최근 선호 챔피언'}
                     </SectionTitle>
                     <ChampionList>
                         {user.recentChampions
@@ -304,7 +335,9 @@ export default function MatchCard({
                                         alt={getChampionNameFromPath(champion)}
                                         width={32}
                                         height={32}
-                                        $isSynergy={user.game === '전략적 팀 전투'}
+                                        $isSynergy={
+                                            user.game === '전략적 팀 전투'
+                                        }
                                     />
                                     <ChampionName>
                                         {getChampionNameFromPath(champion)}
@@ -330,16 +363,14 @@ export default function MatchCard({
                 <StyleSection>
                     <SectionTitle>커뮤니케이션 스타일</SectionTitle>
                     <StyleTags>
-                        {displayCommStyles
-                            .slice(0, 3)
-                            .map((style, index) => (
-                                <StyleTag
-                                    key={`comm-${index}`}
-                                    $type="communication"
-                                >
-                                    {style}
-                                </StyleTag>
-                            ))}
+                        {displayCommStyles.slice(0, 3).map((style, index) => (
+                            <StyleTag
+                                key={`comm-${index}`}
+                                $type="communication"
+                            >
+                                {style}
+                            </StyleTag>
+                        ))}
                     </StyleTags>
                 </StyleSection>
             </UserInfo>
@@ -427,27 +458,99 @@ const DragOverlay = styled.div<{ $type: 'like' | 'reject'; $opacity: number }>`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: ${({ $type }) =>
-        $type === 'like' ? 'rgba(34, 197, 94, 0.9)' : 'rgba(239, 68, 68, 0.9)'};
+    background: ${({ $type }) =>
+        $type === 'like'
+            ? 'linear-gradient(135deg, rgba(66, 114, 236, 0.95) 0%, rgba(88, 86, 214, 0.98) 100%)'
+            : 'linear-gradient(135deg, rgba(147, 147, 147, 0.92) 0%, rgba(99, 99, 99, 0.95) 100%)'};
+    backdrop-filter: blur(8px);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 10;
     opacity: ${({ $opacity }) => $opacity};
-    transition: opacity 0.1s ease;
+    transition: opacity 0.15s ease-out;
+`;
+
+const OverlayContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    animation: overlayPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    @keyframes overlayPop {
+        0% {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+`;
+
+const OverlayIconCircle = styled.div<{ $type: 'like' | 'reject' }>`
+    width: 9rem;
+    height: 9rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border: 0.4rem solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    animation: ${({ $type }) =>
+        $type === 'like'
+            ? 'heartBeat 0.6s ease-in-out infinite'
+            : 'wave 0.6s ease-in-out infinite'};
+
+    @keyframes heartBeat {
+        0%,
+        100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+    }
+
+    @keyframes wave {
+        0%,
+        100% {
+            transform: rotate(0deg);
+        }
+        25% {
+            transform: rotate(-15deg);
+        }
+        75% {
+            transform: rotate(15deg);
+        }
+    }
 `;
 
 const OverlayIcon = styled.div`
-    font-size: 4rem;
-    margin-bottom: 1rem;
+    font-size: 5rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
 `;
 
-const OverlayText = styled.div`
-    font-size: 2.4rem;
-    font-weight: 900;
+const OverlayText = styled.div<{ $type: 'like' | 'reject' }>`
+    font-size: 3.2rem;
+    font-weight: 800;
     color: #ffffff;
-    letter-spacing: 0.2rem;
+    letter-spacing: 0.3rem;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    font-family:
+        -apple-system, BlinkMacSystemFont, 'Pretendard Variable', sans-serif;
+`;
+
+const OverlaySubText = styled.div`
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 `;
 
 const ProfileImage = styled(Image)`
@@ -538,7 +641,8 @@ const TierName = styled.span`
 
 const StatsSection = styled.div<{ $isSingleStat?: boolean }>`
     display: flex;
-    justify-content: ${({ $isSingleStat }) => ($isSingleStat ? 'center' : 'space-around')};
+    justify-content: ${({ $isSingleStat }) =>
+        $isSingleStat ? 'center' : 'space-around'};
     margin-bottom: 1rem;
     padding: 0.8rem;
     background-color: #1f1f21;
@@ -584,6 +688,7 @@ const Description = styled.p`
     text-align: center;
     margin: 0 0 1rem;
     padding: 1rem;
+    word-break: keep-all;
     background-color: rgba(255, 255, 255, 0.05);
     border-radius: 0.8rem;
 
@@ -649,12 +754,15 @@ const ChampionItem = styled.div`
     flex: 1;
 `;
 
-const ChampionImage = styled(Image)<{ $isSynergy?: boolean }>`
+const ChampionImage = styled(Image, {
+    shouldForwardProp: (prop) => prop !== '$isSynergy',
+})<{ $isSynergy?: boolean }>`
     border-radius: 50%;
     border: 0.1rem solid #4272ec;
     object-fit: cover;
     padding: ${({ $isSynergy }) => ($isSynergy ? '0.4rem' : '0')};
-    background-color: ${({ $isSynergy }) => ($isSynergy ? 'rgba(255, 255, 255, 0.1)' : 'transparent')};
+    background-color: ${({ $isSynergy }) =>
+        $isSynergy ? 'rgba(255, 255, 255, 0.1)' : 'transparent'};
 `;
 
 const ChampionName = styled.span`
@@ -673,6 +781,9 @@ const PositionBadge = styled.div`
     flex-shrink: 0;
 
     svg {
+        width: 2rem;
+        height: 2rem;
+        flex-shrink: 0;
         color: #e5e7eb;
     }
 `;

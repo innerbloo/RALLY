@@ -71,7 +71,9 @@ export default function Home() {
                             </GameItem>
                         </li>
                         <li>
-                            <GameItem onClick={() => handleGameClick('overwatch')}>
+                            <GameItem
+                                onClick={() => handleGameClick('overwatch')}
+                            >
                                 <IconWrapper>
                                     <Image
                                         src={'/game4.png'}
@@ -153,7 +155,7 @@ export default function Home() {
                             {
                                 id: 2,
                                 profileImage: '/lol/profile-lol-2.png',
-                                username: 'ShadowHunter',
+                                username: '그림자사냥꾼',
                                 position: (
                                     <PositionLolJungle2
                                         width={20}
