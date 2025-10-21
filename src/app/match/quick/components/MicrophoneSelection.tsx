@@ -56,61 +56,67 @@ export default function MicrophoneSelection({
 
     return (
         <MicrophoneSelectionContainer>
-            <Description>듀오와의 소통 방식을 선택해주세요</Description>
+            <Section>
+                <SectionTitle>소통 방식</SectionTitle>
+                <SectionDescription>
+                    듀오와의 소통 방식을 선택해주세요
+                </SectionDescription>
 
-            <OptionGrid>
-                {microphoneOptions.map((option) => (
-                    <OptionCard
-                        key={option.id}
-                        $active={selectedPreference === option.id}
-                        onClick={() => {
-                            onPreferenceSelect(option.id);
-
-                            setTimeout(() => {
-                                const footer = document.querySelector('footer');
-                                if (footer) {
-                                    const headerHeight = 140;
-                                    const footerTop =
-                                        footer.getBoundingClientRect().top +
-                                        window.scrollY;
-                                    const targetScroll = Math.max(
-                                        0,
-                                        footerTop -
-                                            window.innerHeight +
-                                            footer.offsetHeight +
-                                            headerHeight,
-                                    );
-
-                                    window.scrollTo({
-                                        top: targetScroll,
-                                        behavior: 'smooth',
-                                    });
-                                }
-                            }, 300);
-                        }}
-                    >
-                        <IconContainer
+                <OptionGrid>
+                    {microphoneOptions.map((option) => (
+                        <OptionCard
+                            key={option.id}
                             $active={selectedPreference === option.id}
+                            onClick={() => {
+                                onPreferenceSelect(option.id);
+
+                                setTimeout(() => {
+                                    const footer =
+                                        document.querySelector('footer');
+                                    if (footer) {
+                                        const headerHeight = 140;
+                                        const footerTop =
+                                            footer.getBoundingClientRect().top +
+                                            window.scrollY;
+                                        const targetScroll = Math.max(
+                                            0,
+                                            footerTop -
+                                                window.innerHeight +
+                                                footer.offsetHeight +
+                                                headerHeight,
+                                        );
+
+                                        window.scrollTo({
+                                            top: targetScroll,
+                                            behavior: 'smooth',
+                                        });
+                                    }
+                                }, 300);
+                            }}
                         >
-                            {getIcon(
-                                option.icon,
-                                selectedPreference === option.id,
+                            <IconContainer
+                                $active={selectedPreference === option.id}
+                            >
+                                {getIcon(
+                                    option.icon,
+                                    selectedPreference === option.id,
+                                )}
+                            </IconContainer>
+
+                            <OptionContent>
+                                <OptionTitle>{option.name}</OptionTitle>
+                                <OptionDescription>
+                                    {option.description}
+                                </OptionDescription>
+                            </OptionContent>
+
+                            {selectedPreference === option.id && (
+                                <SelectedIndicator>✓</SelectedIndicator>
                             )}
-                        </IconContainer>
-
-                        <OptionContent>
-                            <OptionTitle>{option.name}</OptionTitle>
-                            <OptionDescription>
-                                {option.description}
-                            </OptionDescription>
-                        </OptionContent>
-
-                        {selectedPreference === option.id && (
-                            <SelectedIndicator>✓</SelectedIndicator>
-                        )}
-                    </OptionCard>
-                ))}
-            </OptionGrid>
+                        </OptionCard>
+                    ))}
+                </OptionGrid>
+            </Section>
 
             <TipSection>
                 <TipTitle>💡 소통 방식 안내</TipTitle>
@@ -136,16 +142,29 @@ export default function MicrophoneSelection({
 const MicrophoneSelectionContainer = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 3rem;
-    align-items: center;
+    gap: 4rem;
 `;
 
-const Description = styled.p`
-    font-size: 1.6rem;
-    color: #cccccc;
-    text-align: center;
-    line-height: 1.5;
+const Section = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0rem;
+`;
+
+const SectionTitle = styled.h2`
+    font-size: 2rem;
+    font-weight: 700;
+    color: #f5f5f5;
     margin: 0;
+    text-align: center;
+`;
+
+const SectionDescription = styled.p`
+    font-size: 1.4rem;
+    color: #939393;
+    text-align: center;
+    margin: 0 0 2rem;
+    line-height: 1.4;
 `;
 
 const OptionGrid = styled.div`
@@ -154,6 +173,7 @@ const OptionGrid = styled.div`
     gap: 1.5rem;
     width: 100%;
     max-width: 50rem;
+    margin: auto;
 `;
 
 const OptionCard = styled.button<{ $active: boolean }>`
@@ -242,6 +262,7 @@ const TipSection = styled.div`
     background-color: rgba(255, 255, 255, 0.02);
     border: 0.1rem solid #3f3f41;
     border-radius: 1.6rem;
+    margin: auto;
 `;
 
 const TipTitle = styled.h4`

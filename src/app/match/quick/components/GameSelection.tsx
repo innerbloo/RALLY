@@ -70,70 +70,75 @@ export default function GameSelection({
     const toastId = 'game-unavailable';
     return (
         <GameSelectionContainer>
-            <Description>듀오 매칭을 원하는 게임을 선택해주세요</Description>
+            <Section>
+                <SectionTitle>게임 선택</SectionTitle>
+                <SectionDescription>
+                    듀오 매칭을 원하는 게임을 선택해주세요
+                </SectionDescription>
 
-            <GameGrid>
-                {gameOptions.map((game) => (
-                    <GameCard
-                        key={game.id}
-                        $active={selectedGame === game.id}
-                        $available={game.available}
-                        onClick={() => {
-                            if (game.available) {
-                                onGameSelect(
-                                    game.id as 'lol' | 'tft' | 'overwatch',
-                                );
+                <GameGrid>
+                    {gameOptions.map((game) => (
+                        <GameCard
+                            key={game.id}
+                            $active={selectedGame === game.id}
+                            $available={game.available}
+                            onClick={() => {
+                                if (game.available) {
+                                    onGameSelect(
+                                        game.id as 'lol' | 'tft' | 'overwatch',
+                                    );
 
-                                setTimeout(() => {
-                                    const footer =
-                                        document.querySelector('footer');
-                                    if (footer) {
-                                        const headerHeight = 140;
-                                        const footerTop =
-                                            footer.getBoundingClientRect().top +
-                                            window.scrollY;
-                                        const targetScroll = Math.max(
-                                            0,
-                                            footerTop -
-                                                window.innerHeight +
-                                                footer.offsetHeight +
-                                                headerHeight,
-                                        );
+                                    setTimeout(() => {
+                                        const footer =
+                                            document.querySelector('footer');
+                                        if (footer) {
+                                            const headerHeight = 140;
+                                            const footerTop =
+                                                footer.getBoundingClientRect()
+                                                    .top + window.scrollY;
+                                            const targetScroll = Math.max(
+                                                0,
+                                                footerTop -
+                                                    window.innerHeight +
+                                                    footer.offsetHeight +
+                                                    headerHeight,
+                                            );
 
-                                        window.scrollTo({
-                                            top: targetScroll,
-                                            behavior: 'smooth',
-                                        });
-                                    }
-                                }, 100);
-                            } else {
-                                toast('아직 서비스 준비중인 게임입니다!', {
-                                    id: toastId,
-                                });
-                            }
-                        }}
-                    >
-                        <GameIcon>
-                            <Image
-                                src={game.icon}
-                                width={60}
-                                height={60}
-                                alt={game.name}
-                            />
-                            {!game.available && <UnavailableOverlay />}
-                        </GameIcon>
-                        <GameName $available={game.available}>
-                            {game.name}
-                        </GameName>
-                        {/*{!game.available && (*/}
-                        {/*    <UnavailableLabel>준비중</UnavailableLabel>*/}
-                        {/*)}*/}
-                        {selectedGame === game.id && (
-                            <SelectedIndicator>✓</SelectedIndicator>
-                        )}
-                    </GameCard>
-                ))}
-            </GameGrid>
+                                            window.scrollTo({
+                                                top: targetScroll,
+                                                behavior: 'smooth',
+                                            });
+                                        }
+                                    }, 100);
+                                } else {
+                                    toast('아직 서비스 준비중인 게임입니다!', {
+                                        id: toastId,
+                                    });
+                                }
+                            }}
+                        >
+                            <GameIcon>
+                                <Image
+                                    src={game.icon}
+                                    width={60}
+                                    height={60}
+                                    alt={game.name}
+                                />
+                                {!game.available && <UnavailableOverlay />}
+                            </GameIcon>
+                            <GameName $available={game.available}>
+                                {game.name}
+                            </GameName>
+                            {/*{!game.available && (*/}
+                            {/*    <UnavailableLabel>준비중</UnavailableLabel>*/}
+                            {/*)}*/}
+                            {selectedGame === game.id && (
+                                <SelectedIndicator>✓</SelectedIndicator>
+                            )}
+                        </GameCard>
+                    ))}
+                </GameGrid>
+            </Section>
         </GameSelectionContainer>
     );
 }
@@ -141,16 +146,29 @@ export default function GameSelection({
 const GameSelectionContainer = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 3rem;
+    gap: 4rem;
 `;
 
-const Description = styled.p`
-    font-size: 1.6rem;
-    color: #cccccc;
-    text-align: center;
-    line-height: 1.5;
+const Section = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0rem;
+`;
+
+const SectionTitle = styled.h2`
+    font-size: 2rem;
+    font-weight: 700;
+    color: #f5f5f5;
     margin: 0;
+    text-align: center;
+`;
+
+const SectionDescription = styled.p`
+    font-size: 1.4rem;
+    color: #939393;
+    text-align: center;
+    margin: 0 0 2rem;
+    line-height: 1.4;
 `;
 
 const GameGrid = styled.div`
@@ -159,6 +177,7 @@ const GameGrid = styled.div`
     gap: 2rem;
     width: 100%;
     max-width: 60rem;
+    margin: auto;
 
     @media (max-width: 768px) {
         grid-template-columns: repeat(2, 1fr);
