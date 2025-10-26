@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { Swiper as SwiperType } from 'swiper';
 import 'swiper/css';
 import { Autoplay } from 'swiper/modules';
@@ -10,35 +10,15 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import styled from '@emotion/styled';
 
-const mobileBanners = [
+const banners = [
     { id: 1, image: '/banner1.png', alt: '배너 1' },
     { id: 2, image: '/banner2.png', alt: '배너 2' },
     { id: 3, image: '/banner3.png', alt: '배너 3' },
 ];
 
-const pcBanners = [
-    { id: 1, image: '/pc-banner1.png', alt: '배너 1' },
-    { id: 2, image: '/pc-banner2.png', alt: '배너 2' },
-    { id: 3, image: '/pc-banner3.png', alt: '배너 3' },
-];
-
 export default function BannerSwiper() {
     const router = useRouter();
     const [currentIndex, setCurrentIndex] = useState(1);
-    const [isDesktop, setIsDesktop] = useState(false);
-
-    useEffect(() => {
-        const checkScreenSize = () => {
-            setIsDesktop(window.innerWidth >= 768);
-        };
-
-        checkScreenSize();
-        window.addEventListener('resize', checkScreenSize);
-
-        return () => window.removeEventListener('resize', checkScreenSize);
-    }, []);
-
-    const banners = isDesktop ? pcBanners : mobileBanners;
 
     const handleSlideChange = (swiper: SwiperType) => {
         setCurrentIndex(swiper.realIndex + 1);
@@ -87,11 +67,6 @@ const BannerContainer = styled.div`
     width: 100%;
     aspect-ratio: 390 / 200;
     overflow: hidden;
-
-    @media (min-width: 768px) {
-        aspect-ratio: unset;
-        height: 200px;
-    }
 `;
 
 const StyledSwiper = styled(Swiper)`

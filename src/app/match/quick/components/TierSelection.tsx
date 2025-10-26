@@ -223,14 +223,9 @@ const SectionDescription = styled.p`
 
 const TierGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
     width: 100%;
-
-    @media (max-width: 768px) {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
-    }
 `;
 
 const TierCard = styled.button<{ $active: boolean }>`
@@ -240,14 +235,13 @@ const TierCard = styled.button<{ $active: boolean }>`
     align-items: center;
     gap: 1rem;
     padding: 1.5rem 1rem;
-    background-color: ${({ $active }) => 
+    background-color: ${({ $active }) =>
         $active ? 'rgba(66, 114, 236, 0.2)' : '#252527'
     };
-    border: 0.2rem solid ${({ $active }) => 
+    border: 0.2rem solid ${({ $active }) =>
         $active ? '#4272ec' : '#3f3f41'
     };
     border-radius: 1.2rem;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -285,17 +279,16 @@ const SubTierButton = styled.button<{ $active: boolean }>`
     padding: 0.8rem 1.6rem;
     font-size: 1.4rem;
     font-weight: 600;
-    background-color: ${({ $active }) => 
+    background-color: ${({ $active }) =>
         $active ? '#4272ec' : 'transparent'
     };
-    color: ${({ $active }) => 
+    color: ${({ $active }) =>
         $active ? '#f5f5f5' : '#939393'
     };
-    border: 0.1rem solid ${({ $active }) => 
+    border: 0.1rem solid ${({ $active }) =>
         $active ? '#4272ec' : '#3f3f41'
     };
     border-radius: 2rem;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -332,7 +325,7 @@ const RangeLabel = styled.label`
 
 const TierDropdown = styled.div`
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: 0.5rem;
     background-color: #252527;
     border: 0.1rem solid #3f3f41;
@@ -348,10 +341,6 @@ const TierDropdown = styled.div`
     &::-webkit-scrollbar { /* WebKit */
         display: none;
     }
-
-    @media (max-width: 480px) {
-        grid-template-columns: 1fr;
-    }
 `;
 
 const TierOption = styled.button<{ $active: boolean }>`
@@ -359,19 +348,17 @@ const TierOption = styled.button<{ $active: boolean }>`
     align-items: center;
     gap: 0.8rem;
     padding: 0.8rem 1rem;
-    background-color: ${({ $active }) => 
+    background-color: ${({ $active }) =>
         $active ? 'rgba(66, 114, 236, 0.2)' : 'transparent'
     };
     border: none;
     border-radius: 0.8rem;
     color: #f5f5f5;
     font-size: 1.2rem;
-    cursor: pointer;
     transition: background-color 0.2s ease;
 
     &:disabled {
         opacity: 0.5;
-        cursor: not-allowed;
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -424,14 +411,9 @@ const SummaryContent = styled.div`
 
 const SummaryItem = styled.div`
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    @media (max-width: 480px) {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
 `;
 
 const SummaryLabel = styled.span`

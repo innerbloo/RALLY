@@ -712,7 +712,6 @@ const ActionButton = styled.button<{ $active?: boolean }>`
     color: ${({ $active }) => ($active ? '#ef4444' : '#939393')};
     font-size: 1.4rem;
     font-weight: 500;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -742,7 +741,6 @@ const TagItem = styled.span`
     border-radius: 2rem;
     font-size: 1.3rem;
     font-weight: 500;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -854,7 +852,6 @@ const CommentLikeButton = styled.button<{ $active?: boolean }>`
     border: none;
     color: ${({ $active }) => ($active ? '#ef4444' : '#939393')};
     font-size: 1.2rem;
-    cursor: pointer;
     padding: 0;
 
     @media (hover: hover) and (pointer: fine) {
@@ -903,7 +900,6 @@ const CommentSubmitButton = styled.button`
     border-radius: 0.8rem;
     font-size: 1.4rem;
     font-weight: 600;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -937,7 +933,6 @@ const BackButton = styled.button`
     border-radius: 3rem;
     font-size: 1.4rem;
     font-weight: 600;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {

@@ -80,10 +80,6 @@ const ServicesGrid = styled.div`
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
-
-    @media (min-width: 640px) {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    }
 `;
 
 const ServiceCard = styled.div`

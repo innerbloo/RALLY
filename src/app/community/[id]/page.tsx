@@ -450,7 +450,6 @@ const AuthorProfile = styled.div`
     display: flex;
     align-items: center;
     gap: 1rem;
-    cursor: pointer;
     transition: opacity 0.2s ease;
     padding: 0.5rem;
     margin: -0.5rem;
@@ -517,7 +516,6 @@ const ActionButton = styled.button<{ $active?: boolean }>`
     color: ${({ $active }) => ($active ? '#ef4444' : '#939393')};
     font-size: 1.4rem;
     font-weight: 500;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -561,7 +559,6 @@ const CommentAuthor = styled.div`
     align-items: center;
     gap: 1rem;
     margin-bottom: 0.8rem;
-    cursor: pointer;
     transition: opacity 0.2s ease;
     padding: 0.5rem;
     margin-left: -0.5rem;
@@ -618,7 +615,6 @@ const CommentLikeButton = styled.button<{ $active?: boolean }>`
     border: none;
     color: ${({ $active }) => ($active ? '#ef4444' : '#939393')};
     font-size: 1.2rem;
-    cursor: pointer;
     padding: 0;
 
     @media (hover: hover) and (pointer: fine) {
@@ -667,7 +663,6 @@ const CommentSubmitButton = styled.button`
     border-radius: 0.8rem;
     font-size: 1.4rem;
     font-weight: 600;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -701,7 +696,6 @@ const BackButton = styled.button`
     border-radius: 3rem;
     font-size: 1.4rem;
     font-weight: 600;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {

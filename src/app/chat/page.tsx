@@ -267,7 +267,6 @@ const FilterButton = styled.button<{ $active: boolean }>`
     border-radius: 2rem;
     background-color: ${({ $active }) => ($active ? '#4272ec' : 'transparent')};
     color: ${({ $active }) => ($active ? '#ffffff' : '#939393')};
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -284,19 +283,14 @@ const GameFilterList = styled.div`
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
-    margin-bottom: 1.5rem;
-
-    @media (max-width: 480px) {
-        margin: 0 -2rem 1.5rem;
-        padding: 0 2rem;
-    }
+    scrollbar-width: none;
+    margin: 0 -2rem 1.5rem;
+    padding: 0 2rem;
 
     &::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Edge */
+        display: none;
     }
 
-    /* Prevent buttons from shrinking */
     > button {
         flex-shrink: 0;
     }
@@ -311,7 +305,6 @@ const GameFilterButton = styled.button<{ $active: boolean }>`
     border-radius: 2rem;
     background-color: ${({ $active }) => ($active ? '#4272ec' : 'transparent')};
     color: ${({ $active }) => ($active ? '#ffffff' : '#939393')};
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {

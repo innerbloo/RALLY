@@ -84,13 +84,8 @@ const AnimationContainer = styled.div`
 
 const LottieWrapper = styled.div`
     position: relative;
-    width: 30rem;
-    height: 30rem;
-
-    @media (max-width: 400px) {
-        width: 25rem;
-        height: 25rem;
-    }
+    width: 25rem;
+    height: 25rem;
 `;
 
 const CloseButton = styled.button`

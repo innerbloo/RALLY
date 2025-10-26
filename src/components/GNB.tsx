@@ -119,7 +119,9 @@ export default function GNB() {
         // 모바일 디바이스 감지
         const isMobileDevice = () => {
             const userAgent = navigator.userAgent || navigator.vendor;
-            return /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+            return /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
+                userAgent.toLowerCase(),
+            );
         };
 
         // 모바일이 아니면 early return
@@ -129,10 +131,7 @@ export default function GNB() {
 
         const handleFocusIn = (e: FocusEvent) => {
             const target = e.target as HTMLElement;
-            if (
-                target.tagName === 'INPUT' ||
-                target.tagName === 'TEXTAREA'
-            ) {
+            if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
                 // 이전에 설정된 타이머가 있으면 취소
                 if (focusOutTimerRef.current) {
                     clearTimeout(focusOutTimerRef.current);
@@ -144,10 +143,7 @@ export default function GNB() {
 
         const handleFocusOut = (e: FocusEvent) => {
             const target = e.target as HTMLElement;
-            if (
-                target.tagName === 'INPUT' ||
-                target.tagName === 'TEXTAREA'
-            ) {
+            if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
                 // 1초 후에 GNB 다시 표시
                 focusOutTimerRef.current = setTimeout(() => {
                     setIsInputFocused(false);
@@ -282,7 +278,7 @@ const GNBContainer = styled.nav`
     bottom: var(--visual-viewport-offset, 0px);
     left: 50%;
     transform: translateX(-50%);
-    max-width: 800px;
+    max-width: 430px;
     width: 100%;
     z-index: 1000;
     background: #1a1a1a;
@@ -317,7 +313,6 @@ const GNBLink = styled.div<{ $active: boolean }>`
     gap: 0.4rem;
     padding: 0.5rem;
     min-width: 44px;
-    cursor: pointer;
     transition: all 0.2s ease;
     color: ${({ $active }) => ($active ? '#4272EC' : '#939393')};
 

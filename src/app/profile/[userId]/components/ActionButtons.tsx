@@ -190,15 +190,8 @@ const PrimaryButton = styled.button<{ $variant?: 'primary' | 'secondary' }>`
     border: ${({ $variant }) =>
         $variant === 'secondary' ? '0.2rem solid #4272ec' : 'none'};
     border-radius: 1.2rem;
-    cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
-
-    @media (min-width: 480px) {
-        padding: 1.4rem 1.5rem;
-        font-size: 1.5rem;
-        gap: 0.8rem;
-    }
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -233,23 +226,12 @@ const IconButton = styled.button<{ $active?: boolean }>`
     border: 0.2rem solid ${({ $active }) => ($active ? '#ef4444' : '#3f3f41')};
     border-radius: 1.2rem;
     color: ${({ $active }) => ($active ? '#ef4444' : '#939393')};
-    cursor: pointer;
     transition: all 0.2s ease;
 
     svg {
         fill: ${({ $active }) => ($active ? '#ef4444' : 'none')};
         width: 1.8rem;
         height: 1.8rem;
-    }
-
-    @media (min-width: 480px) {
-        width: 4.8rem;
-        height: 4.8rem;
-
-        svg {
-            width: 2rem;
-            height: 2rem;
-        }
     }
 
     @media (hover: hover) and (pointer: fine) {

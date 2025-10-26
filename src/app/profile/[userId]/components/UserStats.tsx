@@ -65,10 +65,6 @@ const StatsContainer = styled.div<{ $isTFT: boolean }>`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.2rem;
-
-    @media (min-width: 768px) {
-        grid-template-columns: ${({ $isTFT }) => ($isTFT ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)')};
-    }
 `;
 
 const StatCard = styled.div`

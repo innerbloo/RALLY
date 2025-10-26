@@ -31,7 +31,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
 const TutorialLayout = styled.div`
     height: 100dvh;
-    max-width: 800px;
+    max-width: 430px;
     margin: 0 auto;
     padding: calc(20px + env(safe-area-inset-top)) 0 2rem;
     display: flex;

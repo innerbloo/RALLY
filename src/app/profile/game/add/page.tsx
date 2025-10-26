@@ -700,10 +700,6 @@ const GameGrid = styled.div`
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
     width: 100%;
-
-    @media (min-width: 768px) {
-        grid-template-columns: repeat(3, 1fr);
-    }
 `;
 
 const GameCard = styled.button<{ $active: boolean }>`
@@ -716,7 +712,6 @@ const GameCard = styled.button<{ $active: boolean }>`
         $active ? 'rgba(66, 114, 236, 0.2)' : '#252527'};
     border: 0.2rem solid ${({ $active }) => ($active ? '#4272ec' : '#3f3f41')};
     border-radius: 1.6rem;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -789,7 +784,6 @@ const RankButton = styled.button<{ $active: boolean }>`
     background-color: ${({ $active }) =>
         $active ? 'rgba(66, 114, 236, 0.2)' : 'transparent'};
     color: ${({ $active }) => ($active ? '#ffffff' : '#939393')};
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -816,10 +810,6 @@ const TierGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
-
-    @media (min-width: 768px) {
-        grid-template-columns: repeat(5, 1fr);
-    }
 `;
 
 const TierCard = styled.button<{ $active: boolean }>`
@@ -832,7 +822,6 @@ const TierCard = styled.button<{ $active: boolean }>`
         $active ? 'rgba(66, 114, 236, 0.2)' : '#252527'};
     border: 0.2rem solid ${({ $active }) => ($active ? '#4272ec' : '#3f3f41')};
     border-radius: 1.2rem;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -890,7 +879,6 @@ const SubTierButton = styled.button<{ $active: boolean }>`
     border-radius: 10rem;
     background-color: ${({ $active }) => ($active ? '#4272ec' : 'transparent')};
     color: ${({ $active }) => ($active ? '#ffffff' : '#939393')};
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -912,10 +900,6 @@ const PositionGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.2rem;
-
-    @media (min-width: 768px) {
-        grid-template-columns: repeat(5, 1fr);
-    }
 `;
 
 const PositionCard = styled.button<{ $active: boolean }>`
@@ -929,7 +913,6 @@ const PositionCard = styled.button<{ $active: boolean }>`
         $active ? 'rgba(66, 114, 236, 0.2)' : '#252527'};
     border: 0.2rem solid ${({ $active }) => ($active ? '#4272ec' : '#3f3f41')};
     border-radius: 1.2rem;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -1039,7 +1022,6 @@ const StyleTag = styled.button<{
         }
         return '#939393';
     }};
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -1081,7 +1063,6 @@ const FooterButton = styled.button<{ $variant: 'primary' | 'secondary' }>`
     border: ${({ $variant }) =>
         $variant === 'secondary' ? '0.1rem solid #3f3f41' : 'none'};
     border-radius: 1.2rem;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     background-color: ${({ $variant }) =>

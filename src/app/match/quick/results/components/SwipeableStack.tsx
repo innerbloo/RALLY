@@ -128,8 +128,7 @@ export default function SwipeableStack({
         if (!currentUser) return;
 
         setIsAnimating(true);
-        const targetX =
-            direction === 'right' ? window.innerWidth : -window.innerWidth;
+        const targetX = direction === 'right' ? 400 : -400;
         const targetRotation = direction === 'right' ? 30 : -30;
 
         const startTime = Date.now();

@@ -98,8 +98,8 @@ const CardContainer = styled.li`
     align-items: center;
     padding: 1.8rem 2rem;
     border-bottom: 0.1rem solid #3f3f41;
-    cursor: pointer;
     transition: background-color 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

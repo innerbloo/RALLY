@@ -177,7 +177,6 @@ const ClearButton = styled.button`
     color: #ffffff;
     border: none;
     border-radius: 2rem;
-    cursor: pointer;
     transition: background-color 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -207,7 +206,6 @@ const SectionHeader = styled.button`
     padding: 1.5rem;
     background-color: #1f1f21;
     border: none;
-    cursor: pointer;
     transition: background-color 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -274,7 +272,6 @@ const FilterButton = styled.button<{ $active: boolean; $type: 'game' | 'communic
         return 'transparent';
     }};
     color: ${({ $active }) => ($active ? '#ffffff' : '#939393')};
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -315,7 +312,6 @@ const SelectedFilterTag = styled.button<{ $type: 'game' | 'communication' }>`
     color: #ffffff;
     border: none;
     border-radius: 1.5rem;
-    cursor: pointer;
     transition: background-color 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {

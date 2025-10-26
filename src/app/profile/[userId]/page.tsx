@@ -244,7 +244,6 @@ const BackButton = styled.button`
     color: #ffffff;
     border: none;
     border-radius: 1.2rem;
-    cursor: pointer;
     transition: background-color 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {

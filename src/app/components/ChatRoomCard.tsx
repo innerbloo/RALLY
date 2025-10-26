@@ -107,7 +107,6 @@ const CardContainer = styled.li`
     gap: 1.2rem;
     padding: 1.6rem 2rem;
     border-bottom: 0.1rem solid #3f3f41;
-    cursor: pointer;
     transition: background-color 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {

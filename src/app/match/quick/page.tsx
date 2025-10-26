@@ -372,7 +372,6 @@ const NavigationButton = styled.button<{
     font-weight: 600;
     border: none;
     border-radius: 1.2rem;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     background-color: ${({ $variant, disabled }) => {
@@ -389,10 +388,6 @@ const NavigationButton = styled.button<{
         $variant === 'secondary' && !disabled
             ? '0.1rem solid #4272ec'
             : 'none'};
-
-    &:disabled {
-        cursor: not-allowed;
-    }
 
     @media (hover: hover) and (pointer: fine) {
         &:hover:not(:disabled) {

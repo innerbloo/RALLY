@@ -92,21 +92,11 @@ const HeaderContainer = styled.div`
     background-color: #252527;
     border-radius: 1.6rem;
     margin-top: 1rem;
-
-    @media (min-width: 768px) {
-        flex-direction: row;
-        align-items: flex-start;
-        gap: 2rem;
-    }
 `;
 
 const ProfileImageWrapper = styled.div`
     position: relative;
     margin-bottom: 1.5rem;
-
-    @media (min-width: 768px) {
-        margin-bottom: 0;
-    }
 `;
 
 const ProfileImage = styled(Image)`
@@ -159,10 +149,6 @@ const ProfileInfo = styled.div`
     gap: 1rem;
     text-align: center;
     width: 100%;
-
-    @media (min-width: 768px) {
-        text-align: left;
-    }
 `;
 
 const TopRow = styled.div`
@@ -170,10 +156,6 @@ const TopRow = styled.div`
     align-items: center;
     gap: 1rem;
     justify-content: center;
-
-    @media (min-width: 768px) {
-        justify-content: flex-start;
-    }
 `;
 
 const Username = styled.h2`
@@ -203,10 +185,6 @@ const GameIdRow = styled.div`
     align-items: center;
     gap: 1.2rem;
     justify-content: center;
-
-    @media (min-width: 768px) {
-        justify-content: flex-start;
-    }
 `;
 
 const GameId = styled.span`
@@ -230,10 +208,6 @@ const GameBadge = styled.div`
     font-size: 1.3rem;
     color: #ffffff;
     align-self: center;
-
-    @media (min-width: 768px) {
-        align-self: flex-start;
-    }
 `;
 
 const GameImage = styled(Image)`
@@ -253,10 +227,6 @@ const TagList = styled.div`
     flex-wrap: wrap;
     gap: 0.8rem;
     justify-content: center;
-
-    @media (min-width: 768px) {
-        justify-content: flex-start;
-    }
 `;
 
 const Tag = styled.span<{ $type: 'game' | 'comm' }>`

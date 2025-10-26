@@ -537,10 +537,6 @@ const MatchedUsersList = styled.div`
     width: 100%;
     box-sizing: border-box;
 
-    @media (min-width: 768px) {
-        grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
-    }
-
     &::-webkit-scrollbar {
         width: 0.8rem;
     }
@@ -580,7 +576,6 @@ const UserClickArea = styled.div`
     display: flex;
     align-items: center;
     gap: 1.2rem;
-    cursor: pointer;
 `;
 
 const UserImage = styled.img`
@@ -633,15 +628,8 @@ const ChatButton = styled.button`
     color: #ffffff;
     border: none;
     border-radius: 50%;
-    cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
-
-    @media (min-width: 768px) {
-        width: auto;
-        padding: 0.8rem 1.6rem;
-        border-radius: 0.8rem;
-    }
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -652,10 +640,6 @@ const ChatButton = styled.button`
 
 const ChatButtonText = styled.span`
     display: none;
-
-    @media (min-width: 768px) {
-        display: inline;
-    }
 `;
 
 const ButtonGroup = styled.div`

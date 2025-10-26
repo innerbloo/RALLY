@@ -419,11 +419,8 @@ const GameFilterList = styled.div`
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none; /* Firefox */
-
-    @media (max-width: 480px) {
-        margin: 0 -2rem;
-        padding: 0 2rem;
-    }
+    margin: 0 -2rem;
+    padding: 0 2rem;
 
     &::-webkit-scrollbar {
         display: none; /* Chrome, Safari, Edge */
@@ -444,7 +441,6 @@ const GameFilterButton = styled.button<{ $active: boolean }>`
     border-radius: 2rem;
     background-color: ${({ $active }) => ($active ? '#4272ec' : 'transparent')};
     color: ${({ $active }) => ($active ? '#ffffff' : '#939393')};
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -460,26 +456,7 @@ const UserListSection = styled.section`
 `;
 
 const ListHeader = styled.div`
-    display: grid;
-    grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 1rem;
-    padding: 2rem;
-    background-color: #252527;
-    border-bottom: 0.1rem solid #3f3f41;
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #939393;
-    align-items: center;
-
-    > div:not(:first-of-type) {
-        text-align: center;
-        display: flex;
-        justify-content: center;
-    }
-
-    @media (max-width: 768px) {
-        display: none;
-    }
+    display: none;
 `;
 
 const UserList = styled.ul`
@@ -489,26 +466,18 @@ const UserList = styled.ul`
 `;
 
 const UserRow = styled.li`
-    display: grid;
-    grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 1rem;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: stretch;
     padding: 2rem;
     border-bottom: 0.1rem solid #3f3f41;
     transition: background-color 0.2s ease;
-    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
             background-color: #252527;
         }
-    }
-
-    @media (max-width: 768px) {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        align-items: stretch;
     }
 `;
 
@@ -589,14 +558,10 @@ const TagBadge = styled.span<{ $type: 'game' | 'communication' }>`
 
 const TierCell = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     gap: 0.2rem;
-
-    @media (max-width: 768px) {
-        flex-direction: row;
-        justify-content: space-between;
-    }
 `;
 
 const TierImage = styled(Image)`
@@ -611,19 +576,13 @@ const TierRank = styled.div`
 `;
 
 const WinRateCell = styled.div`
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-    @media (max-width: 768px) {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    @media (max-width: 768px) {
-        &::before {
-            content: '승률: ';
-            color: #939393;
-        }
+    &::before {
+        content: '승률: ';
+        color: #939393;
     }
 `;
 
@@ -635,19 +594,13 @@ const WinRateValue = styled.div<{ $rate: number }>`
 `;
 
 const KDACell = styled.div`
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-    @media (max-width: 768px) {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    @media (max-width: 768px) {
-        &::before {
-            content: 'KDA: ';
-            color: #939393;
-        }
+    &::before {
+        content: 'KDA: ';
+        color: #939393;
     }
 `;
 
@@ -660,11 +613,7 @@ const KDAValue = styled.div<{ $kda: number }>`
 
 const StatusCell = styled.div`
     display: flex;
-    justify-content: center;
-
-    @media (max-width: 768px) {
-        justify-content: flex-start;
-    }
+    justify-content: flex-start;
 `;
 
 const StatusBadge = styled.span<{ $status: string }>`
@@ -695,22 +644,19 @@ const ActionCell = styled.div`
 const ActionButtons = styled.div`
     display: flex;
     gap: 0.6rem;
-
-    @media (max-width: 768px) {
-        width: 100%;
-        justify-content: center;
-    }
+    width: 100%;
+    justify-content: center;
 `;
 
 const MatchButton = styled.button`
-    padding: 0.6rem 1.2rem;
-    font-size: 1.2rem;
+    flex: 1;
+    padding: 1rem;
+    font-size: 1.4rem;
     font-weight: 600;
     background-color: #4272ec;
     color: #ffffff;
     border: none;
     border-radius: 1.5rem;
-    cursor: pointer;
     transition: background-color 0.2s ease;
     word-break: keep-all;
 
@@ -719,23 +665,17 @@ const MatchButton = styled.button`
             background-color: #3a5fd9;
         }
     }
-
-    @media (max-width: 768px) {
-        flex: 1;
-        padding: 1rem;
-        font-size: 1.4rem;
-    }
 `;
 
 const ChatButton = styled.button`
-    padding: 0.6rem 1.2rem;
-    font-size: 1.2rem;
+    flex: 1;
+    padding: 1rem;
+    font-size: 1.4rem;
     font-weight: 600;
     background-color: transparent;
     color: #4272ec;
     border: 0.1rem solid #4272ec;
     border-radius: 1.5rem;
-    cursor: pointer;
     transition: all 0.2s ease;
     word-break: keep-all;
 
@@ -745,12 +685,6 @@ const ChatButton = styled.button`
             color: #ffffff;
         }
     }
-
-    @media (max-width: 768px) {
-        flex: 1;
-        padding: 1rem;
-        font-size: 1.4rem;
-    }
 `;
 
 const QuickMatchButton = styled.button<{
@@ -758,20 +692,24 @@ const QuickMatchButton = styled.button<{
     $tutorialActive: boolean;
 }>`
     position: fixed;
-    bottom: 8rem;
+    right: 1.5rem;
+    bottom: calc(8rem + env(safe-area-inset-bottom));
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    padding: 1.2rem 2rem;
+    padding: 1rem 1.6rem;
     background: linear-gradient(135deg, #4272ec 0%, #3a5fd9 100%);
     color: #ffffff;
     border: none;
     border-radius: 3rem;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 600;
-    cursor: pointer;
     z-index: ${({ $tutorialActive }) => ($tutorialActive ? 10000 : 999)};
     transition: all 0.3s ease;
+    transform: ${({ $isAtBottom, $tutorialActive }) => {
+        if ($tutorialActive) return 'none';
+        return $isAtBottom ? 'translateY(150%)' : 'none';
+    }};
 
     ${({ $tutorialActive }) =>
         $tutorialActive
@@ -791,32 +729,11 @@ const QuickMatchButton = styled.button<{
         box-shadow: 0 4px 20px rgba(66, 114, 236, 0.4);
     `}
 
-    /* Position relative to centered 800px container */
-    left: 50%;
-    transform: ${({ $isAtBottom, $tutorialActive }) => {
-        if ($tutorialActive) return 'translateX(calc(800px / 2 - 2rem - 100%))';
-        return $isAtBottom
-            ? 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(150%)'
-            : 'translateX(calc(800px / 2 - 2rem - 100%))';
-    }};
-
-    @media (max-width: 800px) {
-        right: 2rem;
-        left: auto;
-        transform: ${({ $isAtBottom, $tutorialActive }) => {
-            if ($tutorialActive) return 'none';
-            return $isAtBottom ? 'translateY(150%)' : 'none';
-        }};
-    }
-
     @media (hover: hover) and (pointer: fine) {
         &:hover {
             transform: ${({ $isAtBottom, $tutorialActive }) => {
-                if ($tutorialActive)
-                    return 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(-2px)';
-                return $isAtBottom
-                    ? 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(150%)'
-                    : 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(-2px)';
+                if ($tutorialActive) return 'translateY(-2px)';
+                return $isAtBottom ? 'translateY(150%)' : 'translateY(-2px)';
             }};
             box-shadow: ${({ $tutorialActive }) =>
                 $tutorialActive
@@ -825,43 +742,11 @@ const QuickMatchButton = styled.button<{
         }
     }
 
-    @media (hover: hover) and (pointer: fine) and (max-width: 800px) {
-        &:hover {
-            transform: ${({ $isAtBottom, $tutorialActive }) => {
-                if ($tutorialActive) return 'translateY(-2px)';
-                return $isAtBottom ? 'translateY(150%)' : 'translateY(-2px)';
-            }};
-        }
-    }
-
     &:active {
         transform: ${({ $isAtBottom, $tutorialActive }) => {
-            if ($tutorialActive)
-                return 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(0)';
-            return $isAtBottom
-                ? 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(150%)'
-                : 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(0)';
+            if ($tutorialActive) return 'translateY(0)';
+            return $isAtBottom ? 'translateY(150%)' : 'translateY(0)';
         }};
-    }
-
-    @media (max-width: 800px) {
-        &:active {
-            transform: ${({ $isAtBottom, $tutorialActive }) => {
-                if ($tutorialActive) return 'translateY(0)';
-                return $isAtBottom ? 'translateY(150%)' : 'translateY(0)';
-            }};
-        }
-    }
-
-    @media (max-width: 768px) {
-        right: 1.5rem;
-        bottom: calc(8rem + env(safe-area-inset-bottom));
-        padding: 1rem 1.6rem;
-        font-size: 1.3rem;
-    }
-
-    @media (min-width: 769px) {
-        bottom: 8rem;
     }
 
     svg {

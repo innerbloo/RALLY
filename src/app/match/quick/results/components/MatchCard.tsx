@@ -401,11 +401,6 @@ const CardContainer = styled.div<{
     flex-direction: column;
     touch-action: none;
 
-    @media (min-width: 768px) {
-        max-width: 40rem;
-        max-height: 90vh;
-    }
-
     /* 위치 및 변형 통합 계산 */
     transform: ${({ $index, $isDragging, $dragX, $dragY }) => {
         const baseTransform = 'translate(-50%, -50%)';
@@ -445,13 +440,8 @@ const CardContainer = styled.div<{
         return 0;
     }};
 
-    cursor: ${({ $index }) => ($index === 0 ? 'grab' : 'default')};
     transition: ${({ $isDragging }) =>
         $isDragging ? 'none' : 'all 0.3s ease'};
-
-    &:active {
-        cursor: ${({ $index }) => ($index === 0 ? 'grabbing' : 'default')};
-    }
 
     /* 화면 밖 카드 숨김 */
     display: ${({ $index }) => ($index > 2 ? 'none' : 'flex')};
@@ -563,11 +553,6 @@ const ProfileImage = styled(Image)`
     border: 0.2rem solid #ffffff;
     object-fit: cover;
     flex-shrink: 0;
-
-    @media (min-width: 768px) {
-        width: 80px;
-        height: 80px;
-    }
 `;
 
 const UserInfo = styled.div`
@@ -576,16 +561,6 @@ const UserInfo = styled.div`
     overflow: visible;
     display: flex;
     flex-direction: column;
-
-    /* 모바일 대응 */
-    @media (max-width: 375px) {
-        padding: 1rem 1rem 2rem 1rem;
-    }
-
-    /* 데스크톱 대응 */
-    @media (min-width: 768px) {
-        padding: 2rem 2rem 2.5rem 2rem;
-    }
 `;
 
 const UserHeaderSection = styled.div`
@@ -595,12 +570,6 @@ const UserHeaderSection = styled.div`
     margin-bottom: 1rem;
     padding: 1rem;
     border-radius: 1rem;
-
-    @media (min-width: 768px) {
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
-        padding: 1.5rem;
-    }
 `;
 
 const UserNameInfo = styled.div`
@@ -616,21 +585,12 @@ const UserName = styled.h2`
     align-items: center;
     gap: 0.3rem;
     flex-wrap: wrap;
-
-    @media (min-width: 768px) {
-        font-size: 2rem;
-        margin: 0 0 0.4rem;
-    }
 `;
 
 const GameId = styled.p`
     font-size: 1.1rem;
     color: rgba(255, 255, 255, 0.8);
     margin: 0;
-
-    @media (min-width: 768px) {
-        font-size: 1.4rem;
-    }
 `;
 
 const TierBadge = styled.div`
@@ -663,12 +623,6 @@ const TierRank = styled.span`
     line-height: 1;
 `;
 
-const TierName = styled.span`
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.9);
-    line-height: 1;
-`;
-
 const StatsSection = styled.div<{ $isSingleStat?: boolean }>`
     display: flex;
     justify-content: ${({ $isSingleStat }) =>
@@ -677,11 +631,6 @@ const StatsSection = styled.div<{ $isSingleStat?: boolean }>`
     padding: 0.8rem;
     background-color: #1f1f21;
     border-radius: 1rem;
-
-    @media (min-width: 768px) {
-        margin-bottom: 1.5rem;
-        padding: 1.5rem;
-    }
 `;
 
 const StatItem = styled.div`
@@ -692,11 +641,6 @@ const StatLabel = styled.div`
     font-size: 1.3rem;
     color: #939393;
     margin-bottom: 0.5rem;
-
-    @media (min-width: 768px) {
-        font-size: 1.5rem;
-        margin-bottom: 0.8rem;
-    }
 `;
 
 const StatValue = styled.div<{ $type: string; $value: number }>`
@@ -719,10 +663,6 @@ const StatValue = styled.div<{ $type: string; $value: number }>`
         }
         return '#ffffff';
     }};
-
-    @media (min-width: 768px) {
-        font-size: 2.4rem;
-    }
 `;
 
 const Description = styled.p`
@@ -735,21 +675,6 @@ const Description = styled.p`
     word-break: keep-all;
     background-color: rgba(255, 255, 255, 0.05);
     border-radius: 0.8rem;
-
-    /* 모바일에서 더 컴팩트하게 */
-    @media (max-width: 375px) {
-        font-size: 1.2rem;
-        margin: 0 0 0.8rem;
-        padding: 0.8rem;
-    }
-
-    /* 데스크톱에서 더 여유있게 */
-    @media (min-width: 768px) {
-        font-size: 1.5rem;
-        line-height: 1.6;
-        margin: 0 0 1.5rem;
-        padding: 1.5rem;
-    }
 `;
 
 const StyleSection = styled.div`
@@ -758,24 +683,6 @@ const StyleSection = styled.div`
     &:last-child {
         margin-bottom: 0.8rem;
     }
-
-    /* 모바일에서 간격 조정 */
-    @media (max-width: 375px) {
-        margin-bottom: 0.8rem;
-
-        &:last-child {
-            margin-bottom: 0.8rem;
-        }
-    }
-
-    /* 데스크톱에서 간격 증가 */
-    @media (min-width: 768px) {
-        margin-bottom: 1.5rem;
-
-        &:last-child {
-            margin-bottom: 1.2rem;
-        }
-    }
 `;
 
 const SectionTitle = styled.h3`
@@ -783,21 +690,12 @@ const SectionTitle = styled.h3`
     font-weight: 600;
     color: #ffffff;
     margin: 0 0 0.8rem;
-
-    @media (min-width: 768px) {
-        font-size: 1.6rem;
-        margin: 0 0 1rem;
-    }
 `;
 
 const StyleTags = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-
-    @media (min-width: 768px) {
-        gap: 0.8rem;
-    }
 `;
 
 const StyleTag = styled.span<{ $type: 'game' | 'communication' }>`
@@ -808,21 +706,12 @@ const StyleTag = styled.span<{ $type: 'game' | 'communication' }>`
     background-color: ${({ $type }) =>
         $type === 'game' ? '#4272ec' : '#22c55e'};
     color: #ffffff;
-
-    @media (min-width: 768px) {
-        padding: 0.8rem 1.4rem;
-        font-size: 1.3rem;
-    }
 `;
 
 const ChampionList = styled.div`
     display: flex;
     gap: 1rem;
     align-items: center;
-
-    @media (min-width: 768px) {
-        gap: 1.5rem;
-    }
 `;
 
 const ChampionItem = styled.div`
@@ -850,10 +739,6 @@ const ChampionName = styled.span`
     font-weight: 500;
     text-align: center;
     line-height: 1.2;
-
-    @media (min-width: 768px) {
-        font-size: 1.3rem;
-    }
 `;
 
 const PositionBadge = styled.div`

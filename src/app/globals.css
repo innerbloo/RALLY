@@ -7,7 +7,7 @@ html {
 html,
 body {
   font-size: 10px;
-  max-width: 800px;
+  max-width: 430px;
   /*overflow-x: hidden;*/
   margin: 0 auto;
 
@@ -33,15 +33,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Desktop Shadow Effect */
-@media (min-width: 801px) {
-  body {
-    box-shadow:
-      0 0 40px rgba(0, 0, 0, 0.5),
-      0 20px 60px rgba(0, 0, 0, 0.3);
-  }
-}
-
 ul, ol, li {
   list-style: none;
 }
@@ -65,7 +56,6 @@ button {
   font: inherit;
   color: inherit;
   text-decoration: none;
-  cursor: pointer;
   outline: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -73,20 +63,18 @@ button {
   box-sizing: border-box;
 }
 
-/* Hide Next.js Dev Tools on Mobile */
-@media (max-width: 768px) {
-  /* Next.js 빌드 인디케이터 숨기기 */
-  div[data-nextjs-toast-wrapper] {
-    display: none !important;
-  }
-  
-  /* Next.js 개발 도구들 숨기기 */
-  nextjs-portal {
-    display: none !important;
-  }
-  
-  /* React Query DevTools 등 개발 도구 숨기기 */
-  div[data-testid*="devtools"] {
-    display: none !important;
-  }
+/* Hide Next.js Dev Tools */
+/* Next.js 빌드 인디케이터 숨기기 */
+div[data-nextjs-toast-wrapper] {
+  display: none !important;
+}
+
+/* Next.js 개발 도구들 숨기기 */
+nextjs-portal {
+  display: none !important;
+}
+
+/* React Query DevTools 등 개발 도구 숨기기 */
+div[data-testid*="devtools"] {
+  display: none !important;
 }

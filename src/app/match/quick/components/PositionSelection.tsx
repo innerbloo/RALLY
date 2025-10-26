@@ -289,16 +289,11 @@ const SectionDescription = styled.p`
 
 const PositionGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
     max-width: 50rem;
     margin: 0 auto;
     width: 100%;
-
-    @media (max-width: 768px) {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-    }
 `;
 
 const PositionCard = styled.button<{
@@ -315,7 +310,6 @@ const PositionCard = styled.button<{
         $active ? 'rgba(66, 114, 236, 0.2)' : '#252527'};
     border: 0.2rem solid ${({ $active }) => ($active ? '#4272ec' : '#3f3f41')};
     border-radius: 1.6rem;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -400,14 +394,9 @@ const SummaryContent = styled.div`
 
 const SummaryItem = styled.div`
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    @media (max-width: 480px) {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
 `;
 
 const SummaryLabel = styled.span`

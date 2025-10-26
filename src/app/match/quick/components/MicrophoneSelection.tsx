@@ -179,16 +179,16 @@ const OptionGrid = styled.div`
 const OptionCard = styled.button<{ $active: boolean }>`
     position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
     padding: 2.5rem 2rem;
     background-color: ${({ $active }) =>
         $active ? 'rgba(66, 114, 236, 0.15)' : '#252527'};
     border: 0.2rem solid ${({ $active }) => ($active ? '#4272ec' : '#3f3f41')};
     border-radius: 1.6rem;
-    cursor: pointer;
     transition: all 0.2s ease;
-    text-align: left;
+    text-align: center;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -196,12 +196,6 @@ const OptionCard = styled.button<{ $active: boolean }>`
             background-color: rgba(66, 114, 236, 0.1);
             transform: translateY(-2px);
         }
-    }
-
-    @media (max-width: 480px) {
-        flex-direction: column;
-        text-align: center;
-        gap: 1.5rem;
     }
 `;
 

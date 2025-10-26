@@ -339,7 +339,6 @@ const Select = styled.select`
     border-radius: 1.2rem;
     color: #ffffff;
     outline: none;
-    cursor: pointer;
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23939393' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
@@ -407,7 +406,6 @@ const ImageUploadLabel = styled.label`
     border: 0.2rem dashed #3f3f41;
     border-radius: 1.2rem;
     color: #939393;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -446,7 +444,6 @@ const RemoveImageButton = styled.button`
     border: none;
     border-radius: 50%;
     color: #ffffff;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -516,7 +513,6 @@ const AddTagButton = styled.button`
     border-radius: 1.2rem;
     font-size: 1.4rem;
     font-weight: 600;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -527,7 +523,6 @@ const AddTagButton = styled.button`
 
     &:disabled {
         opacity: 0.5;
-        cursor: not-allowed;
     }
 `;
 
@@ -557,7 +552,6 @@ const RemoveTagButton = styled.button`
     background: transparent;
     border: none;
     color: #ffffff;
-    cursor: pointer;
     padding: 0;
     transition: all 0.2s ease;
 

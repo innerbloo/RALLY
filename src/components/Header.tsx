@@ -91,8 +91,10 @@ export default function Header() {
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as HTMLElement;
             // 알림 버튼이나 드롭다운 내부 클릭이 아닌 경우에만 닫기
-            if (!target.closest('[data-notification-button]') &&
-                !target.closest('[data-notification-dropdown]')) {
+            if (
+                !target.closest('[data-notification-button]') &&
+                !target.closest('[data-notification-dropdown]')
+            ) {
                 setIsNotificationOpen(false);
             }
         };
@@ -236,7 +238,9 @@ export default function Header() {
                                     <Link
                                         href={notification.link}
                                         key={notification.id}
-                                        onClick={() => setIsNotificationOpen(false)}
+                                        onClick={() =>
+                                            setIsNotificationOpen(false)
+                                        }
                                     >
                                         <NotificationItem
                                             $isRead={notification.isRead}
@@ -279,7 +283,7 @@ const HeaderContainer = styled.header`
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    max-width: 800px;
+    max-width: 430px;
     width: 100%;
     z-index: 1000;
     background: #1a1a1a;
@@ -306,7 +310,6 @@ const Logo = styled.h1`
     color: #4272ec;
     margin: 0;
     height: 2rem;
-    cursor: pointer;
 `;
 
 const StatusIndicator = styled.div`
@@ -341,13 +344,13 @@ const GameSelect = styled.div`
     padding: 0.6rem 1rem;
     background: #252527;
     border-radius: 2rem;
-    cursor: pointer;
     position: relative;
     min-width: 44px;
 
     span {
         font-size: 1.3rem;
         color: #ffffff;
+        display: none;
     }
 
     svg {
@@ -357,12 +360,6 @@ const GameSelect = styled.div`
     @media (hover: hover) and (pointer: fine) {
         &:hover {
             background: #2a2a2c;
-        }
-    }
-
-    @media (max-width: 480px) {
-        span {
-            display: none;
         }
     }
 `;
@@ -384,7 +381,6 @@ const GameItem = styled.div`
     align-items: center;
     gap: 0.8rem;
     padding: 1rem;
-    cursor: pointer;
 
     span {
         font-size: 1.3rem;
@@ -406,31 +402,22 @@ const QuickMatchButton = styled.button`
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.6rem 1.2rem;
+    padding: 0.8rem;
     background: #4272ec;
     border: none;
     border-radius: 2rem;
     color: #ffffff;
     font-size: 1.3rem;
     font-weight: 600;
-    cursor: pointer;
     min-width: 44px;
 
-    &:hover {
-        background: #315fbb;
-    }
-
-    @media (max-width: 480px) {
-        span {
-            display: none;
-        }
-        padding: 0.8rem;
+    span {
+        display: none;
     }
 `;
 
 const NotificationButton = styled.div`
     position: relative;
-    cursor: pointer;
     padding: 0.8rem;
     border-radius: 50%;
     min-width: 44px;
@@ -472,18 +459,13 @@ const NotificationBadge = styled.span`
 const NotificationDropdown = styled.div`
     position: absolute;
     top: calc(100% + 0.5rem);
-    right: 0;
-    width: 300px;
+    right: -2rem;
+    width: 280px;
     background: #252527;
     border: 1px solid #3f3f41;
     border-radius: 1.2rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     z-index: 999;
-
-    @media (max-width: 480px) {
-        width: 280px;
-        right: -2rem;
-    }
 `;
 
 const NotificationHeader = styled.div`
@@ -539,7 +521,6 @@ const NotificationTime = styled.div`
 `;
 
 const ProfileButton = styled.div`
-    cursor: pointer;
     padding: 0.2rem;
     border-radius: 50%;
     min-width: 44px;
@@ -566,7 +547,6 @@ const BackButton = styled.button`
     background: transparent;
     border: none;
     color: #939393;
-    cursor: pointer;
     padding: 0.8rem 0.8rem 0.8rem 0.8rem;
     margin-left: -0.8rem;
     min-width: 44px;

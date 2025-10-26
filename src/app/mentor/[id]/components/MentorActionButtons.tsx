@@ -89,7 +89,10 @@ export default function MentorActionButtons({
         if (!isSaved) {
             // 좋아요 추가
             const updatedMentors = [...savedMentors, mentorId];
-            localStorage.setItem('savedMentors', JSON.stringify(updatedMentors));
+            localStorage.setItem(
+                'savedMentors',
+                JSON.stringify(updatedMentors),
+            );
             setIsSaved(true);
             toast.success('찜 목록에 추가했습니다!', {
                 id: 'mentor-save',
@@ -99,7 +102,10 @@ export default function MentorActionButtons({
             const updatedMentors = savedMentors.filter(
                 (id: number) => id !== mentorId,
             );
-            localStorage.setItem('savedMentors', JSON.stringify(updatedMentors));
+            localStorage.setItem(
+                'savedMentors',
+                JSON.stringify(updatedMentors),
+            );
             setIsSaved(false);
             toast.success('찜 목록에서 제거했습니다!', {
                 id: 'mentor-unsave',
@@ -134,7 +140,7 @@ const FixedButtonContainer = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
-    max-width: 800px;
+    max-width: 430px;
     margin: 0 auto;
     background: linear-gradient(
         to top,
@@ -164,7 +170,6 @@ const SaveButton = styled.button<{ $active: boolean }>`
     background-color: ${({ $active }) => ($active ? '#ef444420' : '#252527')};
     border: 0.1rem solid ${({ $active }) => ($active ? '#ef4444' : '#3f3f41')};
     border-radius: 1.6rem;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -189,7 +194,6 @@ const MessageButton = styled.button`
     color: #ffffff;
     font-size: 1.5rem;
     font-weight: 600;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -210,7 +214,6 @@ const ApplyButton = styled.button`
     color: #ffffff;
     font-size: 1.6rem;
     font-weight: 700;
-    cursor: pointer;
     transition: all 0.2s ease;
     box-shadow: 0 4px 16px rgba(66, 114, 236, 0.3);
 

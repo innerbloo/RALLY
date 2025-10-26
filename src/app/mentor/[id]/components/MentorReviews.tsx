@@ -208,7 +208,6 @@ const ReviewerInfo = styled.div`
     display: flex;
     align-items: center;
     gap: 1rem;
-    cursor: pointer;
     transition: opacity 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
@@ -270,7 +269,6 @@ const HelpfulButton = styled.button<{ $active: boolean }>`
     color: ${({ $active }) => ($active ? '#4272ec' : '#939393')};
     font-size: 1.3rem;
     font-weight: 500;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {

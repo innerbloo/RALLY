@@ -48,33 +48,11 @@ const SpotlightOverlay = styled.div<{ $isVisible: boolean }>`
     opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
     transition: opacity 0.3s ease;
     pointer-events: ${({ $isVisible }) => ($isVisible ? 'auto' : 'none')};
-
-
-    /* Spotlight 효과 - 버튼 영역만 밝게 */
-    /* 데스크톱: 중앙 800px 컨테이너 기준 오른쪽, 버튼은 bottom: 8rem */
     background: radial-gradient(
-        circle 140px at calc(50% + 800px / 2 - 8rem) calc(100% - 9rem),
+        circle 120px at calc(100% - 7rem) calc(100% - 10rem),
         rgba(0, 0, 0, 0.3) 0%,
         rgba(0, 0, 0, 0.85) 100%
     );
-
-    @media (max-width: 800px) {
-        /* 모바일: 오른쪽에서 약 8rem 위치 */
-        background: radial-gradient(
-            circle 130px at calc(100% - 8rem) calc(100% - 10rem),
-            rgba(0, 0, 0, 0.3) 0%,
-            rgba(0, 0, 0, 0.85) 100%
-        );
-    }
-
-    @media (max-width: 768px) {
-        /* 작은 모바일: 버튼이 safe-area-inset-bottom 고려 */
-        background: radial-gradient(
-            circle 120px at calc(100% - 7rem) calc(100% - 10rem),
-            rgba(0, 0, 0, 0.3) 0%,
-            rgba(0, 0, 0, 0.85) 100%
-        );
-    }
 `;
 
 const TooltipCard = styled.div`
@@ -82,17 +60,12 @@ const TooltipCard = styled.div`
     background: linear-gradient(135deg, #4272ec 0%, #3a5fd9 100%);
     border-radius: 1.6rem;
     padding: 1.8rem 2rem;
-    max-width: 30rem;
+    max-width: calc(100vw - 3rem);
     box-shadow: 0 8px 30px rgba(66, 114, 236, 0.5);
     animation: fadeInScale 0.3s ease;
+    right: 1.5rem;
+    bottom: calc(15rem + env(safe-area-inset-bottom));
 
-    /* 데스크톱: 버튼과 같은 수평 위치 (중앙 800px 컨테이너 기준 오른쪽) */
-    /* 버튼(bottom: 8rem) 바로 위에 배치 */
-    bottom: 16rem;
-    left: 50%;
-    transform: translateX(calc(800px / 2 - 2rem - 100%));
-
-    /* 말풍선 꼬리 */
     &::after {
         content: '';
         position: absolute;
@@ -103,20 +76,6 @@ const TooltipCard = styled.div`
         border-left: 1.2rem solid transparent;
         border-right: 1.2rem solid transparent;
         border-top: 1rem solid #3a5fd9;
-    }
-
-    @media (max-width: 800px) {
-        /* 모바일: 오른쪽 정렬 */
-        right: 2rem;
-        left: auto;
-        transform: none;
-        bottom: calc(15rem + env(safe-area-inset-bottom));
-    }
-
-    @media (max-width: 768px) {
-        right: 1.5rem;
-        max-width: calc(100vw - 3rem);
-        bottom: calc(15rem + env(safe-area-inset-bottom));
     }
 
     @keyframes fadeInScale {
@@ -151,7 +110,6 @@ const CloseButton = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
     color: #ffffff;
     transition: background-color 0.2s ease;
 

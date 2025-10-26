@@ -1,7 +1,13 @@
 'use client';
 
 import { Send } from 'lucide-react';
-import { forwardRef, KeyboardEvent, MouseEvent, TouchEvent, useState } from 'react';
+import {
+    KeyboardEvent,
+    MouseEvent,
+    TouchEvent,
+    forwardRef,
+    useState,
+} from 'react';
 
 import styled from '@emotion/styled';
 
@@ -14,25 +20,27 @@ const MessageInput = forwardRef<HTMLTextAreaElement, MessageInputProps>(
         const [message, setMessage] = useState('');
         const [isComposing, setIsComposing] = useState(false);
 
-    const handleSend = () => {
-        if (message.trim()) {
-            onSendMessage(message.trim());
-            setMessage('');
-        }
-    };
+        const handleSend = () => {
+            if (message.trim()) {
+                onSendMessage(message.trim());
+                setMessage('');
+            }
+        };
 
-    const handleButtonMouseDown = (e: MouseEvent<HTMLButtonElement> | TouchEvent<HTMLButtonElement>) => {
-        // iOS에서 버튼 클릭 시 input blur 방지
-        e.preventDefault();
-    };
-
-    const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-        // 한글 입력 중(조합 중)일 때는 Enter 키를 무시
-        if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
+        const handleButtonMouseDown = (
+            e: MouseEvent<HTMLButtonElement> | TouchEvent<HTMLButtonElement>,
+        ) => {
+            // iOS에서 버튼 클릭 시 input blur 방지
             e.preventDefault();
-            handleSend();
-        }
-    };
+        };
+
+        const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+            // 한글 입력 중(조합 중)일 때는 Enter 키를 무시
+            if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
+                e.preventDefault();
+                handleSend();
+            }
+        };
 
         return (
             <InputContainer>
@@ -72,7 +80,7 @@ const InputContainer = styled.div`
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    max-width: 800px;
+    max-width: 430px;
     width: 100%;
     background-color: #1a1a1a;
     border-top: 0.1rem solid #3f3f41;

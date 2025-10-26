@@ -24,7 +24,12 @@ import styled from '@emotion/styled';
 import MessageBubble from '@/app/components/MessageBubble';
 import MessageInput from '@/app/components/MessageInput';
 import TypingIndicator from '@/app/components/TypingIndicator';
-import { Message, mockChatRooms, mockMessages, ChatRoom } from '@/data/chatMockData';
+import {
+    ChatRoom,
+    Message,
+    mockChatRooms,
+    mockMessages,
+} from '@/data/chatMockData';
 import { getMentorDetailById } from '@/data/mentorDetailMockData';
 
 export default function ChatRoomPage() {
@@ -83,17 +88,9 @@ export default function ChatRoomPage() {
         scrollToBottom();
     }, [messages, isAiTyping]);
 
-    // 데스크톱 환경에서만 입력창에 자동 포커스
+    // 모바일 환경에서는 자동 포커스 하지 않음
     useEffect(() => {
-        // 데스크톱 환경 감지 (호버 가능 + 정밀한 포인터)
-        const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-        if (isDesktop && messageInputRef.current) {
-            // 약간의 딜레이를 두고 포커스 (페이지 로딩 완료 후)
-            setTimeout(() => {
-                messageInputRef.current?.focus();
-            }, 100);
-        }
+        // 자동 포커스 제거 - 모바일 전용
     }, []);
 
     // 외부 클릭 시 드롭다운 닫기
@@ -101,8 +98,10 @@ export default function ChatRoomPage() {
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as HTMLElement;
             // More 버튼이나 드롭다운 내부 클릭이 아닌 경우에만 닫기
-            if (!target.closest('button[aria-label="more-menu"]') &&
-                !target.closest('[data-more-dropdown]')) {
+            if (
+                !target.closest('button[aria-label="more-menu"]') &&
+                !target.closest('[data-more-dropdown]')
+            ) {
                 setIsMoreMenuOpen(false);
             }
         };
@@ -243,10 +242,14 @@ export default function ChatRoomPage() {
                 // 멘토인 경우 시스템 프롬프트 추가
                 let messages = conversationHistory;
                 if (room?.matchedUser.isMentor) {
-                    const mentorDetail = getMentorDetailById(room.matchedUser.userId);
+                    const mentorDetail = getMentorDetailById(
+                        room.matchedUser.userId,
+                    );
                     if (mentorDetail) {
                         // 첫 대화인지 확인 (시스템 메시지 제외)
-                        const userMessages = updatedMessages.filter(msg => msg.messageType !== 'system');
+                        const userMessages = updatedMessages.filter(
+                            (msg) => msg.messageType !== 'system',
+                        );
                         const isFirstMessage = userMessages.length <= 1;
 
                         const systemPrompt = `당신은 ${mentorDetail.username} 멘토입니다.
@@ -267,7 +270,7 @@ ${mentorDetail.bio}
 ${mentorDetail.style}
 
 [제공 서비스]
-${mentorDetail.services.map(s => `- ${s.type}: ${s.description} (${s.duration}분, ${s.price.toLocaleString()}원)`).join('\n')}
+${mentorDetail.services.map((s) => `- ${s.type}: ${s.description} (${s.duration}분, ${s.price.toLocaleString()}원)`).join('\n')}
 
 [커리큘럼]
 ${mentorDetail.curriculum.join('\n')}
@@ -281,7 +284,9 @@ ${mentorDetail.curriculum.join('\n')}
 학생들에게 친절하고 전문적으로 답변하되, 멘토의 스타일을 유지하세요.
 멘토링 관련 질문에는 위 정보를 참고하여 구체적으로 답변하세요.
 
-${isFirstMessage ? `
+${
+    isFirstMessage
+        ? `
 [중요] 이번 대화는 학생과의 첫 만남입니다. 반드시 다음 형식으로 답변하세요:
 1. 따뜻한 인사말로 시작
 2. 자신의 전문 분야와 경력을 2-3줄로 간단히 소개
@@ -292,11 +297,13 @@ ${isFirstMessage ? `
 "안녕하세요! 문의 주셔서 감사합니다 😊
 저는 [경력 요약]이고, [전문 분야] 멘토링을 하고 있어요.
 어떤 부분에서 도움이 필요하신가요?"
-` : ''}`;
+`
+        : ''
+}`;
 
                         messages = [
                             { role: 'system', content: systemPrompt },
-                            ...conversationHistory
+                            ...conversationHistory,
                         ];
                     }
                 }
@@ -564,7 +571,9 @@ ${isFirstMessage ? `
                                     )}
                                 </ProfileImageWrapper>
                                 <UserInfo>
-                                    <Username>{room.matchedUser.username}</Username>
+                                    <Username>
+                                        {room.matchedUser.username}
+                                    </Username>
                                     <OnlineStatus>
                                         {room.matchedUser.isOnline
                                             ? '온라인'
@@ -693,7 +702,10 @@ ${isFirstMessage ? `
                 <div ref={messagesEndRef} />
             </MessagesContainer>
 
-            <MessageInput ref={messageInputRef} onSendMessage={handleSendMessage} />
+            <MessageInput
+                ref={messageInputRef}
+                onSendMessage={handleSendMessage}
+            />
         </ChatRoomContainer>
     );
 }
@@ -710,7 +722,7 @@ const ChatRoomHeader = styled.header`
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    max-width: 800px;
+    max-width: 430px;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -731,7 +743,6 @@ const ProfileSection = styled.div`
     display: flex;
     align-items: center;
     gap: 1.2rem;
-    cursor: pointer;
     transition: opacity 0.2s ease;
     padding: 0.4rem 0.8rem;
     margin: -0.4rem -0.8rem;
@@ -751,7 +762,6 @@ const BackButton = styled.button`
     background: transparent;
     border: none;
     color: #939393;
-    cursor: pointer;
     padding: 0.8rem;
     margin-left: -0.8rem;
     min-width: 44px;
@@ -816,7 +826,6 @@ const MoreButton = styled.button`
     background: transparent;
     border: none;
     color: #939393;
-    cursor: pointer;
     padding: 0.8rem;
     margin-right: -0.8rem;
     min-width: 44px;
@@ -848,7 +857,6 @@ const MoreMenuItem = styled.div<{ $danger?: boolean }>`
     align-items: center;
     gap: 1.2rem;
     padding: 1.2rem 1.6rem;
-    cursor: pointer;
     color: ${({ $danger }) => ($danger ? '#ef4444' : '#ffffff')};
 
     span {
@@ -922,7 +930,6 @@ const SearchNavButton = styled.button`
     background: transparent;
     border: none;
     color: #939393;
-    cursor: pointer;
     padding: 0.6rem;
     min-width: 36px;
     min-height: 36px;
@@ -942,7 +949,6 @@ const CloseSearchButton = styled.button`
     background: transparent;
     border: none;
     color: #939393;
-    cursor: pointer;
     padding: 0.6rem;
     min-width: 36px;
     min-height: 36px;
