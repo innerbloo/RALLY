@@ -189,6 +189,7 @@ const OptionCard = styled.button<{ $active: boolean }>`
     border-radius: 1.6rem;
     transition: all 0.2s ease;
     text-align: center;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

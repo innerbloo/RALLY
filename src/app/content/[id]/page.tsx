@@ -713,6 +713,7 @@ const ActionButton = styled.button<{ $active?: boolean }>`
     font-size: 1.4rem;
     font-weight: 500;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -807,6 +808,18 @@ const CommentAuthor = styled.div`
     align-items: center;
     gap: 1rem;
     margin-bottom: 0.8rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    padding: 0.5rem;
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+    border-radius: 0.8rem;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            background: #1a1a1a;
+        }
+    }
 `;
 
 const CommentAuthorImage = styled.img`
@@ -853,6 +866,7 @@ const CommentLikeButton = styled.button<{ $active?: boolean }>`
     color: ${({ $active }) => ($active ? '#ef4444' : '#939393')};
     font-size: 1.2rem;
     padding: 0;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -901,6 +915,7 @@ const CommentSubmitButton = styled.button`
     font-size: 1.4rem;
     font-weight: 600;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -934,6 +949,7 @@ const BackButton = styled.button`
     font-size: 1.4rem;
     font-weight: 600;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

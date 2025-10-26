@@ -4,12 +4,15 @@ import { Zap } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
 
 import styled from '@emotion/styled';
 
 import MatchTutorial from '@/app/match/components/MatchTutorial';
 import StyleFilter from '@/app/match/components/StyleFilter';
+import { mockChatRooms } from '@/data/chatMockData';
 import { type BaseUser, getAllUsers } from '@/data/mockGameUsers';
+import { useDragScroll } from '@/hooks/useDragScroll';
 
 interface MatchUser extends BaseUser {
     status: 'online' | 'offline' | 'in-game' | 'matching';
@@ -25,6 +28,7 @@ export default function MatchPage() {
     const [visibleCount, setVisibleCount] = useState(10);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
     const router = useRouter();
+    const { scrollRef, isDragging } = useDragScroll();
 
     // 클라이언트에서만 유저 상태 설정 (Hydration 에러 방지)
     useEffect(() => {
@@ -136,6 +140,69 @@ export default function MatchPage() {
         setShowTutorial(false);
     };
 
+    const handleMatchRequest = (user: MatchUser) => {
+        toast.success('🎮 매칭 신청을 보냈습니다!', {
+            id: `match-${user.id}`,
+        });
+    };
+
+    const handleChatClick = (user: MatchUser) => {
+        // 목 데이터와 로컬스토리지의 채팅방을 모두 확인
+        const storedRooms = JSON.parse(
+            localStorage.getItem('chatRooms') || '[]',
+        );
+        const allRooms = [...mockChatRooms, ...storedRooms];
+
+        // 해당 유저와의 기존 채팅방 찾기
+        const existingRoom = allRooms.find(
+            (room) => room.matchedUser.userId === user.id,
+        );
+
+        if (existingRoom) {
+            // 기존 채팅방이 있으면 해당 방으로 이동
+            router.push(`/chat/${existingRoom.id}`);
+        } else {
+            // 게임 이름에 따른 아이콘 매핑
+            const gameImageMap: { [key: string]: string } = {
+                '리그오브레전드': '/game1.png',
+                '전략적 팀 전투': '/game2.png',
+                '발로란트': '/game3.png',
+                '오버워치2': '/game4.png',
+                '배틀그라운드': '/game5.png',
+            };
+
+            // 새 채팅방 생성
+            const newRoomId = Date.now();
+            const newRoom = {
+                id: newRoomId,
+                matchedUser: {
+                    userId: user.id,
+                    username: user.username,
+                    profileImage: user.profileImage,
+                    isOnline: true,
+                },
+                game: {
+                    name: user.game,
+                    image: gameImageMap[user.game] || '/game1.png',
+                },
+                lastMessage: {
+                    content: '매칭에서 채팅을 시작했습니다.',
+                    timestamp: new Date().toISOString(),
+                    senderId: 0,
+                },
+                unreadCount: 0,
+                matchedAt: new Date().toISOString(),
+            };
+
+            // localStorage에 새 채팅방 저장
+            storedRooms.push(newRoom);
+            localStorage.setItem('chatRooms', JSON.stringify(storedRooms));
+
+            // 새 채팅방으로 이동
+            router.push(`/chat/${newRoomId}`);
+        }
+    };
+
     const filteredUsers = useMemo(() => {
         return mockUsers.filter((user) => {
             const gameFilter =
@@ -215,7 +282,7 @@ export default function MatchPage() {
             <FilterSection>
                 <GameFilterContainer>
                     <h3>게임</h3>
-                    <GameFilterList>
+                    <GameFilterList ref={scrollRef} $isDragging={isDragging}>
                         {[
                             '전체',
                             '리그오브레전드',
@@ -262,14 +329,22 @@ export default function MatchPage() {
                                     alt={`${user.username} 프로필`}
                                 />
                                 <UserNameContent>
-                                    <UserNameWithPosition>
-                                        {user.username}
-                                        {user.position && (
-                                            <PositionIcon>
-                                                {user.position}
-                                            </PositionIcon>
-                                        )}
-                                    </UserNameWithPosition>
+                                    <UserNameRow>
+                                        <UserNameWithPosition>
+                                            {user.username}
+                                            {user.position && (
+                                                <PositionIcon>
+                                                    {user.position}
+                                                </PositionIcon>
+                                            )}
+                                        </UserNameWithPosition>
+                                        <StatusBadge $status={user.status}>
+                                            {user.status === 'online' && '온라인'}
+                                            {user.status === 'offline' && '오프라인'}
+                                            {user.status === 'in-game' && '게임중'}
+                                            {user.status === 'matching' && '매칭중'}
+                                        </StatusBadge>
+                                    </UserNameRow>
                                     <UserGameId>{user.gameId}</UserGameId>
                                     <UserDescription>
                                         {user.description}
@@ -298,14 +373,6 @@ export default function MatchPage() {
                                     </UserTags>
                                 </UserNameContent>
                             </UserNameCell>
-                            <StatusCell>
-                                <StatusBadge $status={user.status}>
-                                    {user.status === 'online' && '온라인'}
-                                    {user.status === 'offline' && '오프라인'}
-                                    {user.status === 'in-game' && '게임중'}
-                                    {user.status === 'matching' && '매칭중'}
-                                </StatusBadge>
-                            </StatusCell>
                             <TierCell>
                                 <TierImage
                                     src={getTierImage(user.tier, user.game)}
@@ -325,8 +392,16 @@ export default function MatchPage() {
                             </KDACell>
                             <ActionCell onClick={(e) => e.stopPropagation()}>
                                 <ActionButtons>
-                                    <MatchButton>듀오</MatchButton>
-                                    <ChatButton>채팅</ChatButton>
+                                    <MatchButton
+                                        onClick={() => handleMatchRequest(user)}
+                                    >
+                                        듀오
+                                    </MatchButton>
+                                    <ChatButton
+                                        onClick={() => handleChatClick(user)}
+                                    >
+                                        채팅
+                                    </ChatButton>
                                 </ActionButtons>
                             </ActionCell>
                         </UserRow>
@@ -412,7 +487,7 @@ const GameFilterContainer = styled.div`
     }
 `;
 
-const GameFilterList = styled.div`
+const GameFilterList = styled.div<{ $isDragging?: boolean }>`
     display: flex;
     gap: 1rem;
     overflow-x: auto;
@@ -421,6 +496,8 @@ const GameFilterList = styled.div`
     scrollbar-width: none; /* Firefox */
     margin: 0 -2rem;
     padding: 0 2rem;
+    cursor: ${({ $isDragging }) => ($isDragging ? 'grabbing' : 'grab')};
+    user-select: none;
 
     &::-webkit-scrollbar {
         display: none; /* Chrome, Safari, Edge */
@@ -429,6 +506,7 @@ const GameFilterList = styled.div`
     /* Prevent buttons from shrinking */
     > button {
         flex-shrink: 0;
+        pointer-events: ${({ $isDragging }) => ($isDragging ? 'none' : 'auto')};
     }
 `;
 
@@ -442,6 +520,7 @@ const GameFilterButton = styled.button<{ $active: boolean }>`
     background-color: ${({ $active }) => ($active ? '#4272ec' : 'transparent')};
     color: ${({ $active }) => ($active ? '#ffffff' : '#939393')};
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -473,6 +552,7 @@ const UserRow = styled.li`
     padding: 2rem;
     border-bottom: 0.1rem solid #3f3f41;
     transition: background-color 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -493,11 +573,20 @@ const UserProfileImage = styled.img`
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
+    cursor: pointer;
 `;
 
 const UserNameContent = styled.div`
     flex: 1;
     min-width: 0;
+`;
+
+const UserNameRow = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-bottom: 0.3rem;
 `;
 
 const UserNameWithPosition = styled.div`
@@ -507,7 +596,6 @@ const UserNameWithPosition = styled.div`
     font-size: 1.6rem;
     font-weight: 600;
     color: #ffffff;
-    margin-bottom: 0.3rem;
 `;
 
 const PositionIcon = styled.div`
@@ -611,17 +699,13 @@ const KDAValue = styled.div<{ $kda: number }>`
         $kda >= 2.0 ? '#22c55e' : $kda >= 1.5 ? '#f59e0b' : '#ef4444'};
 `;
 
-const StatusCell = styled.div`
-    display: flex;
-    justify-content: flex-start;
-`;
-
 const StatusBadge = styled.span<{ $status: string }>`
     padding: 0.4rem 0.8rem;
     font-size: 1.1rem;
     font-weight: 600;
     border-radius: 1rem;
     background-color: transparent;
+    white-space: nowrap;
     color: ${({ $status }) => {
         switch ($status) {
             case 'online':
@@ -659,6 +743,7 @@ const MatchButton = styled.button`
     border-radius: 1.5rem;
     transition: background-color 0.2s ease;
     word-break: keep-all;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -678,6 +763,7 @@ const ChatButton = styled.button`
     border-radius: 1.5rem;
     transition: all 0.2s ease;
     word-break: keep-all;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -692,7 +778,7 @@ const QuickMatchButton = styled.button<{
     $tutorialActive: boolean;
 }>`
     position: fixed;
-    right: 1.5rem;
+    left: 50%;
     bottom: calc(8rem + env(safe-area-inset-bottom));
     display: flex;
     align-items: center;
@@ -706,9 +792,12 @@ const QuickMatchButton = styled.button<{
     font-weight: 600;
     z-index: ${({ $tutorialActive }) => ($tutorialActive ? 10000 : 999)};
     transition: all 0.3s ease;
+    cursor: pointer;
     transform: ${({ $isAtBottom, $tutorialActive }) => {
-        if ($tutorialActive) return 'none';
-        return $isAtBottom ? 'translateY(150%)' : 'none';
+        if ($tutorialActive) return 'translateX(calc(-100% + 220px - 1.5rem))';
+        if ($isAtBottom)
+            return 'translateX(calc(-100% + 220px - 1.5rem)) translateY(150%)';
+        return 'translateX(calc(-100% + 220px - 1.5rem))';
     }};
 
     ${({ $tutorialActive }) =>
@@ -729,11 +818,23 @@ const QuickMatchButton = styled.button<{
         box-shadow: 0 4px 20px rgba(66, 114, 236, 0.4);
     `}
 
-    @media (hover: hover) and (pointer: fine) {
+    @media (max-width: 768px) {
+        left: auto;
+        right: 1.5rem;
+        transform: ${({ $isAtBottom, $tutorialActive }) => {
+            if ($tutorialActive) return 'none';
+            return $isAtBottom ? 'translateY(150%)' : 'none';
+        }};
+    }
+
+    @media (hover: hover) and (pointer: fine) and (min-width: 769px) {
         &:hover {
             transform: ${({ $isAtBottom, $tutorialActive }) => {
-                if ($tutorialActive) return 'translateY(-2px)';
-                return $isAtBottom ? 'translateY(150%)' : 'translateY(-2px)';
+                if ($tutorialActive)
+                    return 'translateX(calc(-100% + 220px - 1.5rem)) translateY(-2px)';
+                if ($isAtBottom)
+                    return 'translateX(calc(-100% + 220px - 1.5rem)) translateY(150%)';
+                return 'translateX(calc(-100% + 220px - 1.5rem)) translateY(-2px)';
             }};
             box-shadow: ${({ $tutorialActive }) =>
                 $tutorialActive
@@ -742,11 +843,16 @@ const QuickMatchButton = styled.button<{
         }
     }
 
-    &:active {
-        transform: ${({ $isAtBottom, $tutorialActive }) => {
-            if ($tutorialActive) return 'translateY(0)';
-            return $isAtBottom ? 'translateY(150%)' : 'translateY(0)';
-        }};
+    @media (min-width: 769px) {
+        &:active {
+            transform: ${({ $isAtBottom, $tutorialActive }) => {
+                if ($tutorialActive)
+                    return 'translateX(calc(-100% + 220px - 1.5rem))';
+                if ($isAtBottom)
+                    return 'translateX(calc(-100% + 220px - 1.5rem)) translateY(150%)';
+                return 'translateX(calc(-100% + 220px - 1.5rem))';
+            }};
+        }
     }
 
     svg {

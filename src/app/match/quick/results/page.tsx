@@ -630,6 +630,7 @@ const ChatButton = styled.button`
     border-radius: 50%;
     transition: all 0.2s ease;
     white-space: nowrap;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

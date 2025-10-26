@@ -27,16 +27,7 @@ export default function MentorRecommendList({
 }: MentorRecommendListProps) {
     return (
         <MentorWrapper>
-            <StyledSwiper
-                spaceBetween={10}
-                slidesPerView={1.4}
-                breakpoints={{
-                    768: {
-                        slidesPerView: 2.5,
-                        spaceBetween: 20,
-                    },
-                }}
-            >
+            <StyledSwiper spaceBetween={10} slidesPerView={1.4}>
                 {mentors.map((mentor) => (
                     <SwiperSlide key={mentor.id}>
                         <MentorRecommendCard

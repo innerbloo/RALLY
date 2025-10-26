@@ -208,6 +208,7 @@ const ImageUploadLabel = styled.label`
     border-radius: 50%;
     color: #939393;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -253,6 +254,7 @@ const RemoveImageButton = styled.button`
     border-radius: 50%;
     color: #ffffff;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -326,6 +328,7 @@ const CancelButton = styled.button`
     font-size: 1.6rem;
     font-weight: 600;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -349,6 +352,7 @@ const SubmitButton = styled.button`
     font-size: 1.6rem;
     font-weight: 700;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

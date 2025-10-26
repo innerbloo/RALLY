@@ -243,6 +243,7 @@ const TierCard = styled.button<{ $active: boolean }>`
     };
     border-radius: 1.2rem;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -290,6 +291,7 @@ const SubTierButton = styled.button<{ $active: boolean }>`
     };
     border-radius: 2rem;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

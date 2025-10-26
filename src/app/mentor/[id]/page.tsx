@@ -105,6 +105,7 @@ const BackButton = styled.button`
     font-size: 1.4rem;
     font-weight: 600;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

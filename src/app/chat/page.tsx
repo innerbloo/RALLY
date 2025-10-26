@@ -12,6 +12,7 @@ import {
     mockChatRooms,
     mockMessages,
 } from '@/data/chatMockData';
+import { useDragScroll } from '@/hooks/useDragScroll';
 
 export default function ChatPage() {
     const [chatRooms, setChatRooms] = useState<ChatRoom[]>(mockChatRooms);
@@ -20,6 +21,7 @@ export default function ChatPage() {
         'all',
     );
     const [selectedGame, setSelectedGame] = useState<string>('전체');
+    const { scrollRef, isDragging } = useDragScroll();
 
     // localStorage에서 최신 메시지 불러와서 채팅방 목록 업데이트
     useEffect(() => {
@@ -69,8 +71,8 @@ export default function ChatPage() {
         '전체',
         '리그오브레전드',
         '전략적 팀 전투',
-        '발로란트',
         '오버워치2',
+        '발로란트',
         '배틀그라운드',
     ];
 
@@ -134,7 +136,7 @@ export default function ChatPage() {
                     </SearchInputWrapper>
                 </SearchSection>
 
-                <GameFilterList>
+                <GameFilterList ref={scrollRef} $isDragging={isDragging}>
                     {gameList.map((game) => (
                         <GameFilterButton
                             key={game}
@@ -268,6 +270,7 @@ const FilterButton = styled.button<{ $active: boolean }>`
     background-color: ${({ $active }) => ($active ? '#4272ec' : 'transparent')};
     color: ${({ $active }) => ($active ? '#ffffff' : '#939393')};
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -277,7 +280,7 @@ const FilterButton = styled.button<{ $active: boolean }>`
     }
 `;
 
-const GameFilterList = styled.div`
+const GameFilterList = styled.div<{ $isDragging?: boolean }>`
     display: flex;
     gap: 1rem;
     overflow-x: auto;
@@ -286,6 +289,8 @@ const GameFilterList = styled.div`
     scrollbar-width: none;
     margin: 0 -2rem 1.5rem;
     padding: 0 2rem;
+    cursor: ${({ $isDragging }) => ($isDragging ? 'grabbing' : 'grab')};
+    user-select: none;
 
     &::-webkit-scrollbar {
         display: none;
@@ -293,6 +298,7 @@ const GameFilterList = styled.div`
 
     > button {
         flex-shrink: 0;
+        pointer-events: ${({ $isDragging }) => ($isDragging ? 'none' : 'auto')};
     }
 `;
 
@@ -306,6 +312,7 @@ const GameFilterButton = styled.button<{ $active: boolean }>`
     background-color: ${({ $active }) => ($active ? '#4272ec' : 'transparent')};
     color: ${({ $active }) => ($active ? '#ffffff' : '#939393')};
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

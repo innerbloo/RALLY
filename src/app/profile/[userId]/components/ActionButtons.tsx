@@ -3,20 +3,24 @@
 import { AlertCircle, Heart, MessageSquare, Users } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 import styled from '@emotion/styled';
+
+import { mockChatRooms } from '@/data/chatMockData';
 
 interface ActionButtonsProps {
     userId: number;
     username: string;
     profileImage: string;
+    game: string;
 }
 
 export default function ActionButtons({
     userId,
     username,
     profileImage,
+    game,
 }: ActionButtonsProps) {
     const router = useRouter();
     const [isFollowed, setIsFollowed] = useState(false);
@@ -30,21 +34,29 @@ export default function ActionButtons({
     }, [userId]);
 
     const handleChat = () => {
-        // 기존 채팅방 확인 또는 새로 생성
-        const chatRooms = JSON.parse(localStorage.getItem('chatRooms') || '[]');
-        const existingRoomIndex = chatRooms.findIndex(
-            (room: { matchedUser: { userId: number } }) =>
-                room.matchedUser.userId === userId,
+        // 목 데이터와 로컬스토리지의 채팅방을 모두 확인
+        const storedRooms = JSON.parse(localStorage.getItem('chatRooms') || '[]');
+        const allRooms = [...mockChatRooms, ...storedRooms];
+
+        // 기존 채팅방이 있는지 확인
+        const existingRoom = allRooms.find(
+            (room) => room.matchedUser.userId === userId,
         );
 
-        if (existingRoomIndex !== -1) {
-            // 기존 채팅방이 있으면 프로필 이미지를 최신 정보로 업데이트
-            chatRooms[existingRoomIndex].matchedUser.profileImage = profileImage;
-            chatRooms[existingRoomIndex].matchedUser.username = username;
-            localStorage.setItem('chatRooms', JSON.stringify(chatRooms));
-            router.push(`/chat/${chatRooms[existingRoomIndex].id}`);
+        if (existingRoom) {
+            // 기존 채팅방으로 이동
+            router.push(`/chat/${existingRoom.id}`);
         } else {
-            // 새 채팅방 생성 로직
+            // 게임 이름에 따른 아이콘 매핑
+            const gameImageMap: { [key: string]: string } = {
+                '리그오브레전드': '/game1.png',
+                '전략적 팀 전투': '/game2.png',
+                '발로란트': '/game3.png',
+                '오버워치2': '/game4.png',
+                '배틀그라운드': '/game5.png',
+            };
+
+            // 새 채팅방 생성
             const newRoom = {
                 id: Date.now(),
                 matchedUser: {
@@ -54,8 +66,8 @@ export default function ActionButtons({
                     isOnline: true,
                 },
                 game: {
-                    name: '리그오브레전드',
-                    image: '/game1.png',
+                    name: game,
+                    image: gameImageMap[game] || '/game1.png',
                 },
                 lastMessage: {
                     content: '프로필에서 채팅을 시작했습니다.',
@@ -66,8 +78,8 @@ export default function ActionButtons({
                 matchedAt: new Date().toISOString(),
             };
 
-            chatRooms.push(newRoom);
-            localStorage.setItem('chatRooms', JSON.stringify(chatRooms));
+            storedRooms.push(newRoom);
+            localStorage.setItem('chatRooms', JSON.stringify(storedRooms));
             router.push(`/chat/${newRoom.id}`);
         }
     };
@@ -118,50 +130,30 @@ export default function ActionButtons({
     };
 
     return (
-        <>
-            <Toaster
-                position="top-center"
-                containerStyle={{
-                    top: 'calc(env(safe-area-inset-top) + 20px)',
-                }}
-                toastOptions={{
-                    style: {
-                        background:
-                            'linear-gradient(135deg, #4272ec 0%, #3a5fd9 100%)',
-                        color: '#ffffff',
-                        fontSize: '1.4rem',
-                        padding: '1.2rem 1.6rem',
-                        borderRadius: '1.2rem',
-                        boxShadow: '0 4px 12px rgba(66, 114, 236, 0.3)',
-                    },
-                }}
-            />
+        <ButtonContainer>
+            <PrimaryButton onClick={handleChat}>
+                <MessageSquare size={20} />
+                채팅하기
+            </PrimaryButton>
 
-            <ButtonContainer>
-                <PrimaryButton onClick={handleChat}>
-                    <MessageSquare size={20} />
-                    채팅하기
-                </PrimaryButton>
+            <PrimaryButton
+                onClick={handleMatchRequest}
+                $variant="secondary"
+            >
+                <Users size={20} />
+                매칭 신청
+            </PrimaryButton>
 
-                <PrimaryButton
-                    onClick={handleMatchRequest}
-                    $variant="secondary"
-                >
-                    <Users size={20} />
-                    매칭 신청
-                </PrimaryButton>
+            <SecondaryButtons>
+                <IconButton onClick={handleFollow} $active={isFollowed}>
+                    <Heart size={20} />
+                </IconButton>
 
-                <SecondaryButtons>
-                    <IconButton onClick={handleFollow} $active={isFollowed}>
-                        <Heart size={20} />
-                    </IconButton>
-
-                    <IconButton onClick={handleReport}>
-                        <AlertCircle size={20} />
-                    </IconButton>
-                </SecondaryButtons>
-            </ButtonContainer>
-        </>
+                <IconButton onClick={handleReport}>
+                    <AlertCircle size={20} />
+                </IconButton>
+            </SecondaryButtons>
+        </ButtonContainer>
     );
 }
 
@@ -192,6 +184,7 @@ const PrimaryButton = styled.button<{ $variant?: 'primary' | 'secondary' }>`
     border-radius: 1.2rem;
     transition: all 0.2s ease;
     white-space: nowrap;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -227,6 +220,7 @@ const IconButton = styled.button<{ $active?: boolean }>`
     border-radius: 1.2rem;
     color: ${({ $active }) => ($active ? '#ef4444' : '#939393')};
     transition: all 0.2s ease;
+    cursor: pointer;
 
     svg {
         fill: ${({ $active }) => ($active ? '#ef4444' : 'none')};

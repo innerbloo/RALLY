@@ -358,6 +358,7 @@ const StyleTag = styled.button<{
         return '#939393';
     }};
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

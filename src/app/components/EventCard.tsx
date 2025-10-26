@@ -54,6 +54,14 @@ const CardContainer = styled.li`
     align-items: center;
     padding: 1.8rem 2rem;
     border-bottom: 0.1rem solid #3f3f41;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            background-color: #252527;
+        }
+    }
 `;
 
 const EventLeftSection = styled.div`

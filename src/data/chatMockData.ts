@@ -37,7 +37,7 @@ export const mockChatRooms: ChatRoom[] = [
     {
         id: 1,
         matchedUser: {
-            userId: 101,
+            userId: 1,
             username: '멋졌으면 핑찍어',
             profileImage: '/lol/profile-lol-1.png',
             position: '/lol/position-lol-top2.svg',
@@ -50,7 +50,7 @@ export const mockChatRooms: ChatRoom[] = [
         lastMessage: {
             content: '넵 그럼 8시에 디코 들어갈게요!',
             timestamp: '2025-09-08T18:30:00',
-            senderId: 101,
+            senderId: 1,
         },
         unreadCount: 2,
         matchedAt: '2025-09-08T10:00:00',
@@ -58,8 +58,8 @@ export const mockChatRooms: ChatRoom[] = [
     {
         id: 2,
         matchedUser: {
-            userId: 102,
-            username: '티 모',
+            userId: 2,
+            username: '그림자사냥꾼',
             profileImage: '/lol/profile-lol-2.png',
             isOnline: true,
         },
@@ -70,7 +70,7 @@ export const mockChatRooms: ChatRoom[] = [
         lastMessage: {
             content: '방금 플레 됐어요 ㅋㅋㅋ 감사합니다!',
             timestamp: '2025-09-08T16:45:00',
-            senderId: 102,
+            senderId: 2,
         },
         unreadCount: 0,
         matchedAt: '2025-09-07T14:20:00',
@@ -78,8 +78,8 @@ export const mockChatRooms: ChatRoom[] = [
     {
         id: 3,
         matchedUser: {
-            userId: 103,
-            username: '닮은 살걀',
+            userId: 201,
+            username: '레킹볼마스터',
             profileImage: '/overwatch/profile-overwatch-1.png',
             position: '/overwatch/position-overwatch-dps2.svg',
             isOnline: false,
@@ -91,7 +91,7 @@ export const mockChatRooms: ChatRoom[] = [
         lastMessage: {
             content: '오늘 재밌게 했어요! 내일 또 해요~',
             timestamp: '2025-09-07T23:15:00',
-            senderId: 103,
+            senderId: 201,
         },
         unreadCount: 0,
         matchedAt: '2025-09-06T19:00:00',
@@ -99,8 +99,8 @@ export const mockChatRooms: ChatRoom[] = [
     {
         id: 4,
         matchedUser: {
-            userId: 104,
-            username: '정글러의품격',
+            userId: 3,
+            username: '정글의왕',
             profileImage: '/lol/profile-lol-3.png',
             position: '/lol/position-lol-jungle2.svg',
             isOnline: true,
@@ -112,7 +112,7 @@ export const mockChatRooms: ChatRoom[] = [
         lastMessage: {
             content: '혹시 지금 한 판 하실 수 있나요?',
             timestamp: '2025-09-08T17:20:00',
-            senderId: 104,
+            senderId: 3,
         },
         unreadCount: 3,
         matchedAt: '2025-09-05T11:30:00',
@@ -120,8 +120,8 @@ export const mockChatRooms: ChatRoom[] = [
     {
         id: 5,
         matchedUser: {
-            userId: 105,
-            username: '겐지장인',
+            userId: 202,
+            username: '위도우메이커',
             profileImage: '/overwatch/profile-overwatch-2.png',
             isOnline: false,
         },
@@ -140,8 +140,8 @@ export const mockChatRooms: ChatRoom[] = [
     {
         id: 6,
         matchedUser: {
-            userId: 106,
-            username: '발로고인물',
+            userId: 4,
+            username: '미드라이너',
             profileImage: '/lol/profile-lol-4.png',
             isOnline: true,
         },
@@ -152,7 +152,7 @@ export const mockChatRooms: ChatRoom[] = [
         lastMessage: {
             content: '실력이 정말 좋으시네요!',
             timestamp: '2025-09-08T15:30:00',
-            senderId: 106,
+            senderId: 4,
         },
         unreadCount: 1,
         matchedAt: '2025-09-08T13:00:00',
@@ -160,9 +160,9 @@ export const mockChatRooms: ChatRoom[] = [
     {
         id: 7,
         matchedUser: {
-            userId: 107,
-            username: '배그생존왕',
-            profileImage: '/lol/profile-lol-1.png',
+            userId: 5,
+            username: '힐링게임러',
+            profileImage: '/lol/profile-lol-5.png',
             isOnline: false,
         },
         game: {
@@ -172,7 +172,7 @@ export const mockChatRooms: ChatRoom[] = [
         lastMessage: {
             content: '안녕하세요! 같이 스쿼드 돌아요',
             timestamp: '2025-09-04T10:20:00',
-            senderId: 107,
+            senderId: 5,
         },
         unreadCount: 0,
         matchedAt: '2025-09-04T10:15:00',
@@ -180,9 +180,9 @@ export const mockChatRooms: ChatRoom[] = [
     {
         id: 8,
         matchedUser: {
-            userId: 108,
-            username: '롤토체스장인',
-            profileImage: '/lol/profile-lol-2.png',
+            userId: 6,
+            username: '섬광탄',
+            profileImage: '/lol/profile-lol-6.png',
             isOnline: false,
         },
         game: {
@@ -223,7 +223,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 3,
             roomId: 1,
-            senderId: 101,
+            senderId: 1,
             content: '안녕하세요~ 저도 반갑습니다!',
             timestamp: '2025-09-08T10:07:00',
             isRead: true,
@@ -232,7 +232,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 4,
             roomId: 1,
-            senderId: 101,
+            senderId: 1,
             content: '프로필 보니까 탑 포지션이시네요. 저도 탑 주로 해요 ㅎㅎ',
             timestamp: '2025-09-08T10:08:00',
             isRead: true,
@@ -250,7 +250,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 6,
             roomId: 1,
-            senderId: 101,
+            senderId: 1,
             content: '저는 에메랄드 4입니다. 프로필에 있는 것처럼요',
             timestamp: '2025-09-08T10:11:00',
             isRead: true,
@@ -277,7 +277,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 9,
             roomId: 1,
-            senderId: 101,
+            senderId: 1,
             content: '네 저는 8시 이후로 괜찮아요!',
             timestamp: '2025-09-08T10:15:00',
             isRead: true,
@@ -304,7 +304,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 12,
             roomId: 1,
-            senderId: 101,
+            senderId: 1,
             content: 'ping_master#1234 입니다',
             timestamp: '2025-09-08T10:20:00',
             isRead: true,
@@ -322,7 +322,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 14,
             roomId: 1,
-            senderId: 101,
+            senderId: 1,
             content: '넵 그럼 8시에 디코 들어갈게요!',
             timestamp: '2025-09-08T18:30:00',
             isRead: false,
@@ -331,7 +331,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 15,
             roomId: 1,
-            senderId: 101,
+            senderId: 1,
             content: '기대되네요 ㅎㅎ',
             timestamp: '2025-09-08T18:31:00',
             isRead: false,
@@ -353,7 +353,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 2,
             roomId: 2,
-            senderId: 102,
+            senderId: 2,
             content: '안녕하세요! 롤토체스 같이 하실 분 찾고 있었어요',
             timestamp: '2025-09-07T14:25:00',
             isRead: true,
@@ -371,7 +371,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 4,
             roomId: 2,
-            senderId: 102,
+            senderId: 2,
             content: '저는 골드 1이에요~ 플레 가고 싶은데 잘 안되네요 ㅠㅠ',
             timestamp: '2025-09-07T14:28:00',
             isRead: true,
@@ -389,7 +389,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 6,
             roomId: 2,
-            senderId: 102,
+            senderId: 2,
             content: '오 감사합니다!! 지금 바로 하실 수 있나요?',
             timestamp: '2025-09-07T14:32:00',
             isRead: true,
@@ -407,7 +407,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 8,
             roomId: 2,
-            senderId: 102,
+            senderId: 2,
             content: '와 덕분에 연승했어요!',
             timestamp: '2025-09-07T16:20:00',
             isRead: true,
@@ -416,7 +416,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 9,
             roomId: 2,
-            senderId: 102,
+            senderId: 2,
             content: '아이템 조합 정말 잘 알려주시네요',
             timestamp: '2025-09-07T16:21:00',
             isRead: true,
@@ -434,7 +434,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 11,
             roomId: 2,
-            senderId: 102,
+            senderId: 2,
             content: '방금 플레 됐어요 ㅋㅋㅋ 감사합니다!',
             timestamp: '2025-09-08T16:45:00',
             isRead: true,
@@ -465,7 +465,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 3,
             roomId: 3,
-            senderId: 103,
+            senderId: 201,
             content: '안녕하세요! 오버워치 즐겜하시나요?',
             timestamp: '2025-09-06T19:07:00',
             isRead: true,
@@ -483,7 +483,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 5,
             roomId: 3,
-            senderId: 103,
+            senderId: 201,
             content: '좋아요! 저도 즐빡겜 좋아해요 ㅋㅋ',
             timestamp: '2025-09-06T19:09:00',
             isRead: true,
@@ -492,7 +492,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 6,
             roomId: 3,
-            senderId: 103,
+            senderId: 201,
             content: '지금 한 판 하실래요?',
             timestamp: '2025-09-06T19:10:00',
             isRead: true,
@@ -510,7 +510,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 8,
             roomId: 3,
-            senderId: 103,
+            senderId: 201,
             content: '오늘 재밌게 했어요! 내일 또 해요~',
             timestamp: '2025-09-07T23:15:00',
             isRead: true,
@@ -541,7 +541,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 2,
             roomId: 4,
-            senderId: 104,
+            senderId: 3,
             content: '안녕하세요! 정글 듀오 찾고 있었어요',
             timestamp: '2025-09-05T11:35:00',
             isRead: true,
@@ -559,7 +559,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 4,
             roomId: 4,
-            senderId: 104,
+            senderId: 3,
             content: '같이 몇 판 돌아봐요!',
             timestamp: '2025-09-05T11:40:00',
             isRead: true,
@@ -577,7 +577,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 6,
             roomId: 4,
-            senderId: 104,
+            senderId: 3,
             content: '평일 저녁이랑 주말 오후 가능해요',
             timestamp: '2025-09-05T11:45:00',
             isRead: true,
@@ -595,7 +595,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 8,
             roomId: 4,
-            senderId: 104,
+            senderId: 3,
             content: '혹시 지금 한 판 하실 수 있나요?',
             timestamp: '2025-09-08T17:20:00',
             isRead: false,
@@ -604,7 +604,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 9,
             roomId: 4,
-            senderId: 104,
+            senderId: 3,
             content: '저 막 접속했어요~',
             timestamp: '2025-09-08T17:21:00',
             isRead: false,
@@ -613,7 +613,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 10,
             roomId: 4,
-            senderId: 104,
+            senderId: 3,
             content: '답 주시면 바로 게임 시작할게요!',
             timestamp: '2025-09-08T17:22:00',
             isRead: false,
@@ -635,7 +635,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 2,
             roomId: 5,
-            senderId: 105,
+            senderId: 202,
             content: '안녕하세요~ 겐지 유저시군요!',
             timestamp: '2025-09-05T16:50:00',
             isRead: true,
@@ -653,7 +653,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 4,
             roomId: 5,
-            senderId: 105,
+            senderId: 202,
             content: '저도 DPS 메인인데 궁합 잘 맞을 것 같네요',
             timestamp: '2025-09-05T16:54:00',
             isRead: true,
@@ -671,7 +671,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 6,
             roomId: 5,
-            senderId: 105,
+            senderId: 202,
             content: '이번 주는 좀 바빠서... 주말은 어떠세요?',
             timestamp: '2025-09-05T16:58:00',
             isRead: true,
@@ -711,7 +711,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 3,
             roomId: 6,
-            senderId: 106,
+            senderId: 4,
             content: '안녕하세요~ 발로란트 티어가 어떻게 되세요?',
             timestamp: '2025-09-08T13:07:00',
             isRead: true,
@@ -729,7 +729,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 5,
             roomId: 6,
-            senderId: 106,
+            senderId: 4,
             content: '와 고수시네요! 저 플래티넌데 괜찮을까요?',
             timestamp: '2025-09-08T13:12:00',
             isRead: true,
@@ -747,7 +747,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 7,
             roomId: 6,
-            senderId: 106,
+            senderId: 4,
             content: '감사합니다 ㅎㅎ 한 판 돌려봐요',
             timestamp: '2025-09-08T13:18:00',
             isRead: true,
@@ -756,7 +756,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 8,
             roomId: 6,
-            senderId: 106,
+            senderId: 4,
             content: '실력이 정말 좋으시네요!',
             timestamp: '2025-09-08T15:30:00',
             isRead: false,
@@ -778,7 +778,7 @@ export const mockMessages: { [roomId: number]: Message[] } = {
         {
             id: 2,
             roomId: 7,
-            senderId: 107,
+            senderId: 5,
             content: '안녕하세요! 같이 스쿼드 돌아요',
             timestamp: '2025-09-04T10:20:00',
             isRead: true,

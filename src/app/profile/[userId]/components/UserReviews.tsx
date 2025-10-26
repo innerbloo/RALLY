@@ -275,6 +275,7 @@ const HelpfulButton = styled.button<{ $active: boolean }>`
     font-size: 1.3rem;
     font-weight: 500;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

@@ -8,6 +8,7 @@ import styled from '@emotion/styled';
 
 import CommunityList from '@/app/components/CommunityList';
 import { mockPosts } from '@/data/communityMockData';
+import { useDragScroll } from '@/hooks/useDragScroll';
 
 export default function CommunityPage() {
     const [selectedGame, setSelectedGame] = useState<string>('전체');
@@ -17,6 +18,7 @@ export default function CommunityPage() {
     const [allPosts, setAllPosts] = useState(mockPosts);
     const [isAtBottom, setIsAtBottom] = useState(false);
     const router = useRouter();
+    const { scrollRef, isDragging } = useDragScroll();
 
     // 로컬스토리지에서 내가 작성한 게시글 불러오기
     useEffect(() => {
@@ -86,13 +88,13 @@ export default function CommunityPage() {
             <FilterSection>
                 <GameFilterContainer>
                     <h3>게임</h3>
-                    <GameFilterList>
+                    <GameFilterList ref={scrollRef} $isDragging={isDragging}>
                         {[
                             '전체',
                             '리그오브레전드',
                             '전략적 팀 전투',
-                            '발로란트',
                             '오버워치2',
+                            '발로란트',
                             '배틀그라운드',
                         ].map((game) => (
                             <GameFilterButton
@@ -214,18 +216,17 @@ const GameFilterContainer = styled.div`
     }
 `;
 
-const GameFilterList = styled.div`
+const GameFilterList = styled.div<{ $isDragging?: boolean }>`
     display: flex;
     gap: 1rem;
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none; /* Firefox */
-
-    @media (max-width: 480px) {
-        margin: 0 -2rem;
-        padding: 0 2rem;
-    }
+    cursor: ${({ $isDragging }) => ($isDragging ? 'grabbing' : 'grab')};
+    user-select: none;
+    margin: 0 -2rem;
+    padding: 0 2rem;
 
     &::-webkit-scrollbar {
         display: none; /* Chrome, Safari, Edge */
@@ -234,6 +235,7 @@ const GameFilterList = styled.div`
     /* Prevent buttons from shrinking */
     > button {
         flex-shrink: 0;
+        pointer-events: ${({ $isDragging }) => ($isDragging ? 'none' : 'auto')};
     }
 `;
 
@@ -331,72 +333,51 @@ const PostListSection = styled.section`
 
 const NewPostButton = styled.button<{ $isAtBottom: boolean }>`
     position: fixed;
-    bottom: 8rem;
+    left: 50%;
+    bottom: calc(8rem + env(safe-area-inset-bottom));
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    padding: 1.2rem 2rem;
+    padding: 1rem 1.6rem;
     background: linear-gradient(135deg, #4272ec 0%, #3a5fd9 100%);
     color: #ffffff;
     border: none;
     border-radius: 3rem;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 600;
     cursor: pointer;
     box-shadow: 0 4px 20px rgba(66, 114, 236, 0.4);
     z-index: 999;
     transition: all 0.3s ease;
-
-    /* Position relative to centered 800px container */
-    left: 50%;
     transform: ${({ $isAtBottom }) =>
         $isAtBottom
-            ? 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(150%)'
-            : 'translateX(calc(800px / 2 - 2rem - 100%))'};
+            ? 'translateX(calc(-100% + 220px - 1.5rem)) translateY(150%)'
+            : 'translateX(calc(-100% + 220px - 1.5rem))'};
 
-    @media (max-width: 800px) {
-        right: 2rem;
+    @media (max-width: 768px) {
         left: auto;
+        right: 1.5rem;
         transform: ${({ $isAtBottom }) =>
             $isAtBottom ? 'translateY(150%)' : 'none'};
     }
 
-    @media (hover: hover) and (pointer: fine) {
+    @media (hover: hover) and (pointer: fine) and (min-width: 769px) {
         &:hover {
             transform: ${({ $isAtBottom }) =>
                 $isAtBottom
-                    ? 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(150%)'
-                    : 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(-2px)'};
+                    ? 'translateX(calc(-100% + 220px - 1.5rem)) translateY(150%)'
+                    : 'translateX(calc(-100% + 220px - 1.5rem)) translateY(-2px)'};
             box-shadow: 0 8px 25px rgba(66, 114, 236, 0.5);
         }
     }
 
-    @media (hover: hover) and (pointer: fine) and (max-width: 800px) {
-        &:hover {
-            transform: ${({ $isAtBottom }) =>
-                $isAtBottom ? 'translateY(150%)' : 'translateY(-2px)'};
-        }
-    }
-
-    &:active {
-        transform: ${({ $isAtBottom }) =>
-            $isAtBottom
-                ? 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(150%)'
-                : 'translateX(calc(800px / 2 - 2rem - 100%)) translateY(0)'};
-    }
-
-    @media (max-width: 800px) {
+    @media (min-width: 769px) {
         &:active {
             transform: ${({ $isAtBottom }) =>
-                $isAtBottom ? 'translateY(150%)' : 'translateY(0)'};
+                $isAtBottom
+                    ? 'translateX(calc(-100% + 220px - 1.5rem)) translateY(150%)'
+                    : 'translateX(calc(-100% + 220px - 1.5rem))'};
         }
-    }
-
-    @media (max-width: 768px) {
-        right: 1.5rem;
-        bottom: calc(8rem + env(safe-area-inset-bottom));
-        padding: 1rem 1.6rem;
-        font-size: 1.3rem;
     }
 
     svg {

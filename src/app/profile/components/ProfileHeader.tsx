@@ -77,6 +77,7 @@ const HeaderContainer = styled.div`
 
 const ProfileImageWrapper = styled.div`
     flex-shrink: 0;
+    cursor: pointer;
 `;
 
 const ProfileImage = styled(Image)`

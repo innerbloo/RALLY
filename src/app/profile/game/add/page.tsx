@@ -713,6 +713,7 @@ const GameCard = styled.button<{ $active: boolean }>`
     border: 0.2rem solid ${({ $active }) => ($active ? '#4272ec' : '#3f3f41')};
     border-radius: 1.6rem;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -785,6 +786,7 @@ const RankButton = styled.button<{ $active: boolean }>`
         $active ? 'rgba(66, 114, 236, 0.2)' : 'transparent'};
     color: ${({ $active }) => ($active ? '#ffffff' : '#939393')};
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -823,6 +825,7 @@ const TierCard = styled.button<{ $active: boolean }>`
     border: 0.2rem solid ${({ $active }) => ($active ? '#4272ec' : '#3f3f41')};
     border-radius: 1.2rem;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -880,6 +883,7 @@ const SubTierButton = styled.button<{ $active: boolean }>`
     background-color: ${({ $active }) => ($active ? '#4272ec' : 'transparent')};
     color: ${({ $active }) => ($active ? '#ffffff' : '#939393')};
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -914,6 +918,7 @@ const PositionCard = styled.button<{ $active: boolean }>`
     border: 0.2rem solid ${({ $active }) => ($active ? '#4272ec' : '#3f3f41')};
     border-radius: 1.2rem;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -1023,6 +1028,7 @@ const StyleTag = styled.button<{
         return '#939393';
     }};
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -1064,6 +1070,7 @@ const FooterButton = styled.button<{ $variant: 'primary' | 'secondary' }>`
         $variant === 'secondary' ? '0.1rem solid #3f3f41' : 'none'};
     border-radius: 1.2rem;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     background-color: ${({ $variant }) =>
         $variant === 'primary' ? '#4272ec' : 'transparent'};

@@ -171,6 +171,7 @@ const SaveButton = styled.button<{ $active: boolean }>`
     border: 0.1rem solid ${({ $active }) => ($active ? '#ef4444' : '#3f3f41')};
     border-radius: 1.6rem;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -195,6 +196,7 @@ const MessageButton = styled.button`
     font-size: 1.5rem;
     font-weight: 600;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -216,6 +218,7 @@ const ApplyButton = styled.button`
     font-weight: 700;
     transition: all 0.2s ease;
     box-shadow: 0 4px 16px rgba(66, 114, 236, 0.3);
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

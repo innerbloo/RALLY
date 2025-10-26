@@ -63,7 +63,8 @@ const TooltipCard = styled.div`
     max-width: calc(100vw - 3rem);
     box-shadow: 0 8px 30px rgba(66, 114, 236, 0.5);
     animation: fadeInScale 0.3s ease;
-    right: 1.5rem;
+    left: 50%;
+    transform: translateX(calc(-100% + 220px - 1.5rem));
     bottom: calc(15rem + env(safe-area-inset-bottom));
 
     &::after {
@@ -76,6 +77,12 @@ const TooltipCard = styled.div`
         border-left: 1.2rem solid transparent;
         border-right: 1.2rem solid transparent;
         border-top: 1rem solid #3a5fd9;
+    }
+
+    @media (max-width: 768px) {
+        transform: unset;
+        left: unset;
+        right: 1.5rem;
     }
 
     @keyframes fadeInScale {
@@ -112,6 +119,7 @@ const CloseButton = styled.button`
     justify-content: center;
     color: #ffffff;
     transition: background-color 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

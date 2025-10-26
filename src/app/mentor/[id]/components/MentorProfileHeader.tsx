@@ -71,6 +71,7 @@ const HeaderContainer = styled.div`
 
 const ProfileImageWrapper = styled.div`
     margin-bottom: 1.5rem;
+    cursor: pointer;
 `;
 
 const ProfileImage = styled(Image)`

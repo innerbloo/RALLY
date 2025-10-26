@@ -150,6 +150,7 @@ export default function UserProfilePage() {
                     userId={userData.id}
                     username={userData.username}
                     profileImage={userData.profileImage}
+                    game={userData.game}
                 />
 
                 <UserStats
@@ -245,6 +246,7 @@ const BackButton = styled.button`
     border: none;
     border-radius: 1.2rem;
     transition: background-color 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

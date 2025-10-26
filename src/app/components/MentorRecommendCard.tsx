@@ -74,8 +74,8 @@ const CardContainer = styled.li`
     border: 0.1rem solid #3f3f41;
     border-radius: 1.6rem;
     background-color: #252527;
-    transition: all 0.2s ease;
     cursor: pointer;
+    transition: all 0.2s ease;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

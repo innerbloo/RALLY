@@ -373,6 +373,7 @@ const NavigationButton = styled.button<{
     border: none;
     border-radius: 1.2rem;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     background-color: ${({ $variant, disabled }) => {
         if (disabled) return '#3f3f41';

@@ -9,7 +9,14 @@
       "Bash(git reset HEAD src/app/match/)",
       "Bash(git checkout -- src/app/match/)",
       "Bash(git clean -fd src/app/match/)",
-      "Bash(npm run dev)"
+      "Bash(npm run dev)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(for file in /Users/jeonghoseong/Desktop/RALLY/src/app/{chat,match,community,profile}/**/*.tsx)",
+      "Bash(do echo \"=== $file ===\")",
+      "Bash(done)",
+      "Bash(xargs -I {} sh -c 'echo \"\"\"\"File: {}\"\"\"\"; grep -A10 \"\"\"\"= styled.button\\`\"\"\"\" \"\"\"\"{}\"\"\"\" | grep -c \"\"\"\"cursor: pointer\"\"\"\" || echo \"\"\"\"0\"\"\"\"')",
+      "Bash(paste:*)"
     ],
     "deny": [],
     "ask": []

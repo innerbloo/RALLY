@@ -344,6 +344,7 @@ const Select = styled.select`
     background-repeat: no-repeat;
     background-position: right 1.6rem center;
     padding-right: 4rem;
+    cursor: pointer;
 
     option {
         background-color: #252527;
@@ -407,6 +408,7 @@ const ImageUploadLabel = styled.label`
     border-radius: 1.2rem;
     color: #939393;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -445,6 +447,7 @@ const RemoveImageButton = styled.button`
     border-radius: 50%;
     color: #ffffff;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -514,6 +517,7 @@ const AddTagButton = styled.button`
     font-size: 1.4rem;
     font-weight: 600;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -523,6 +527,7 @@ const AddTagButton = styled.button`
 
     &:disabled {
         opacity: 0.5;
+        cursor: not-allowed;
     }
 `;
 
@@ -554,6 +559,7 @@ const RemoveTagButton = styled.button`
     color: #ffffff;
     padding: 0;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

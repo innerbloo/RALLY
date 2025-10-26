@@ -310,6 +310,7 @@ const Logo = styled.h1`
     color: #4272ec;
     margin: 0;
     height: 2rem;
+    cursor: pointer;
 `;
 
 const StatusIndicator = styled.div`
@@ -410,6 +411,7 @@ const QuickMatchButton = styled.button`
     font-size: 1.3rem;
     font-weight: 600;
     min-width: 44px;
+    cursor: pointer;
 
     span {
         display: none;
@@ -425,6 +427,7 @@ const NotificationButton = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -552,6 +555,7 @@ const BackButton = styled.button`
     min-width: 44px;
     min-height: 44px;
     border-radius: 50%;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

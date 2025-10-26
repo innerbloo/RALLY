@@ -6,6 +6,7 @@ export const CommonButton = styled.button`
     font-weight: 600;
     padding: 1.3rem;
     border-radius: 3.8rem;
+    cursor: pointer;
 
     a {
         display: block;

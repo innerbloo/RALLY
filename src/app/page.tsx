@@ -7,8 +7,8 @@ import toast from 'react-hot-toast';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-import PositionLolJungle2 from '/public/lol/position-lol-jungle2.svg';
 import PositionLolTop2 from '/public/lol/position-lol-top2.svg';
+import SupportIcon from '/public/overwatch/position-overwatch-support2.svg';
 
 import styled from '@emotion/styled';
 
@@ -153,52 +153,46 @@ export default function Home() {
                                 gameAlt: '리그오브레전드',
                             },
                             {
-                                id: 2,
-                                profileImage: '/lol/profile-lol-2.png',
-                                username: '그림자사냥꾼',
-                                position: (
-                                    <PositionLolJungle2
-                                        width={20}
-                                        height={20}
-                                    />
-                                ),
-                                userCode: '#SH001',
+                                id: 121,
+                                profileImage: '/lol/profile-lol-4.png',
+                                username: '젠장또대상혁이야',
+                                position: undefined,
+                                userCode: '#SANGHYUK021',
                                 description:
-                                    '정글러 메인입니다. 실력 있는 원딜분과 듀오하고 싶어요',
-                                rankImage: '/lol/rank-lol-diamond.webp',
-                                rankText: 'D3',
+                                    'TFT 배우는 중입니다! 아이템 조합 알려주세요 ㅠㅠ',
+                                rankImage: '/lol/rank-lol-silver.webp',
+                                rankText: 'S4',
                                 tags: [
-                                    '공격적인',
-                                    '리더형',
+                                    '신중한 플레이',
+                                    '서포터형',
+                                    '채팅 위주',
+                                    '+',
+                                ],
+                                gameImage: '/game2.png',
+                                gameAlt: '전략적 팀 전투',
+                            },
+                            {
+                                id: 208,
+                                profileImage:
+                                    '/overwatch/profile-overwatch-8.png',
+                                username: '아나할머니',
+                                position: (
+                                    <SupportIcon width={20} height={20} />
+                                ),
+                                userCode: '#ANA888',
+                                description:
+                                    '아나 장인 출신 힐러랑 재밌게 한판 하실분~',
+                                rankImage:
+                                    '/overwatch/rank-overwatch-master.webp',
+                                rankText: 'M1',
+                                tags: [
+                                    '전략적인',
+                                    '팀 중심형',
                                     '마이크 필수',
                                     '+',
                                 ],
-                                gameImage: '/game1.png',
-                                gameAlt: '리그오브레전드',
-                            },
-                            {
-                                id: 3,
-                                profileImage: '/lol/profile-lol-3.png',
-                                username: '정글의왕',
-                                position: (
-                                    <PositionLolJungle2
-                                        width={20}
-                                        height={20}
-                                    />
-                                ),
-                                userCode: '#KING789',
-                                description:
-                                    '정글 전문, 캐리하고 싶은 분들 오세요!',
-                                rankImage: '/lol/rank-lol-platinum.webp',
-                                rankText: 'P2',
-                                tags: [
-                                    '리더형',
-                                    '팀 중심형',
-                                    '유머러스한',
-                                    '+',
-                                ],
-                                gameImage: '/game1.png',
-                                gameAlt: '리그오브레전드',
+                                gameImage: '/game4.png',
+                                gameAlt: '오버워치2',
                             },
                         ]}
                     />
@@ -328,7 +322,7 @@ const HomeContainer = styled.main`
         padding: 2rem 2rem 0;
 
         > h2 {
-            font-size: 2.4rem;
+            font-size: 1.8rem;
             font-weight: 700;
             margin: 0 0 2rem;
         }

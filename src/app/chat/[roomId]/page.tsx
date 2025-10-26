@@ -747,6 +747,7 @@ const ProfileSection = styled.div`
     padding: 0.4rem 0.8rem;
     margin: -0.4rem -0.8rem;
     border-radius: 1.2rem;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -767,6 +768,7 @@ const BackButton = styled.button`
     min-width: 44px;
     min-height: 44px;
     border-radius: 50%;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -777,6 +779,7 @@ const BackButton = styled.button`
 
 const ProfileImageWrapper = styled.div`
     position: relative;
+    cursor: pointer;
 
     img {
         border-radius: 50%;
@@ -831,6 +834,7 @@ const MoreButton = styled.button`
     min-width: 44px;
     min-height: 44px;
     border-radius: 50%;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -934,6 +938,7 @@ const SearchNavButton = styled.button`
     min-width: 36px;
     min-height: 36px;
     border-radius: 50%;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -953,6 +958,7 @@ const CloseSearchButton = styled.button`
     min-width: 36px;
     min-height: 36px;
     border-radius: 50%;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

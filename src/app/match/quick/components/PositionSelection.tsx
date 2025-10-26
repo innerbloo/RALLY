@@ -311,6 +311,7 @@ const PositionCard = styled.button<{
     border: 0.2rem solid ${({ $active }) => ($active ? '#4272ec' : '#3f3f41')};
     border-radius: 1.6rem;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {

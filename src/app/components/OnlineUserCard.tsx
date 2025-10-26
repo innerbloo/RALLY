@@ -105,6 +105,14 @@ const CardContainer = styled.li`
     border-radius: 1.6rem;
     background-color: #252527;
     min-width: 280px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            background-color: #2a2a2c;
+        }
+    }
 `;
 
 const OnlineTopSection = styled.div`

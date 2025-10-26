@@ -70,19 +70,7 @@ export default function ChatRoomCard({
 
             <ContentSection>
                 <TopRow>
-                    <UserInfo>
-                        <Username>{matchedUser.username}</Username>
-                        {matchedUser.position && (
-                            <PositionIcon>
-                                <Image
-                                    src={matchedUser.position}
-                                    width={14}
-                                    height={14}
-                                    alt="포지션"
-                                />
-                            </PositionIcon>
-                        )}
-                    </UserInfo>
+                    <Username>{matchedUser.username}</Username>
                     <TimeStamp>
                         {dayjs(lastMessage.timestamp).fromNow()}
                     </TimeStamp>
@@ -108,6 +96,7 @@ const CardContainer = styled.li`
     padding: 1.6rem 2rem;
     border-bottom: 0.1rem solid #3f3f41;
     transition: background-color 0.2s ease;
+    cursor: pointer;
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
@@ -154,24 +143,11 @@ const TopRow = styled.div`
     align-items: center;
 `;
 
-const UserInfo = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-`;
-
 const Username = styled.h3`
     font-size: 1.6rem;
     font-weight: 500;
     color: #ffffff;
     margin: 0;
-`;
-
-const PositionIcon = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.8;
 `;
 
 const TimeStamp = styled.span`
