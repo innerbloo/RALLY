@@ -165,65 +165,67 @@ export default function GNB() {
         };
     }, []);
 
-    // iOS Safari 동적 브라우저 UI 대응
+    // iOS 및 모바일 브라우저 동적 UI 대응
     useEffect(() => {
-        const updateViewportHeight = () => {
+        const updateGNBPosition = () => {
+            const gnbElement = document.querySelector('[data-gnb]') as HTMLElement;
+            if (!gnbElement) return;
+
             if (window.visualViewport) {
-                const vh = window.visualViewport.height;
-                const vt = window.visualViewport.offsetTop;
+                const viewportHeight = window.visualViewport.height;
+                const offsetTop = window.visualViewport.offsetTop;
                 const windowHeight = window.innerHeight;
-                const diff = windowHeight - vh;
 
-                // 디버깅용 로그 (개발 환경에서만)
-                if (process.env.NODE_ENV === 'development') {
-                    console.log('Viewport Debug:', {
-                        innerHeight: windowHeight,
-                        visualHeight: vh,
-                        visualTop: vt,
-                        offset: diff,
-                    });
-                }
+                // 실제 뷰포트 하단까지의 거리 계산
+                const bottomOffset = windowHeight - (viewportHeight + offsetTop);
 
-                // CSS 변수 업데이트
+                // GNB를 실제 뷰포트 하단에 고정
+                gnbElement.style.bottom = `${bottomOffset}px`;
+
+                // CSS 변수도 업데이트 (다른 요소에서 사용할 수 있도록)
                 document.documentElement.style.setProperty(
-                    '--visual-viewport-offset',
-                    `${diff}px`,
+                    '--gnb-bottom-offset',
+                    `${bottomOffset}px`,
+                );
+            } else {
+                // visualViewport를 지원하지 않는 브라우저
+                gnbElement.style.bottom = '0px';
+                document.documentElement.style.setProperty(
+                    '--gnb-bottom-offset',
+                    '0px',
                 );
             }
         };
 
-        // 초기 설정
-        updateViewportHeight();
+        // 초기 설정 및 약간의 지연을 두고 재설정 (브라우저 렌더링 완료 대기)
+        updateGNBPosition();
+        setTimeout(updateGNBPosition, 100);
+        setTimeout(updateGNBPosition, 300);
 
-        // visualViewport 리스너 등록
+        // visualViewport 이벤트 리스너
         if (window.visualViewport) {
-            window.visualViewport.addEventListener(
-                'resize',
-                updateViewportHeight,
-            );
-            window.visualViewport.addEventListener(
-                'scroll',
-                updateViewportHeight,
-            );
+            window.visualViewport.addEventListener('resize', updateGNBPosition);
+            window.visualViewport.addEventListener('scroll', updateGNBPosition);
         }
 
-        // 페이지 스크롤도 감지 (폴백)
-        window.addEventListener('scroll', updateViewportHeight);
-        window.addEventListener('resize', updateViewportHeight);
+        // 페이지 스크롤 및 리사이즈 감지
+        window.addEventListener('scroll', updateGNBPosition, { passive: true });
+        window.addEventListener('resize', updateGNBPosition);
+
+        // orientationchange 이벤트 추가 (모바일 화면 회전 대응)
+        window.addEventListener('orientationchange', () => {
+            setTimeout(updateGNBPosition, 100);
+            setTimeout(updateGNBPosition, 500);
+        });
 
         return () => {
             if (window.visualViewport) {
-                window.visualViewport.removeEventListener(
-                    'resize',
-                    updateViewportHeight,
-                );
-                window.visualViewport.removeEventListener(
-                    'scroll',
-                    updateViewportHeight,
-                );
+                window.visualViewport.removeEventListener('resize', updateGNBPosition);
+                window.visualViewport.removeEventListener('scroll', updateGNBPosition);
             }
-            window.removeEventListener('scroll', updateViewportHeight);
-            window.removeEventListener('resize', updateViewportHeight);
+            window.removeEventListener('scroll', updateGNBPosition);
+            window.removeEventListener('resize', updateGNBPosition);
+            window.removeEventListener('orientationchange', updateGNBPosition);
         };
     }, []);
 
@@ -231,7 +233,7 @@ export default function GNB() {
     if (isInputFocused) return null;
 
     return (
-        <GNBContainer>
+        <GNBContainer data-gnb>
             <GNBWrapper>
                 {menuItems.map((item) => {
                     const active = isActive(item.path);
@@ -275,7 +277,7 @@ export default function GNB() {
 
 const GNBContainer = styled.nav`
     position: fixed;
-    bottom: var(--visual-viewport-offset, 0px);
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     max-width: 430px;
@@ -284,11 +286,17 @@ const GNBContainer = styled.nav`
     background: #1a1a1a;
     border-top: 1px solid #3f3f41;
     padding-bottom: max(calc(env(safe-area-inset-bottom) - 0.5rem), 0.5rem);
-    will-change: bottom;
 
-    /* iOS Safari 최적화 */
+    /* iOS 및 모바일 브라우저 최적화 */
+    will-change: bottom;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    -webkit-transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-50%, 0, 0);
+
+    /* 하드웨어 가속 활성화 */
+    -webkit-perspective: 1000;
+    perspective: 1000;
 `;
 
 const GNBWrapper = styled.ul`

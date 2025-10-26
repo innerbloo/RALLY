@@ -364,6 +364,16 @@ export default function ContentDetailPage() {
         }
     };
 
+    const handleUserClick = (userId: number) => {
+        if (userId === 0) {
+            // 내 댓글인 경우 내 프로필로 이동
+            router.push('/profile');
+        } else {
+            // 다른 유저 프로필로 이동
+            router.push(`/profile/${userId}`);
+        }
+    };
+
     if (!content) {
         return (
             <ErrorContainer>
@@ -502,7 +512,7 @@ export default function ContentDetailPage() {
                 <CommentsList>
                     {comments.map((comment) => (
                         <CommentItem key={comment.id}>
-                            <CommentAuthor>
+                            <CommentAuthor onClick={() => handleUserClick(comment.userId)}>
                                 <CommentAuthorImage
                                     src={comment.profileImage}
                                     alt={comment.username}

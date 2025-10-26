@@ -16,6 +16,7 @@ import {
     getGameNameById,
     getUsersByGame,
 } from '@/data/mockGameUsers';
+import { mockUserReviews } from '@/data/userReviewsMockData';
 
 interface UserProfileData {
     id: number;
@@ -87,10 +88,12 @@ export default function UserProfilePage() {
                     : {};
                 const userProfile = profiles[userId] || {};
 
-                // 리뷰 데이터 가져오기
+                // 리뷰 데이터 가져오기 (mock 데이터 + localStorage)
                 const storedReviews = localStorage.getItem('userReviews');
                 const reviews = storedReviews ? JSON.parse(storedReviews) : {};
-                const userReviews = reviews[userId] || [];
+                const localUserReviews = reviews[userId] || [];
+                const mockReviews = mockUserReviews[parseInt(userId)] || [];
+                const userReviews = [...mockReviews, ...localUserReviews];
 
                 // 통계 데이터 가져오기 또는 생성
                 const storedStats = localStorage.getItem('userStats_' + userId);

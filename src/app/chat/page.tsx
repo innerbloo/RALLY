@@ -136,17 +136,19 @@ export default function ChatPage() {
                     </SearchInputWrapper>
                 </SearchSection>
 
-                <GameFilterList ref={scrollRef} $isDragging={isDragging}>
-                    {gameList.map((game) => (
-                        <GameFilterButton
-                            key={game}
-                            $active={selectedGame === game}
-                            onClick={() => setSelectedGame(game)}
-                        >
-                            {game}
-                        </GameFilterButton>
-                    ))}
-                </GameFilterList>
+                <GameFilterWrapper>
+                    <GameFilterList ref={scrollRef} $isDragging={isDragging}>
+                        {gameList.map((game) => (
+                            <GameFilterButton
+                                key={game}
+                                $active={selectedGame === game}
+                                onClick={() => setSelectedGame(game)}
+                            >
+                                {game}
+                            </GameFilterButton>
+                        ))}
+                    </GameFilterList>
+                </GameFilterWrapper>
                 <FilterSection>
                     <FilterGroup>
                         <FilterButton
@@ -280,6 +282,10 @@ const FilterButton = styled.button<{ $active: boolean }>`
     }
 `;
 
+const GameFilterWrapper = styled.div`
+    margin-bottom: 1.5rem;
+`;
+
 const GameFilterList = styled.div<{ $isDragging?: boolean }>`
     display: flex;
     gap: 1rem;
@@ -287,7 +293,7 @@ const GameFilterList = styled.div<{ $isDragging?: boolean }>`
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    margin: 0 -2rem 1.5rem;
+    margin: 0 -2rem;
     padding: 0 2rem;
     cursor: ${({ $isDragging }) => ($isDragging ? 'grabbing' : 'grab')};
     user-select: none;
