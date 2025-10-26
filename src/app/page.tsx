@@ -18,10 +18,12 @@ import DuoRecommendList from '@/app/components/DuoRecommendList';
 import MentorRecommendList from '@/app/components/MentorRecommendList';
 import RecommendContentList from '@/app/components/RecommendContentList';
 import { mockPosts } from '@/data/communityMockData';
+import { useDragScroll } from '@/hooks/useDragScroll';
 
 export default function Home() {
     const [communityPosts, setCommunityPosts] = useState(mockPosts.slice(0, 5));
     const router = useRouter();
+    const { scrollRef, isDragging } = useDragScroll<HTMLUListElement>();
 
     useEffect(() => {
         const myPosts = JSON.parse(localStorage.getItem('myPosts') || '[]');
@@ -43,14 +45,14 @@ export default function Home() {
                 <BannerSwiper />
                 <PopularGameSection>
                     <h2>빠른 매칭</h2>
-                    <GameWrapper>
+                    <GameWrapper ref={scrollRef} $isDragging={isDragging}>
                         <li>
                             <GameItem onClick={() => handleGameClick('lol')}>
                                 <IconWrapper>
                                     <Image
                                         src={'/game1.png'}
-                                        width={62}
-                                        height={62}
+                                        width={48}
+                                        height={48}
                                         alt={'리그오브레전드'}
                                     />
                                 </IconWrapper>
@@ -62,8 +64,8 @@ export default function Home() {
                                 <IconWrapper>
                                     <Image
                                         src={'/game2.png'}
-                                        width={62}
-                                        height={62}
+                                        width={48}
+                                        height={48}
                                         alt={'전략적 팀 전투'}
                                     />
                                 </IconWrapper>
@@ -77,8 +79,8 @@ export default function Home() {
                                 <IconWrapper>
                                     <Image
                                         src={'/game4.png'}
-                                        width={62}
-                                        height={62}
+                                        width={48}
+                                        height={48}
                                         alt={'오버워치2'}
                                     />
                                 </IconWrapper>
@@ -90,8 +92,8 @@ export default function Home() {
                                 <IconWrapper>
                                     <Image
                                         src={'/game3.png'}
-                                        width={62}
-                                        height={62}
+                                        width={48}
+                                        height={48}
                                         alt={'발로란트'}
                                     />
                                 </IconWrapper>
@@ -103,8 +105,8 @@ export default function Home() {
                                 <IconWrapper>
                                     <Image
                                         src={'/game5.png'}
-                                        width={62}
-                                        height={62}
+                                        width={48}
+                                        height={48}
                                         alt={'배틀그라운드'}
                                     />
                                 </IconWrapper>
@@ -116,8 +118,8 @@ export default function Home() {
                                 <IconWrapper>
                                     <Image
                                         src={'/game-more.png'}
-                                        width={62}
-                                        height={62}
+                                        width={48}
+                                        height={48}
                                         alt={'더보기'}
                                     />
                                 </IconWrapper>
@@ -159,7 +161,7 @@ export default function Home() {
                                 position: undefined,
                                 userCode: '#SANGHYUK021',
                                 description:
-                                    'TFT 배우는 중입니다! 아이템 조합 알려주세요 ㅠㅠ',
+                                    '더블업 같이 자주 하실 분 구합니다',
                                 rankImage: '/lol/rank-lol-silver.webp',
                                 rankText: 'S4',
                                 tags: [
@@ -181,7 +183,7 @@ export default function Home() {
                                 ),
                                 userCode: '#ANA888',
                                 description:
-                                    '아나 장인 출신 힐러랑 재밌게 한판 하실분~',
+                                    '아나 장인 출신 힐러랑 재밌게 한판 하실분 ㅎㅎ',
                                 rankImage:
                                     '/overwatch/rank-overwatch-master.webp',
                                 rankText: 'M1',
@@ -335,16 +337,29 @@ const HomeContainer = styled.main`
 
 const PopularGameSection = styled.section``;
 
-const GameWrapper = styled.ul`
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 2rem;
+const GameWrapper = styled.ul<{ $isDragging?: boolean }>`
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    padding: 0 2rem;
+    margin: 0 -2rem;
+    cursor: ${({ $isDragging }) => ($isDragging ? 'grabbing' : 'grab')};
+    user-select: none;
+
+    &::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Edge */
+    }
 
     li {
         display: flex;
         justify-content: center;
         align-items: center;
+        flex-shrink: 0;
+        pointer-events: ${({ $isDragging }) => ($isDragging ? 'none' : 'auto')};
     }
 `;
 
@@ -352,24 +367,33 @@ const GameItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 1.4rem;
+    gap: 0.8rem;
+    font-size: 1.2rem;
     font-weight: 500;
     cursor: pointer;
+    color: #ffffff;
 `;
 
 const IconWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 82px;
-    height: 82px;
-    border-radius: 1.6rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 1.2rem;
+    background-color: #252527;
     transition: background-color 0.2s ease;
+
+    img {
+        border-radius: 1rem;
+        pointer-events: none;
+        user-select: none;
+        -webkit-user-drag: none;
+    }
 
     @media (hover: hover) and (pointer: fine) {
         &:hover {
-            background-color: #252527;
+            background-color: #2a2a2c;
         }
     }
 `;

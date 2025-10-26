@@ -191,7 +191,7 @@ export const mockOverwatchUsers: OverwatchUser[] = [
         ],
         gameStyles: ['전략적인', '신중한 플레이', '팀 중심형'],
         communicationStyles: ['마이크 필수', '차분한', '예의 바른'],
-        description: '아나 장인 출신 힐러랑 재밌게 한판 하실분~',
+        description: "'아나 장인 출신 힐러랑 재밌게 한판 하실분 ㅎㅎ",
         game: '오버워치2',
     },
     {

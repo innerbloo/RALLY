@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
-export const useDragScroll = () => {
-    const scrollRef = useRef<HTMLDivElement>(null);
+export const useDragScroll = <T extends HTMLElement = HTMLDivElement>() => {
+    const scrollRef = useRef<T>(null);
     const [isDragging, setIsDragging] = useState(false);
     const dragState = useRef({
         startX: 0,
@@ -52,6 +52,7 @@ export const useDragScroll = () => {
         };
 
         const handleMouseLeave = () => {
+            if (!dragState.current.isMouseDown) return;
             dragState.current.isMouseDown = false;
             setIsDragging(false);
             if (scrollElement) {
@@ -69,15 +70,15 @@ export const useDragScroll = () => {
         };
 
         scrollElement.addEventListener('mousedown', handleMouseDown);
-        scrollElement.addEventListener('mousemove', handleMouseMove);
-        scrollElement.addEventListener('mouseup', handleMouseUp);
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
         scrollElement.addEventListener('mouseleave', handleMouseLeave);
         scrollElement.addEventListener('click', handleClick, true);
 
         return () => {
             scrollElement.removeEventListener('mousedown', handleMouseDown);
-            scrollElement.removeEventListener('mousemove', handleMouseMove);
-            scrollElement.removeEventListener('mouseup', handleMouseUp);
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
             scrollElement.removeEventListener('mouseleave', handleMouseLeave);
             scrollElement.removeEventListener('click', handleClick, true);
         };
