@@ -58,6 +58,30 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         };
     }, []);
 
+    // Visual Viewport 높이 고정 (iOS 툴바 변화 방지)
+    useEffect(() => {
+        const initialHeight = window.visualViewport?.height || window.innerHeight;
+
+        const lockViewportHeight = () => {
+            if (window.visualViewport) {
+                const currentHeight = window.visualViewport.height;
+                // Visual Viewport가 줄어들면 강제로 원래 높이로 복원
+                if (currentHeight < initialHeight) {
+                    document.documentElement.style.height = `${initialHeight}px`;
+                    document.body.style.height = `${initialHeight}px`;
+                }
+            }
+        };
+
+        window.visualViewport?.addEventListener('resize', lockViewportHeight);
+
+        return () => {
+            window.visualViewport?.removeEventListener('resize', lockViewportHeight);
+            document.documentElement.style.height = '';
+            document.body.style.height = '';
+        };
+    }, []);
+
     // 입력창 포커스 시 스크롤 고정 (모바일 키보드 대응)
     useEffect(() => {
         const handleScroll = () => {
