@@ -58,7 +58,6 @@ export default function DuoRecommendCard({
                         height={25}
                         alt={rankText}
                     />
-                    {rankText}
                 </div>
             </DuoTopSection>
             <DuoBottomSection>
