@@ -183,7 +183,7 @@ export default function Home() {
                                 ),
                                 userCode: '#ANA888',
                                 description:
-                                    '아나 장인 출신 힐러랑 재밌게 한판 하실분 ㅎㅎ',
+                                    '아나 장인 출신 힐러랑 재밌게 한판 하실분 ㅎ',
                                 rankImage:
                                     '/overwatch/rank-overwatch-master.webp',
                                 rankText: 'M1',

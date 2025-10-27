@@ -66,13 +66,25 @@ export default function DuoRecommendCard({
                     {tags.map((tag, index) => {
                         // 게임 스타일과 커뮤니케이션 스타일 구분
                         const gameStyles = [
-                            '공격적인', '전략적인', '신중한 플레이', '창의적인 플레이',
-                            '다혈질', '팀 중심형', '빠른 템포 선호', '리더형', '서포터형'
+                            '공격적인',
+                            '전략적인',
+                            '신중한 플레이',
+                            '창의적인 플레이',
+                            '다혈질',
+                            '팀 중심형',
+                            '빠른 템포 선호',
+                            '리더형',
+                            '서포터형',
                         ];
                         const isGameStyle = gameStyles.includes(tag);
 
                         return (
-                            <li key={index} className={isGameStyle ? 'game-style' : 'comm-style'}>
+                            <li
+                                key={index}
+                                className={
+                                    isGameStyle ? 'game-style' : 'comm-style'
+                                }
+                            >
                                 {tag}
                             </li>
                         );
@@ -136,11 +148,15 @@ const DuoTopSection = styled.div`
         font-weight: 500;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.2rem;
+
+        svg {
+            transform: scale(0.8);
+        }
     }
 
     span {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         color: #939393;
     }
 
