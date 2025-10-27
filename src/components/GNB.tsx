@@ -114,6 +114,33 @@ export default function GNB() {
         return chatRooms.reduce((sum, room) => sum + room.unreadCount, 0);
     }, [chatRooms]);
 
+    // 모바일 브라우저 툴바 변화 감지하여 GNB 위치 조정
+    useEffect(() => {
+        if (!window.visualViewport) return;
+
+        const updateGNBPosition = () => {
+            const navBar = document.querySelector('[data-gnb]') as HTMLElement;
+            if (!navBar) return;
+
+            const diff =
+                window.innerHeight - document.documentElement.clientHeight;
+            navBar.style.bottom = `${diff}px`;
+        };
+
+        // 초기 설정
+        updateGNBPosition();
+
+        // resize 이벤트 리스너
+        window.visualViewport.addEventListener('resize', updateGNBPosition);
+
+        return () => {
+            window.visualViewport?.removeEventListener(
+                'resize',
+                updateGNBPosition,
+            );
+        };
+    }, []);
+
     // Input 포커스 감지 (모바일에서만 GNB 숨김)
     // useEffect(() => {
     //     // 모바일 디바이스 감지
@@ -164,70 +191,6 @@ export default function GNB() {
     //         }
     //     };
     // }, []);
-
-    // iOS 및 모바일 브라우저 동적 UI 대응
-    useEffect(() => {
-        const updateGNBPosition = () => {
-            const gnbElement = document.querySelector('[data-gnb]') as HTMLElement;
-            if (!gnbElement) return;
-
-            if (window.visualViewport) {
-                const viewportHeight = window.visualViewport.height;
-                const offsetTop = window.visualViewport.offsetTop;
-                const windowHeight = window.innerHeight;
-
-                // 실제 뷰포트 하단까지의 거리 계산
-                const bottomOffset = windowHeight - (viewportHeight + offsetTop);
-
-                // GNB를 실제 뷰포트 하단에 고정
-                gnbElement.style.bottom = `${bottomOffset}px`;
-
-                // CSS 변수도 업데이트 (다른 요소에서 사용할 수 있도록)
-                document.documentElement.style.setProperty(
-                    '--gnb-bottom-offset',
-                    `${bottomOffset}px`,
-                );
-            } else {
-                // visualViewport를 지원하지 않는 브라우저
-                gnbElement.style.bottom = '0px';
-                document.documentElement.style.setProperty(
-                    '--gnb-bottom-offset',
-                    '0px',
-                );
-            }
-        };
-
-        // 초기 설정 및 약간의 지연을 두고 재설정 (브라우저 렌더링 완료 대기)
-        updateGNBPosition();
-        setTimeout(updateGNBPosition, 100);
-        setTimeout(updateGNBPosition, 300);
-
-        // visualViewport 이벤트 리스너
-        if (window.visualViewport) {
-            window.visualViewport.addEventListener('resize', updateGNBPosition);
-            window.visualViewport.addEventListener('scroll', updateGNBPosition);
-        }
-
-        // 페이지 스크롤 및 리사이즈 감지
-        window.addEventListener('scroll', updateGNBPosition, { passive: true });
-        window.addEventListener('resize', updateGNBPosition);
-
-        // orientationchange 이벤트 추가 (모바일 화면 회전 대응)
-        window.addEventListener('orientationchange', () => {
-            setTimeout(updateGNBPosition, 100);
-            setTimeout(updateGNBPosition, 500);
-        });
-
-        return () => {
-            if (window.visualViewport) {
-                window.visualViewport.removeEventListener('resize', updateGNBPosition);
-                window.visualViewport.removeEventListener('scroll', updateGNBPosition);
-            }
-            window.removeEventListener('scroll', updateGNBPosition);
-            window.removeEventListener('resize', updateGNBPosition);
-            window.removeEventListener('orientationchange', updateGNBPosition);
-        };
-    }, []);
 
     // Input 포커스 시 GNB 렌더링 중단
     // if (isInputFocused) return null;
@@ -285,18 +248,7 @@ const GNBContainer = styled.nav`
     z-index: 1000;
     background: #1a1a1a;
     border-top: 1px solid #3f3f41;
-    padding-bottom: max(calc(env(safe-area-inset-bottom) - 0.5rem), 0.5rem);
-
-    /* iOS 및 모바일 브라우저 최적화 */
-    will-change: bottom;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-transform: translate3d(-50%, 0, 0);
-    transform: translate3d(-50%, 0, 0);
-
-    /* 하드웨어 가속 활성화 */
-    -webkit-perspective: 1000;
-    perspective: 1000;
+    padding-bottom: env(safe-area-inset-bottom);
 `;
 
 const GNBWrapper = styled.ul`
