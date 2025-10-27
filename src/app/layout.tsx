@@ -49,12 +49,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
+    // width: 'device-width',
+    // initialScale: 1,
+    // maximumScale: 1,
+    // userScalable: false,
     // viewportFit: 'cover',
-    themeColor: '#000000',
+    // themeColor: '#000000',
 };
 
 export default function RootLayout({
