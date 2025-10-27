@@ -114,7 +114,6 @@ export default function RootLayout({
                         },
                     }}
                 />
-                <GNB />
             </body>
         </html>
     );
