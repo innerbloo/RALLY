@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import './globals.css';
 
 import ClientLayout from '@/components/ClientLayout';
+import GNB from '@/components/GNB';
 
 const pretendard = localFont({
     src: '../fonts/PretendardVariable.woff2',
@@ -113,6 +114,7 @@ export default function RootLayout({
                         },
                     }}
                 />
+                <GNB />
             </body>
         </html>
     );

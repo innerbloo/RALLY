@@ -114,33 +114,6 @@ export default function GNB() {
         return chatRooms.reduce((sum, room) => sum + room.unreadCount, 0);
     }, [chatRooms]);
 
-    // 모바일 브라우저 툴바 변화 감지하여 GNB 위치 조정
-    useEffect(() => {
-        if (!window.visualViewport) return;
-
-        const updateGNBPosition = () => {
-            const navBar = document.querySelector('[data-gnb]') as HTMLElement;
-            if (!navBar) return;
-
-            const diff =
-                window.innerHeight - document.documentElement.clientHeight;
-            navBar.style.bottom = `${diff}px`;
-        };
-
-        // 초기 설정
-        updateGNBPosition();
-
-        // resize 이벤트 리스너
-        window.visualViewport.addEventListener('resize', updateGNBPosition);
-
-        return () => {
-            window.visualViewport?.removeEventListener(
-                'resize',
-                updateGNBPosition,
-            );
-        };
-    }, []);
-
     // Input 포커스 감지 (모바일에서만 GNB 숨김)
     // useEffect(() => {
     //     // 모바일 디바이스 감지
