@@ -334,7 +334,7 @@ const PostListSection = styled.section`
 const NewPostButton = styled.button<{ $isAtBottom: boolean }>`
     position: fixed;
     left: 50%;
-    bottom: calc(8rem + env(safe-area-inset-bottom));
+    bottom: calc(10rem + env(safe-area-inset-bottom));
     display: flex;
     align-items: center;
     gap: 0.8rem;
