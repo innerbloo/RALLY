@@ -71,26 +71,11 @@ export default function MicrophoneSelection({
                                 onPreferenceSelect(option.id);
 
                                 setTimeout(() => {
-                                    const footer =
-                                        document.querySelector('footer');
-                                    if (footer) {
-                                        const headerHeight = 140;
-                                        const footerTop =
-                                            footer.getBoundingClientRect().top +
-                                            window.scrollY;
-                                        const targetScroll = Math.max(
-                                            0,
-                                            footerTop -
-                                                window.innerHeight +
-                                                footer.offsetHeight +
-                                                headerHeight,
-                                        );
-
-                                        window.scrollTo({
-                                            top: targetScroll,
-                                            behavior: 'smooth',
-                                        });
-                                    }
+                                    // Fixed footer이므로 document 최하단으로 스크롤
+                                    window.scrollTo({
+                                        top: document.documentElement.scrollHeight,
+                                        behavior: 'smooth',
+                                    });
                                 }, 300);
                             }}
                         >

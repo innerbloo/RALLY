@@ -145,19 +145,20 @@ export default function TierSelection({
     const handleTierSelect = (tierId: string) => {
         onDesiredTierChange(tierId);
 
-        setTimeout(() => {
-            const footer = document.querySelector('footer');
-            if (footer) {
-                const headerHeight = 140;
-                const footerTop = footer.getBoundingClientRect().top + window.scrollY;
-                const targetScroll = Math.max(0, footerTop - window.innerHeight + footer.offsetHeight + headerHeight);
+        // 자동 스크롤 비활성화 (Fixed 버튼 사용으로 불필요)
+        // setTimeout(() => {
+        //     const footer = document.querySelector('footer');
+        //     if (footer) {
+        //         const headerHeight = 140;
+        //         const footerTop = footer.getBoundingClientRect().top + window.scrollY;
+        //         const targetScroll = Math.max(0, footerTop - window.innerHeight + footer.offsetHeight + headerHeight);
 
-                window.scrollTo({
-                    top: targetScroll,
-                    behavior: 'smooth'
-                });
-            }
-        }, 300);
+        //         window.scrollTo({
+        //             top: targetScroll,
+        //             behavior: 'smooth'
+        //         });
+        //     }
+        // }, 300);
     };
 
     return (

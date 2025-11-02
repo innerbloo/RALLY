@@ -339,6 +339,7 @@ const QuickMatchMain = styled.main`
     flex: 1;
     padding: 0 2rem;
     padding-top: calc(10rem + env(safe-area-inset-top));
+    padding-bottom: calc(10rem + env(safe-area-inset-bottom));
     display: flex;
     flex-direction: column;
 `;
@@ -351,8 +352,21 @@ const StepContent = styled.div`
 `;
 
 const QuickMatchFooter = styled.footer`
-    padding: 2rem;
-    padding-bottom: calc(3rem + env(safe-area-inset-bottom));
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 430px;
+    margin: 0 auto;
+    background: linear-gradient(
+        to top,
+        #1a1a1a 0%,
+        #1a1a1a 70%,
+        rgba(26, 26, 26, 0.95) 90%,
+        rgba(26, 26, 26, 0) 100%
+    );
+    padding: 1.5rem 2rem calc(env(safe-area-inset-bottom) + 1.5rem);
+    z-index: 1000;
     display: flex;
     justify-content: space-between;
     gap: 1rem;
@@ -367,11 +381,12 @@ const NavigationButton = styled.button<{
     align-items: center;
     justify-content: center;
     gap: 0.8rem;
-    padding: 1.4rem 2rem;
+    height: 5.6rem;
+    padding: 0 2rem;
     font-size: 1.6rem;
     font-weight: 600;
     border: none;
-    border-radius: 1.2rem;
+    border-radius: 1.6rem;
     transition: all 0.2s ease;
     cursor: pointer;
 

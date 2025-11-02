@@ -71,7 +71,8 @@ export default function StyleSelection({
                 setTimeout(() => {
                     const communicationSection = document.querySelector('[data-section="communication-style"]');
                     if (communicationSection) {
-                        const headerHeight = 140;
+                        const header = document.querySelector('header');
+                        const headerHeight = header ? header.offsetHeight + 20 : 140;
                         const sectionTop = communicationSection.getBoundingClientRect().top + window.scrollY;
                         const targetScroll = Math.max(0, sectionTop - headerHeight);
 
@@ -108,17 +109,11 @@ export default function StyleSelection({
 
             if (isComplete) {
                 setTimeout(() => {
-                    const footer = document.querySelector('footer');
-                    if (footer) {
-                        const headerHeight = 140;
-                        const footerTop = footer.getBoundingClientRect().top + window.scrollY;
-                        const targetScroll = Math.max(0, footerTop - window.innerHeight + footer.offsetHeight + headerHeight);
-
-                        window.scrollTo({
-                            top: targetScroll,
-                            behavior: 'smooth'
-                        });
-                    }
+                    // Fixed footer이므로 document 최하단으로 스크롤
+                    window.scrollTo({
+                        top: document.documentElement.scrollHeight,
+                        behavior: 'smooth'
+                    });
                 }, 300);
             }
         }
