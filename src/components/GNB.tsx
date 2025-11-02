@@ -213,28 +213,31 @@ export default function GNB() {
 
 const GNBContainer = styled.nav`
     position: fixed;
-    bottom: 0;
+    bottom: 1.2rem;
     left: 50%;
     transform: translateX(-50%);
-    max-width: 430px;
-    width: 100%;
+    max-width: 390px;
+    width: calc(100% - 2.4rem);
     z-index: 1000;
-    background: #1a1a1a;
-    border-top: 1px solid #3f3f41;
-    padding-bottom: env(safe-area-inset-bottom, 0);
 
-    /* 모바일 브라우저 UI 대응 */
-    @supports (height: 100dvh) {
-        /* Dynamic viewport 지원 시 */
-        bottom: 0;
-    }
+    /* iOS 스타일 글래스모피즘 효과 */
+    background: rgba(30, 30, 32, 0.85);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 
-    /* 브라우저 UI 높이만큼 추가 보정 */
-    bottom: calc(var(--browser-ui-height, 0px) * -1);
+    /* 둥근 모서리 */
+    border-radius: 2.4rem;
+
+    /* 미묘한 테두리와 그림자 효과 */
+    border: 0.1rem solid rgba(255, 255, 255, 0.15);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        0 2px 8px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
 
     /* iOS Safari 하단 홈 인디케이터 영역 처리 */
     @supports (padding-bottom: env(safe-area-inset-bottom)) {
-        padding-bottom: max(env(safe-area-inset-bottom, 0), 0px);
+        bottom: calc(1.2rem + env(safe-area-inset-bottom, 0));
     }
 `;
 
@@ -242,7 +245,8 @@ const GNBWrapper = styled.ul`
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 0.8rem 0;
+    //padding: 1.4rem 1.2rem;
+    padding: 0.8rem;
     margin: 0;
     list-style: none;
 `;

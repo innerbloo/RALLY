@@ -431,7 +431,7 @@ export default function MatchPage() {
 
 const MatchContainer = styled.main`
     padding-top: calc(6rem + env(safe-area-inset-top));
-    padding-bottom: calc(6.65rem + env(safe-area-inset-bottom));
+    padding-bottom: calc(10rem + env(safe-area-inset-bottom));
     background-color: #1a1a1a;
     min-height: 100vh; /* Fallback */
     min-height: 100dvh; /* Dynamic viewport height */
@@ -781,20 +781,29 @@ const QuickMatchButton = styled.button<{
 }>`
     position: fixed;
     left: 50%;
-    bottom: calc(8rem + env(safe-area-inset-bottom));
+    bottom: calc(11.5rem + env(safe-area-inset-bottom));
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    padding: 1rem 1.6rem;
-    background: linear-gradient(135deg, #4272ec 0%, #3a5fd9 100%);
+    padding: 1.2rem 2rem;
+
+    /* iOS 스타일 글래스모피즘 효과 */
+    background: rgba(66, 114, 236, 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
     color: #ffffff;
-    border: none;
+    border: 0.1rem solid rgba(255, 255, 255, 0.2);
     border-radius: 3rem;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     font-weight: 600;
     z-index: ${({ $tutorialActive }) => ($tutorialActive ? 10000 : 999)};
     transition: all 0.3s ease;
     cursor: pointer;
+    box-shadow:
+        0 4px 30px rgba(66, 114, 236, 0.4),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+
     transform: ${({ $isAtBottom, $tutorialActive }) => {
         if ($tutorialActive) return 'translateX(calc(-100% + 220px - 1.5rem))';
         if ($isAtBottom)

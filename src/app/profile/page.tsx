@@ -206,7 +206,7 @@ export default function ProfilePage() {
 
 const ProfileContainer = styled.main`
     padding: calc(6rem + env(safe-area-inset-top)) 2rem
-        calc(8rem + env(safe-area-inset-bottom));
+        calc(11rem + env(safe-area-inset-bottom));
     background-color: #1a1a1a;
     min-height: 100vh; /* Fallback */
     min-height: 100dvh; /* Dynamic viewport height */

@@ -316,7 +316,7 @@ export default function Home() {
 
 const HomeContainer = styled.main`
     padding-top: calc(6rem + env(safe-area-inset-top));
-    padding-bottom: calc(6.65rem + env(safe-area-inset-bottom));
+    padding-bottom: calc(10rem + env(safe-area-inset-bottom));
     background-color: #1a1a1a;
 
     > section {

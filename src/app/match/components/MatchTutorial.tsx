@@ -65,7 +65,7 @@ const TooltipCard = styled.div`
     animation: fadeInScale 0.3s ease;
     left: 50%;
     transform: translateX(calc(-100% + 220px - 1.5rem));
-    bottom: calc(15rem + env(safe-area-inset-bottom));
+    bottom: calc(20rem + env(safe-area-inset-bottom));
 
     &::after {
         content: '';
