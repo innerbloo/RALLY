@@ -7,6 +7,7 @@ import styled from '@emotion/styled';
 interface StyleFilterProps {
     selectedFilters: string[];
     onFilterChange: (filters: string[]) => void;
+    isInModal?: boolean;
 }
 
 const gameStyleFilters = {
@@ -21,7 +22,7 @@ const communicationStyleFilters = {
     '욕설 / 감정 표현': ['욕 안 하는', '가끔 욕하지만 선 넘지 않음', '감정 조절 가능', '다혈질', '쿨하고 감정 없음'],
 };
 
-export default function StyleFilter({ selectedFilters, onFilterChange }: StyleFilterProps) {
+export default function StyleFilter({ selectedFilters, onFilterChange, isInModal = false }: StyleFilterProps) {
     const [expandedSections, setExpandedSections] = useState<string[]>([]);
     const sectionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
@@ -112,15 +113,25 @@ export default function StyleFilter({ selectedFilters, onFilterChange }: StyleFi
     };
 
     return (
-        <StyleFilterContainer>
-            <FilterHeader>
-                <FilterTitle>성향 및 커뮤니케이션 필터</FilterTitle>
-                {selectedFilters.length > 0 && (
+        <StyleFilterContainer $isInModal={isInModal}>
+            {!isInModal && (
+                <FilterHeader>
+                    <FilterTitle>성향 및 커뮤니케이션 필터</FilterTitle>
+                    {selectedFilters.length > 0 && (
+                        <ClearButton onClick={clearAllFilters}>
+                            전체 해제 ({selectedFilters.length})
+                        </ClearButton>
+                    )}
+                </FilterHeader>
+            )}
+
+            {isInModal && selectedFilters.length > 0 && (
+                <ModalFilterHeader>
                     <ClearButton onClick={clearAllFilters}>
                         전체 해제 ({selectedFilters.length})
                     </ClearButton>
-                )}
-            </FilterHeader>
+                </ModalFilterHeader>
+            )}
 
             <FilterSections>
                 {renderFilterSection('게임 성향', gameStyleFilters, 'game')}
@@ -148,16 +159,23 @@ export default function StyleFilter({ selectedFilters, onFilterChange }: StyleFi
     );
 }
 
-const StyleFilterContainer = styled.div`
-    background-color: #252527;
-    border-radius: 1.2rem;
-    padding: 2rem;
-    margin-bottom: 2rem;
+const StyleFilterContainer = styled.div<{ $isInModal: boolean }>`
+    background-color: ${({ $isInModal }) => ($isInModal ? 'transparent' : '#252527')};
+    border-radius: ${({ $isInModal }) => ($isInModal ? '0' : '1.2rem')};
+    padding: ${({ $isInModal }) => ($isInModal ? '0' : '2rem')};
+    margin-bottom: ${({ $isInModal }) => ($isInModal ? '0' : '2rem')};
 `;
 
 const FilterHeader = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+`;
+
+const ModalFilterHeader = styled.div`
+    display: flex;
+    justify-content: flex-end;
     align-items: center;
     margin-bottom: 2rem;
 `;

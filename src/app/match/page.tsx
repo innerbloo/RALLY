@@ -5,11 +5,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
+import { FiFilter } from 'react-icons/fi';
 
 import styled from '@emotion/styled';
 
+import FilterModal from '@/app/match/components/FilterModal';
 import MatchTutorial from '@/app/match/components/MatchTutorial';
-import StyleFilter from '@/app/match/components/StyleFilter';
 import { mockChatRooms } from '@/data/chatMockData';
 import { type BaseUser, getAllUsers } from '@/data/mockGameUsers';
 import { useDragScroll } from '@/hooks/useDragScroll';
@@ -22,6 +23,7 @@ export default function MatchPage() {
     const [selectedGame, setSelectedGame] = useState<string>('전체');
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+    const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
     const [isAtBottom, setIsAtBottom] = useState(false);
     const [showTutorial, setShowTutorial] = useState(false);
     const [mockUsers, setMockUsers] = useState<MatchUser[]>([]);
@@ -164,11 +166,11 @@ export default function MatchPage() {
         } else {
             // 게임 이름에 따른 아이콘 매핑
             const gameImageMap: { [key: string]: string } = {
-                '리그오브레전드': '/game1.png',
+                리그오브레전드: '/game1.png',
                 '전략적 팀 전투': '/game2.png',
-                '발로란트': '/game3.png',
-                '오버워치2': '/game4.png',
-                '배틀그라운드': '/game5.png',
+                발로란트: '/game3.png',
+                오버워치2: '/game4.png',
+                배틀그라운드: '/game5.png',
             };
 
             // 새 채팅방 생성
@@ -276,6 +278,14 @@ export default function MatchPage() {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
+                    <OpenFilterButton
+                        onClick={() => setIsFilterModalOpen(true)}
+                    >
+                        <FiFilter size={20} />
+                        {selectedFilters.length > 0 && (
+                            <FilterBadge>{selectedFilters.length}</FilterBadge>
+                        )}
+                    </OpenFilterButton>
                 </SearchSection>
             </MatchHeader>
 
@@ -301,11 +311,6 @@ export default function MatchPage() {
                         ))}
                     </GameFilterList>
                 </GameFilterContainer>
-
-                <StyleFilter
-                    selectedFilters={selectedFilters}
-                    onFilterChange={setSelectedFilters}
-                />
             </FilterSection>
 
             <UserListSection>
@@ -339,10 +344,14 @@ export default function MatchPage() {
                                             )}
                                         </UserNameWithPosition>
                                         <StatusBadge $status={user.status}>
-                                            {user.status === 'online' && '온라인'}
-                                            {user.status === 'offline' && '오프라인'}
-                                            {user.status === 'in-game' && '게임중'}
-                                            {user.status === 'matching' && '매칭중'}
+                                            {user.status === 'online' &&
+                                                '온라인'}
+                                            {user.status === 'offline' &&
+                                                '오프라인'}
+                                            {user.status === 'in-game' &&
+                                                '게임중'}
+                                            {user.status === 'matching' &&
+                                                '매칭중'}
                                         </StatusBadge>
                                     </UserNameRow>
                                     <UserGameId>{user.gameId}</UserGameId>
@@ -425,6 +434,16 @@ export default function MatchPage() {
             </QuickMatchButton>
 
             {showTutorial && <MatchTutorial onClose={handleCloseTutorial} />}
+
+            <FilterModal
+                isOpen={isFilterModalOpen}
+                onClose={() => setIsFilterModalOpen(false)}
+                selectedFilters={selectedFilters}
+                onApply={(filters) => {
+                    setSelectedFilters(filters);
+                    setIsFilterModalOpen(false);
+                }}
+            />
         </MatchContainer>
     );
 }
@@ -451,11 +470,14 @@ const MatchHeader = styled.header`
 `;
 
 const SearchSection = styled.div`
+    display: flex;
+    gap: 1rem;
+    align-items: center;
     margin-bottom: 1rem;
 `;
 
 const SearchInput = styled.input`
-    width: 100%;
+    flex: 1;
     padding: 1.2rem 1.6rem;
     font-size: 1.6rem;
     background-color: #252527;
@@ -781,7 +803,7 @@ const QuickMatchButton = styled.button<{
 }>`
     position: fixed;
     left: 50%;
-    bottom: calc(11.5rem + env(safe-area-inset-bottom));
+    bottom: calc(10rem + env(safe-area-inset-bottom));
     display: flex;
     align-items: center;
     gap: 0.8rem;
@@ -893,4 +915,46 @@ const Spinner = styled.div`
             transform: rotate(360deg);
         }
     }
+`;
+
+const OpenFilterButton = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.8rem;
+    height: 4.8rem;
+    padding: 0;
+    background-color: #252527;
+    border: 0.1rem solid #3f3f41;
+    border-radius: 1.2rem;
+    color: #ffffff;
+    transition: all 0.2s ease;
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            background-color: #2a2a2c;
+            border-color: #4272ec;
+        }
+    }
+`;
+
+const FilterBadge = styled.span`
+    position: absolute;
+    top: -0.6rem;
+    right: -0.6rem;
+    min-width: 1.8rem;
+    height: 1.8rem;
+    padding: 0 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #4272ec 0%, #3a5fd9 100%);
+    border-radius: 0.9rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    border: 0.2rem solid #1a1a1a;
 `;
