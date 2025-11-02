@@ -221,7 +221,21 @@ const GNBContainer = styled.nav`
     z-index: 1000;
     background: #1a1a1a;
     border-top: 1px solid #3f3f41;
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+
+    /* 모바일 브라우저 UI 대응 */
+    @supports (height: 100dvh) {
+        /* Dynamic viewport 지원 시 */
+        bottom: 0;
+    }
+
+    /* 브라우저 UI 높이만큼 추가 보정 */
+    bottom: calc(var(--browser-ui-height, 0px) * -1);
+
+    /* iOS Safari 하단 홈 인디케이터 영역 처리 */
+    @supports (padding-bottom: env(safe-area-inset-bottom)) {
+        padding-bottom: max(env(safe-area-inset-bottom, 0), 0px);
+    }
 `;
 
 const GNBWrapper = styled.ul`

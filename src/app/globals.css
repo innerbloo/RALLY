@@ -1,5 +1,7 @@
 html {
     height: 100%;
+    /* Dynamic viewport height fallback */
+    height: -webkit-fill-available;
     background: #1f1f21;
     overflow-y: auto;
 }
@@ -23,7 +25,11 @@ body::-webkit-scrollbar {
 }
 
 html > body {
-  min-height: 100vh;
+  /* Dynamic viewport height with multiple fallbacks */
+  min-height: 100vh; /* Fallback for older browsers */
+  min-height: -webkit-fill-available; /* iOS Safari */
+  min-height: 100dvh; /* Dynamic viewport height */
+  min-height: calc(var(--vh, 1vh) * 100); /* Custom property fallback */
   font-size: 1.6rem;
   color: #F5F5F5;
   background: #1A1B1E;

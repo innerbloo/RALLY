@@ -433,7 +433,9 @@ const MatchContainer = styled.main`
     padding-top: calc(6rem + env(safe-area-inset-top));
     padding-bottom: calc(6.65rem + env(safe-area-inset-bottom));
     background-color: #1a1a1a;
-    min-height: 100vh;
+    min-height: 100vh; /* Fallback */
+    min-height: 100dvh; /* Dynamic viewport height */
+    min-height: calc(var(--vh, 1vh) * 100); /* Custom property */
 `;
 
 const MatchHeader = styled.header`

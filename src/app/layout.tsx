@@ -55,7 +55,7 @@ export const viewport = {
     maximumScale: 1,
     userScalable: false,
     viewportFit: 'cover',
-    interactiveWidget: 'overlays-content',
+    interactiveWidget: 'resizes-content', // Changed to better handle browser UI
     themeColor: '#000000',
 };
 

@@ -208,7 +208,9 @@ const ProfileContainer = styled.main`
     padding: calc(6rem + env(safe-area-inset-top)) 2rem
         calc(8rem + env(safe-area-inset-bottom));
     background-color: #1a1a1a;
-    min-height: 100vh;
+    min-height: 100vh; /* Fallback */
+    min-height: 100dvh; /* Dynamic viewport height */
+    min-height: calc(var(--vh, 1vh) * 100); /* Custom property */
 
     > *:first-of-type {
         margin-top: 2rem;
