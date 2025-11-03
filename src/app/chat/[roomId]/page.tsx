@@ -713,7 +713,8 @@ ${
 const ChatRoomContainer = styled.main`
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
+    min-height: 100dvh;
     background-color: #1a1a1a;
 `;
 
