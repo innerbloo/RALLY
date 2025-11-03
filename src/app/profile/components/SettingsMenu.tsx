@@ -1,11 +1,14 @@
 'use client';
 
-import { Bell, ChevronRight, LogOut, Settings, User } from 'lucide-react';
+import { Bell, ChevronRight, LogOut, User } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
 import styled from '@emotion/styled';
 
 export default function SettingsMenu() {
+    const router = useRouter();
+
     const handleNotificationSettings = () => {
         toast('알림 설정 기능은 준비 중입니다.');
     };
@@ -15,7 +18,7 @@ export default function SettingsMenu() {
     };
 
     const handleLogout = () => {
-        toast.success('로그아웃되었습니다.');
+        router.push('/tutorial?step=1');
         // 향후 실제 로그아웃 로직 추가
     };
 
