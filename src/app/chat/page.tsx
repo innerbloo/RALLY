@@ -13,8 +13,12 @@ import {
     mockMessages,
 } from '@/data/chatMockData';
 import { useDragScroll } from '@/hooks/useDragScroll';
+import { useQueryParams } from '@/hooks/useQueryParams';
+
+export const dynamic = 'force-dynamic';
 
 export default function ChatPage() {
+    const { getParam, updateParams } = useQueryParams();
     const [chatRooms, setChatRooms] = useState<ChatRoom[]>(mockChatRooms);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [selectedFilter, setSelectedFilter] = useState<'all' | 'unread'>(
@@ -22,6 +26,18 @@ export default function ChatPage() {
     );
     const [selectedGame, setSelectedGame] = useState<string>('전체');
     const { scrollRef, isDragging } = useDragScroll();
+
+    // URL 쿼리 파라미터에서 초기 상태 복원
+    useEffect(() => {
+        const game = getParam('game') || '전체';
+        const search = getParam('search') || '';
+        const filter =
+            (getParam('filter') as 'all' | 'unread' | null) || 'all';
+
+        setSelectedGame(game);
+        setSearchTerm(search);
+        setSelectedFilter(filter);
+    }, [getParam]);
 
     // localStorage에서 최신 메시지 불러와서 채팅방 목록 업데이트
     useEffect(() => {
@@ -131,7 +147,13 @@ export default function ChatPage() {
                             type="text"
                             placeholder="사용자 이름 검색"
                             value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setSearchTerm(value);
+                                updateParams({
+                                    search: value || undefined,
+                                });
+                            }}
                         />
                     </SearchInputWrapper>
                 </SearchSection>
@@ -142,7 +164,12 @@ export default function ChatPage() {
                             <GameFilterButton
                                 key={game}
                                 $active={selectedGame === game}
-                                onClick={() => setSelectedGame(game)}
+                                onClick={() => {
+                                    setSelectedGame(game);
+                                    updateParams({
+                                        game: game === '전체' ? undefined : game,
+                                    });
+                                }}
                             >
                                 {game}
                             </GameFilterButton>
@@ -153,13 +180,23 @@ export default function ChatPage() {
                     <FilterGroup>
                         <FilterButton
                             $active={selectedFilter === 'all'}
-                            onClick={() => setSelectedFilter('all')}
+                            onClick={() => {
+                                setSelectedFilter('all');
+                                updateParams({
+                                    filter: undefined,
+                                });
+                            }}
                         >
                             전체
                         </FilterButton>
                         <FilterButton
                             $active={selectedFilter === 'unread'}
-                            onClick={() => setSelectedFilter('unread')}
+                            onClick={() => {
+                                setSelectedFilter('unread');
+                                updateParams({
+                                    filter: 'unread',
+                                });
+                            }}
                         >
                             읽지 않음
                         </FilterButton>

@@ -9,8 +9,12 @@ import styled from '@emotion/styled';
 import CommunityList from '@/app/components/CommunityList';
 import { mockPosts } from '@/data/communityMockData';
 import { useDragScroll } from '@/hooks/useDragScroll';
+import { useQueryParams } from '@/hooks/useQueryParams';
+
+export const dynamic = 'force-dynamic';
 
 export default function CommunityPage() {
+    const { getParam, updateParams } = useQueryParams();
     const [selectedGame, setSelectedGame] = useState<string>('전체');
     const [selectedCategory, setSelectedCategory] = useState<string>('전체');
     const [searchTerm, setSearchTerm] = useState<string>('');
@@ -19,6 +23,20 @@ export default function CommunityPage() {
     const [isAtBottom, setIsAtBottom] = useState(false);
     const router = useRouter();
     const { scrollRef, isDragging } = useDragScroll();
+
+    // URL 쿼리 파라미터에서 초기 상태 복원
+    useEffect(() => {
+        const game = getParam('game') || '전체';
+        const category = getParam('category') || '전체';
+        const search = getParam('search') || '';
+        const sort =
+            (getParam('sort') as 'latest' | 'popular' | null) || 'latest';
+
+        setSelectedGame(game);
+        setSelectedCategory(category);
+        setSearchTerm(search);
+        setSortBy(sort);
+    }, [getParam]);
 
     // 로컬스토리지에서 내가 작성한 게시글 불러오기
     useEffect(() => {
@@ -80,7 +98,13 @@ export default function CommunityPage() {
                         type="text"
                         placeholder="제목이나 작성자를 검색해보세요"
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            setSearchTerm(value);
+                            updateParams({
+                                search: value || undefined,
+                            });
+                        }}
                     />
                 </SearchSection>
             </CommunityHeader>
@@ -100,7 +124,12 @@ export default function CommunityPage() {
                             <GameFilterButton
                                 key={game}
                                 $active={selectedGame === game}
-                                onClick={() => setSelectedGame(game)}
+                                onClick={() => {
+                                    setSelectedGame(game);
+                                    updateParams({
+                                        game: game === '전체' ? undefined : game,
+                                    });
+                                }}
                             >
                                 {game}
                             </GameFilterButton>
@@ -116,9 +145,15 @@ export default function CommunityPage() {
                                 <CategoryFilterButton
                                     key={category}
                                     $active={selectedCategory === category}
-                                    onClick={() =>
-                                        setSelectedCategory(category)
-                                    }
+                                    onClick={() => {
+                                        setSelectedCategory(category);
+                                        updateParams({
+                                            category:
+                                                category === '전체'
+                                                    ? undefined
+                                                    : category,
+                                        });
+                                    }}
                                 >
                                     {category}
                                 </CategoryFilterButton>
@@ -133,13 +168,23 @@ export default function CommunityPage() {
                 <SortButtons>
                     <SortButton
                         $active={sortBy === 'latest'}
-                        onClick={() => setSortBy('latest')}
+                        onClick={() => {
+                            setSortBy('latest');
+                            updateParams({
+                                sort: undefined,
+                            });
+                        }}
                     >
                         최신순
                     </SortButton>
                     <SortButton
                         $active={sortBy === 'popular'}
-                        onClick={() => setSortBy('popular')}
+                        onClick={() => {
+                            setSortBy('popular');
+                            updateParams({
+                                sort: 'popular',
+                            });
+                        }}
                     >
                         인기순
                     </SortButton>

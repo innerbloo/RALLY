@@ -14,12 +14,16 @@ import MatchTutorial from '@/app/match/components/MatchTutorial';
 import { mockChatRooms } from '@/data/chatMockData';
 import { type BaseUser, getAllUsers } from '@/data/mockGameUsers';
 import { useDragScroll } from '@/hooks/useDragScroll';
+import { useQueryParams } from '@/hooks/useQueryParams';
 
 interface MatchUser extends BaseUser {
     status: 'online' | 'offline' | 'in-game' | 'matching';
 }
 
+export const dynamic = 'force-dynamic';
+
 export default function MatchPage() {
+    const { getParam, updateParams } = useQueryParams();
     const [selectedGame, setSelectedGame] = useState<string>('전체');
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
@@ -31,6 +35,17 @@ export default function MatchPage() {
     const [isLoadingMore, setIsLoadingMore] = useState(false);
     const router = useRouter();
     const { scrollRef, isDragging } = useDragScroll();
+
+    // URL 쿼리 파라미터에서 초기 상태 복원
+    useEffect(() => {
+        const game = getParam('game') || '전체';
+        const search = getParam('search') || '';
+        const filters = getParam('filters')?.split(',').filter(Boolean) || [];
+
+        setSelectedGame(game);
+        setSearchTerm(search);
+        setSelectedFilters(filters);
+    }, [getParam]);
 
     // 클라이언트에서만 유저 상태 설정 (Hydration 에러 방지)
     useEffect(() => {
@@ -276,7 +291,13 @@ export default function MatchPage() {
                         type="text"
                         placeholder="닉네임이나 게임 ID를 검색해보세요"
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            setSearchTerm(value);
+                            updateParams({
+                                search: value || undefined,
+                            });
+                        }}
                     />
                     <OpenFilterButton
                         onClick={() => setIsFilterModalOpen(true)}
@@ -304,7 +325,12 @@ export default function MatchPage() {
                             <GameFilterButton
                                 key={game}
                                 $active={selectedGame === game}
-                                onClick={() => setSelectedGame(game)}
+                                onClick={() => {
+                                    setSelectedGame(game);
+                                    updateParams({
+                                        game: game === '전체' ? undefined : game,
+                                    });
+                                }}
                             >
                                 {game}
                             </GameFilterButton>
@@ -441,6 +467,12 @@ export default function MatchPage() {
                 selectedFilters={selectedFilters}
                 onApply={(filters) => {
                     setSelectedFilters(filters);
+                    updateParams({
+                        filters:
+                            filters.length > 0
+                                ? filters.join(',')
+                                : undefined,
+                    });
                     setIsFilterModalOpen(false);
                 }}
             />
