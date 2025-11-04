@@ -199,6 +199,11 @@ const ModalFooter = styled.div`
     padding: 1.5rem 2rem calc(1.5rem + env(safe-area-inset-bottom));
     border-top: 0.1rem solid #3f3f41;
     background: #1a1a1a;
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        padding: 1.5rem 2rem 1.5rem;
+    }
 `;
 
 const ApplyButton = styled.button`

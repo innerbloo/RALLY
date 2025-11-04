@@ -465,6 +465,11 @@ const MatchResultsContainer = styled.div`
     padding-bottom: calc(8rem + env(safe-area-inset-bottom));
     overflow: hidden;
     box-sizing: border-box;
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        padding-bottom: 8rem;
+    }
 `;
 
 const NoMoreUsersContainer = styled.div`
@@ -477,6 +482,11 @@ const NoMoreUsersContainer = styled.div`
     padding-top: calc(6rem + env(safe-area-inset-top));
     padding-bottom: calc(8rem + env(safe-area-inset-bottom));
     overflow: hidden;
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        padding-bottom: 8rem;
+    }
 `;
 
 const NoMoreUsersContent = styled.div`

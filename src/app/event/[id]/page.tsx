@@ -121,6 +121,11 @@ const DetailContainer = styled.main`
     padding-bottom: calc(2rem + env(safe-area-inset-bottom));
     background-color: #1a1a1a;
     min-height: 100vh;
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        padding-bottom: 2rem;
+    }
 `;
 
 const BannerSection = styled.div`

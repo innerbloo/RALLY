@@ -179,6 +179,11 @@ const ProfileContainer = styled.main`
     min-height: 100vh;
     background-color: #1a1a1a;
     padding-bottom: calc(8rem + env(safe-area-inset-bottom));
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        padding-bottom: 8rem;
+    }
 `;
 
 const ProfileContent = styled.div`

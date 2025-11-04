@@ -319,6 +319,11 @@ const HomeContainer = styled.main`
     padding-bottom: calc(10rem + env(safe-area-inset-bottom));
     background-color: #1a1a1a;
 
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        padding-bottom: 10rem;
+    }
+
     > section {
         margin: 0 0 3rem;
         padding: 2rem 2rem 0;

@@ -1056,6 +1056,11 @@ const AddGameFooter = styled.footer`
     gap: 1rem;
     background-color: #1a1a1a;
     border-top: 0.1rem solid #3f3f41;
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        padding-bottom: 3rem;
+    }
 `;
 
 const FooterButton = styled.button<{ $variant: 'primary' | 'secondary' }>`

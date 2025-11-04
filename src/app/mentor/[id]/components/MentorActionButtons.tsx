@@ -151,6 +151,11 @@ const FixedButtonContainer = styled.div`
     );
     padding: 1.5rem 2rem calc(env(safe-area-inset-bottom) + 1.5rem);
     z-index: 1000;
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        padding: 1.5rem 2rem 1.5rem;
+    }
 `;
 
 const ButtonWrapper = styled.div`

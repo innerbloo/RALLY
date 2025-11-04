@@ -87,6 +87,11 @@ const InputContainer = styled.div`
     padding: 1.2rem 2rem;
     padding-bottom: calc(1.2rem + env(safe-area-inset-bottom));
     z-index: 999;
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        padding-bottom: 1.2rem;
+    }
 `;
 
 const InputWrapper = styled.div`

@@ -64,6 +64,11 @@ const PageContainer = styled.main`
     background-color: #1a1a1a;
     padding-top: calc(6rem + env(safe-area-inset-top));
     padding-bottom: calc(9rem + env(safe-area-inset-bottom));
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        padding-bottom: 9rem;
+    }
 `;
 
 const ContentWrapper = styled.div`

@@ -487,6 +487,11 @@ const MatchContainer = styled.main`
     min-height: 100vh; /* Fallback */
     min-height: 100dvh; /* Dynamic viewport height */
     min-height: calc(var(--vh, 1vh) * 100); /* Custom property */
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        padding-bottom: 10rem;
+    }
 `;
 
 const MatchHeader = styled.header`
@@ -918,6 +923,11 @@ const QuickMatchButton = styled.button<{
                 return 'translateX(calc(-100% + 220px - 1.5rem))';
             }};
         }
+    }
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        bottom: 10rem;
     }
 
     svg {

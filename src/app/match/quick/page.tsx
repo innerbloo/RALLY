@@ -342,6 +342,11 @@ const QuickMatchMain = styled.main`
     padding-bottom: calc(10rem + env(safe-area-inset-bottom));
     display: flex;
     flex-direction: column;
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        padding-bottom: 10rem;
+    }
 `;
 
 const StepContent = styled.div`
@@ -370,6 +375,11 @@ const QuickMatchFooter = styled.footer`
     display: flex;
     justify-content: space-between;
     gap: 1rem;
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        padding: 1.5rem 2rem 1.5rem;
+    }
 `;
 
 const NavigationButton = styled.button<{

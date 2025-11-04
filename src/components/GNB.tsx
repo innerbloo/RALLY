@@ -239,6 +239,13 @@ const GNBContainer = styled.nav`
     @supports (padding-bottom: env(safe-area-inset-bottom)) {
         bottom: calc(1.2rem + env(safe-area-inset-bottom, 0));
     }
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
+            bottom: 1.2rem;
+        }
+    }
 `;
 
 const GNBWrapper = styled.ul`

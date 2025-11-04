@@ -79,6 +79,11 @@ const TooltipCard = styled.div`
         border-top: 1rem solid #3a5fd9;
     }
 
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        bottom: 18rem;
+    }
+
     @media (max-width: 768px) {
         transform: unset;
         left: unset;

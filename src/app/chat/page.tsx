@@ -220,6 +220,11 @@ const ChatContainer = styled.main`
     min-height: 100vh; /* Fallback */
     min-height: 100dvh; /* Dynamic viewport height */
     min-height: calc(var(--vh, 1vh) * 100); /* Custom property */
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        padding-bottom: 10rem;
+    }
 `;
 
 const ChatHeader = styled.header`

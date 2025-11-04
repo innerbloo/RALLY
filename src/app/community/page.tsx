@@ -208,6 +208,11 @@ const CommunityContainer = styled.main`
     padding-bottom: calc(10rem + env(safe-area-inset-bottom));
     background-color: #1a1a1a;
     min-height: 100vh;
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        padding-bottom: 10rem;
+    }
 `;
 
 const CommunityHeader = styled.header`
@@ -423,6 +428,11 @@ const NewPostButton = styled.button<{ $isAtBottom: boolean }>`
                     ? 'translateX(calc(-100% + 220px - 1.5rem)) translateY(150%)'
                     : 'translateX(calc(-100% + 220px - 1.5rem))'};
         }
+    }
+
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        bottom: 10rem;
     }
 
     svg {

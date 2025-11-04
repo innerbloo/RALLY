@@ -974,6 +974,11 @@ const MessagesContainer = styled.div`
     padding-top: calc(env(safe-area-inset-top) + 7rem);
     padding-bottom: calc(10rem + env(safe-area-inset-bottom));
 
+    /* PWA 모드에서는 하단 safe-area 무시 */
+    @media (display-mode: standalone) {
+        padding-bottom: 10rem;
+    }
+
     &::-webkit-scrollbar {
         width: 0.6rem;
     }
