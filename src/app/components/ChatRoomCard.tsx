@@ -42,7 +42,7 @@ export default function ChatRoomCard({
     const router = useRouter();
 
     const handleClick = () => {
-        router.push(`/chat/${id}`);
+        router.push(`/chat/${id}`, { scroll: false });
     };
 
     return (

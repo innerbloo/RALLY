@@ -55,7 +55,7 @@ export default function ProfileHeader({
             <ProfileInfo>
                 <NicknameRow>
                     <Nickname>{nickname}</Nickname>
-                    <EditButton onClick={() => router.push('/profile/edit')}>
+                    <EditButton onClick={() => router.push('/profile/edit', { scroll: false })}>
                         <Edit2 size={16} />
                         <span>프로필 수정</span>
                     </EditButton>

@@ -31,7 +31,7 @@ export default function MentorRecommendCard({
     const router = useRouter();
 
     const handleClick = () => {
-        router.push(`/mentor/${id}`);
+        router.push(`/mentor/${id}`, { scroll: false });
     };
 
     return (

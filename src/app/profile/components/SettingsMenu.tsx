@@ -18,7 +18,7 @@ export default function SettingsMenu() {
     };
 
     const handleLogout = () => {
-        router.push('/tutorial?step=1');
+        router.push('/tutorial?step=1', { scroll: false });
         // 향후 실제 로그아웃 로직 추가
     };
 

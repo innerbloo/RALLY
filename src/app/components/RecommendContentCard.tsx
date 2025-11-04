@@ -77,7 +77,7 @@ export default function RecommendContentCard({
     };
 
     return (
-        <Link href={`/content/${id}`}>
+        <Link href={`/content/${id}`} scroll={false}>
             <CardContainer>
                 <ContentLeftSection>
                     <ContentHeader>

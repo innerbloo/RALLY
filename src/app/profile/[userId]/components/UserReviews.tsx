@@ -36,7 +36,7 @@ export default function UserReviews({ reviews, userId }: UserReviewsProps) {
     );
 
     const handleReviewerClick = (reviewerId: number) => {
-        router.push(`/profile/${reviewerId}`);
+        router.push(`/profile/${reviewerId}`, { scroll: false });
     };
 
     const handleHelpful = (reviewId: number) => {

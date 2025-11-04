@@ -78,11 +78,11 @@ export default function ProfileEditPage() {
 
         localStorage.setItem('userProfile', JSON.stringify(updatedProfile));
         toast.success('프로필이 저장되었습니다!');
-        router.push('/profile');
+        router.push('/profile', { scroll: false });
     };
 
     const handleCancel = () => {
-        router.push('/profile');
+        router.push('/profile', { scroll: false });
     };
 
     return (

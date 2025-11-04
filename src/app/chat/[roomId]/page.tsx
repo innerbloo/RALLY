@@ -183,9 +183,9 @@ export default function ChatRoomPage() {
     const handleProfileClick = () => {
         // 멘토인 경우 멘토 상세 페이지로, 아니면 유저 프로필로
         if (room?.matchedUser.isMentor) {
-            router.push(`/mentor/${room.matchedUser.userId}`);
+            router.push(`/mentor/${room.matchedUser.userId}`, { scroll: false });
         } else {
-            router.push(`/profile/${room?.matchedUser.userId}`);
+            router.push(`/profile/${room?.matchedUser.userId}`, { scroll: false });
         }
     };
 

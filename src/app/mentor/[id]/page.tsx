@@ -29,7 +29,7 @@ export default function MentorDetailPage() {
         return (
             <ErrorContainer>
                 <ErrorMessage>멘토를 찾을 수 없습니다.</ErrorMessage>
-                <BackButton onClick={() => router.push('/')}>
+                <BackButton onClick={() => router.push('/', { scroll: false })}>
                     홈으로 돌아가기
                 </BackButton>
             </ErrorContainer>

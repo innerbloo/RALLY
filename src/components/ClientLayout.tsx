@@ -33,6 +33,9 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     // 2depth 이상 페이지 체크
     const isDeepPage = pathname.split('/').filter(Boolean).length > 1;
 
+    // 채팅 상세 페이지 체크 (스크롤 락 비활성화 대상)
+    const isChatDetailPage = pathname.startsWith('/chat/') && pathname !== '/chat';
+
     // 모든 input/textarea 포커스 감지
     useEffect(() => {
         const handleFocusIn = (e: FocusEvent) => {
@@ -102,7 +105,8 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
                 visualViewportHeight: window.visualViewport?.height || 0,
             });
 
-            if (isInputFocused) {
+            // 채팅 상세 페이지에서는 스크롤 락 비활성화 (입력창이 키보드에 가려도 스크롤 가능하도록)
+            if (isInputFocused && !isChatDetailPage) {
                 if (!initialScrollYRef.current) {
                     initialScrollYRef.current = currentScrollY;
                 } else if (currentScrollY > initialScrollYRef.current) {
@@ -123,7 +127,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
             window.visualViewport?.removeEventListener('resize', handleScroll);
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [isInputFocused]);
+    }, [isInputFocused, isChatDetailPage]);
 
     return (
         <QuickMatchProvider>

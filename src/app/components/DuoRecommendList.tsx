@@ -29,7 +29,7 @@ export default function DuoRecommendList({ duos }: DuoRecommendListProps) {
     const router = useRouter();
 
     const handleDuoClick = (userId: number) => {
-        router.push(`/profile/${userId}`);
+        router.push(`/profile/${userId}`, { scroll: false });
     };
 
     return (

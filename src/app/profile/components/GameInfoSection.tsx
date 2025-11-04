@@ -27,7 +27,7 @@ export default function GameInfoSection({ games }: GameInfoSectionProps) {
     const router = useRouter();
 
     const handleAddGame = () => {
-        router.push('/profile/game/add');
+        router.push('/profile/game/add', { scroll: false });
     };
 
     const handleDeleteGame = (id: string) => {

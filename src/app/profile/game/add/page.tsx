@@ -315,11 +315,11 @@ export default function GameAddPage() {
         localStorage.setItem('userGames', JSON.stringify(userGames));
 
         toast.success('게임 정보가 추가되었습니다!');
-        router.push('/profile');
+        router.push('/profile', { scroll: false });
     };
 
     const handleCancel = () => {
-        router.push('/profile');
+        router.push('/profile', { scroll: false });
     };
 
     // 티어가 있는 랭크인지 확인

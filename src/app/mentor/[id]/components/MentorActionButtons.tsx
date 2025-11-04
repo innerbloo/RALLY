@@ -50,7 +50,7 @@ export default function MentorActionButtons({
                 mentorProfileImage;
             chatRooms[existingRoomIndex].matchedUser.username = mentorName;
             localStorage.setItem('chatRooms', JSON.stringify(chatRooms));
-            router.push(`/chat/${chatRooms[existingRoomIndex].id}`);
+            router.push(`/chat/${chatRooms[existingRoomIndex].id}`, { scroll: false });
         } else {
             // 새 채팅방 생성 로직
             const newRoom = {
@@ -77,7 +77,7 @@ export default function MentorActionButtons({
 
             chatRooms.push(newRoom);
             localStorage.setItem('chatRooms', JSON.stringify(chatRooms));
-            router.push(`/chat/${newRoom.id}`);
+            router.push(`/chat/${newRoom.id}`, { scroll: false });
         }
     };
 

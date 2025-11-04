@@ -46,7 +46,7 @@ export default function CommunityCard({
     }, [id, comment]);
 
     const handleClick = () => {
-        router.push(`/community/${id}`);
+        router.push(`/community/${id}`, { scroll: false });
     };
 
     const getCategoryColor = () => {

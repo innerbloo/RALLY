@@ -25,7 +25,7 @@ export default function BannerSwiper() {
     };
 
     const handleBannerClick = (bannerId: number) => {
-        router.push(`/event/${bannerId}`);
+        router.push(`/event/${bannerId}`, { scroll: false });
     };
 
     return (

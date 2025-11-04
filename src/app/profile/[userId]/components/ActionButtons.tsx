@@ -45,7 +45,7 @@ export default function ActionButtons({
 
         if (existingRoom) {
             // 기존 채팅방으로 이동
-            router.push(`/chat/${existingRoom.id}`);
+            router.push(`/chat/${existingRoom.id}`, { scroll: false });
         } else {
             // 게임 이름에 따른 아이콘 매핑
             const gameImageMap: { [key: string]: string } = {
@@ -80,7 +80,7 @@ export default function ActionButtons({
 
             storedRooms.push(newRoom);
             localStorage.setItem('chatRooms', JSON.stringify(storedRooms));
-            router.push(`/chat/${newRoom.id}`);
+            router.push(`/chat/${newRoom.id}`, { scroll: false });
         }
     };
 
