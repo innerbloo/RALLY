@@ -92,50 +92,18 @@ const getPositionName = (positionElement: React.ReactNode): string => {
 
 // 이미지 경로에서 챔피언 이름 추출 함수
 const getChampionNameFromPath = (imagePath: string): string => {
-    // '/lol/top-Aatrox.png' -> 'Aatrox' 또는 '/lol/support_Sona.png' -> 'Sona'
+    // '/lol/top-아트록스.png' -> '아트록스' 또는 '/lol/support_소나.png' -> '소나'
     const fileName = imagePath.split('/').pop() || '';
     const nameWithoutExtension = fileName.split('.')[0];
 
     // '-' 또는 '_'로 구분된 마지막 부분을 챔피언 이름으로 추출
-    let championName = '';
     if (nameWithoutExtension.includes('-')) {
-        championName = nameWithoutExtension.split('-').pop() || '';
+        return nameWithoutExtension.split('-').pop() || '';
     } else if (nameWithoutExtension.includes('_')) {
-        championName = nameWithoutExtension.split('_').pop() || '';
-    } else {
-        championName = nameWithoutExtension;
+        return nameWithoutExtension.split('_').pop() || '';
     }
 
-    // 영어 이름을 한국어로 변환
-    const championNameMap: { [key: string]: string } = {
-        Aatrox: '아트록스',
-        Garen: '가렌',
-        Gangplank: '갱플랭크',
-        Sion: '사이온',
-        Vayne: '베인',
-        KhaZix: '카직스',
-        Viego: '비에고',
-        Nidalee: '니달리',
-        Rammus: '람머스',
-        'Master Yi': '마스터 이',
-        Yasuo: '야스오',
-        LeBlanc: '르블랑',
-        Vex: '벡스',
-        'Twisted Fate': '트위스티드 페이트',
-        Lissandra: '리산드라',
-        Jinx: '징크스',
-        KaiSa: '카이사',
-        Ezreal: '이즈리얼',
-        Lucian: '루시안',
-        Zeri: '제리',
-        Sona: '소나',
-        Janna: '잔나',
-        Braum: '브라움',
-        Blitzcrank: '블리츠크랭크',
-        Nautilus: '노틸러스',
-    };
-
-    return championNameMap[championName] || championName;
+    return nameWithoutExtension;
 };
 
 export default function MatchCard({
