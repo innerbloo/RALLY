@@ -8,6 +8,7 @@ import styled from '@emotion/styled';
 import GNB from '@/components/GNB';
 import Header from '@/components/Header';
 import { QuickMatchProvider } from '@/contexts/QuickMatchContext';
+import { useScrollRestoration } from '@/hooks/useScrollRestoration';
 
 interface ClientLayoutProps {
     children: React.ReactNode;
@@ -22,6 +23,9 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         viewportHeight: 0,
         visualViewportHeight: 0,
     });
+
+    // 브라우저 뒤로가기 시 스크롤 위치 복원
+    useScrollRestoration();
 
     // 튜토리얼 페이지에서는 Header와 GNB 숨김
     const hideNavigation = pathname.startsWith('/tutorial');
