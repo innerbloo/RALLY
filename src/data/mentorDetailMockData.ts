@@ -1,3 +1,5 @@
+import { getYesterdayDate } from './communityMockData';
+
 export interface MentorService {
     type: string;
     price: number;
@@ -115,7 +117,7 @@ export const mentorDetailMockData: { [key: number]: MentorDetail } = {
                 rating: 5,
                 comment:
                     '브론즈에서 실버까지 올라갔습니다! 정말 친절하게 알려주시고 제가 이해할 때까지 설명해주셔서 감사했어요. 특히 시야 장악하는 법이 정말 도움이 됐습니다.',
-                createdAt: '2025-01-10T14:30:00Z',
+                createdAt: getYesterdayDate('14:30:00').replace(' ', 'T') + 'Z',
                 helpful: 24,
             },
             {
@@ -126,7 +128,7 @@ export const mentorDetailMockData: { [key: number]: MentorDetail } = {
                 rating: 5,
                 comment:
                     '정글 루트랑 갱킹 타이밍 배우고 나서 확실히 게임이 쉬워졌어요. 3주 만에 골드 달성했습니다!',
-                createdAt: '2025-01-08T16:20:00Z',
+                createdAt: getYesterdayDate('16:20:00').replace(' ', 'T') + 'Z',
                 helpful: 18,
             },
             {
@@ -137,7 +139,7 @@ export const mentorDetailMockData: { [key: number]: MentorDetail } = {
                 rating: 5,
                 comment:
                     '차분하게 잘 알려주시고 질문에도 꼼꼼히 답변해주셔서 좋았습니다. 맵 리딩 개념이 확실히 잡혔어요.',
-                createdAt: '2025-01-05T10:15:00Z',
+                createdAt: getYesterdayDate('10:15:00').replace(' ', 'T') + 'Z',
                 helpful: 15,
             },
         ],
@@ -209,7 +211,7 @@ export const mentorDetailMockData: { [key: number]: MentorDetail } = {
                 rating: 5,
                 comment:
                     '트레이서 운용법 배우고 나서 확실히 달라졌어요. 포지셔닝이 얼마나 중요한지 깨달았습니다!',
-                createdAt: '2025-01-09T18:45:00Z',
+                createdAt: getYesterdayDate('18:45:00').replace(' ', 'T') + 'Z',
                 helpful: 31,
             },
             {
@@ -220,7 +222,7 @@ export const mentorDetailMockData: { [key: number]: MentorDetail } = {
                 rating: 5,
                 comment:
                     '궁 타이밍이랑 팀원들이랑 호흡 맞추는 법 배우고 티어 올랐습니다. 강추!',
-                createdAt: '2025-01-07T13:20:00Z',
+                createdAt: getYesterdayDate('13:20:00').replace(' ', 'T') + 'Z',
                 helpful: 22,
             },
             {
@@ -231,7 +233,7 @@ export const mentorDetailMockData: { [key: number]: MentorDetail } = {
                 rating: 4,
                 comment:
                     '딜러 위주 코칭이지만 지원가도 도움 많이 됐어요. 맵 이해도가 높아졌습니다.',
-                createdAt: '2025-01-04T09:30:00Z',
+                createdAt: getYesterdayDate('09:30:00').replace(' ', 'T') + 'Z',
                 helpful: 12,
             },
         ],
@@ -305,7 +307,7 @@ export const mentorDetailMockData: { [key: number]: MentorDetail } = {
                 rating: 5,
                 comment:
                     '아이템 조합 전혀 모르던 제가 이제는 상황에 맞춰 쓸 수 있게 됐어요! 완전 초보 탈출했습니다.',
-                createdAt: '2025-01-11T15:10:00Z',
+                createdAt: getYesterdayDate('15:10:00').replace(' ', 'T') + 'Z',
                 helpful: 19,
             },
             {
@@ -316,7 +318,7 @@ export const mentorDetailMockData: { [key: number]: MentorDetail } = {
                 rating: 4,
                 comment:
                     '메타 분석이 정말 도움 됐어요. 어떤 덱이 강한지 알고 플레이하니 승률이 올랐습니다.',
-                createdAt: '2025-01-06T11:40:00Z',
+                createdAt: getYesterdayDate('11:40:00').replace(' ', 'T') + 'Z',
                 helpful: 14,
             },
             {
@@ -327,7 +329,7 @@ export const mentorDetailMockData: { [key: number]: MentorDetail } = {
                 rating: 4,
                 comment:
                     '경제 관리 부분이 특히 좋았습니다. 언제 골드를 써야 하는지 감이 잡혔어요.',
-                createdAt: '2025-01-03T14:25:00Z',
+                createdAt: getYesterdayDate('14:25:00').replace(' ', 'T') + 'Z',
                 helpful: 11,
             },
         ],

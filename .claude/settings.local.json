@@ -16,7 +16,8 @@
       "Bash(do echo \"=== $file ===\")",
       "Bash(done)",
       "Bash(xargs -I {} sh -c 'echo \"\"\"\"File: {}\"\"\"\"; grep -A10 \"\"\"\"= styled.button\\`\"\"\"\" \"\"\"\"{}\"\"\"\" | grep -c \"\"\"\"cursor: pointer\"\"\"\" || echo \"\"\"\"0\"\"\"\"')",
-      "Bash(paste:*)"
+      "Bash(paste:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

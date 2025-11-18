@@ -1,5 +1,7 @@
 // 유저 리뷰 Mock 데이터
 
+import { getYesterdayDate } from './communityMockData';
+
 interface Review {
     id: number;
     reviewerId: number;
@@ -21,7 +23,7 @@ export const mockUserReviews: { [userId: number]: Review[] } = {
             reviewerImage: '/lol/profile-lol-2.png',
             rating: 5,
             comment: '탑에서 정말 든든하게 라인 지켜주셨어요! 다음에도 같이 하고 싶습니다 ㅎㅎ',
-            createdAt: '2025-01-15T14:30:00',
+            createdAt: getYesterdayDate('14:30:00').replace(' ', 'T'),
             helpful: 12,
         },
         {
@@ -31,7 +33,7 @@ export const mockUserReviews: { [userId: number]: Review[] } = {
             reviewerImage: '/lol/profile-lol-3.png',
             rating: 5,
             comment: '탱커 운영 정말 잘하시네요. 팀플 짱입니다!',
-            createdAt: '2025-01-14T18:20:00',
+            createdAt: getYesterdayDate('18:20:00').replace(' ', 'T'),
             helpful: 8,
         },
         {
@@ -41,7 +43,7 @@ export const mockUserReviews: { [userId: number]: Review[] } = {
             reviewerImage: '/lol/profile-lol-5.png',
             rating: 4,
             comment: '조합 맞춰서 픽하시고 소통 잘 되서 좋았습니다!',
-            createdAt: '2025-01-13T20:15:00',
+            createdAt: getYesterdayDate('20:15:00').replace(' ', 'T'),
             helpful: 5,
         },
         {
@@ -51,7 +53,7 @@ export const mockUserReviews: { [userId: number]: Review[] } = {
             reviewerImage: '/lol/profile-lol-4.png',
             rating: 5,
             comment: '탑 완전 장악하셔서 게임이 편했어요. 커뮤니케이션도 좋으시고 매너도 최고!',
-            createdAt: '2025-01-12T16:45:00',
+            createdAt: getYesterdayDate('16:45:00').replace(' ', 'T'),
             helpful: 15,
         },
     ],
@@ -65,7 +67,7 @@ export const mockUserReviews: { [userId: number]: Review[] } = {
             reviewerImage: '/lol/profile-lol-2.png',
             rating: 5,
             comment: '초보라고 하셨는데 배우는 속도가 엄청 빠르세요! 같이 하면서 즐거웠습니다',
-            createdAt: '2025-01-16T10:30:00',
+            createdAt: getYesterdayDate('10:30:00').replace(' ', 'T'),
             helpful: 7,
         },
         {
@@ -75,7 +77,7 @@ export const mockUserReviews: { [userId: number]: Review[] } = {
             reviewerImage: '/lol/profile-lol-3.png',
             rating: 4,
             comment: '궁금한 거 물어보면 친절하게 알려주셔서 좋았어요. 함께 성장하는 느낌!',
-            createdAt: '2025-01-15T19:00:00',
+            createdAt: getYesterdayDate('19:00:00').replace(' ', 'T'),
             helpful: 4,
         },
         {
@@ -85,7 +87,7 @@ export const mockUserReviews: { [userId: number]: Review[] } = {
             reviewerImage: '/mentor/profile-mentor-1.png',
             rating: 5,
             comment: '채팅으로만 소통했는데도 호흡이 잘 맞았습니다. 다음에도 같이 해요~',
-            createdAt: '2025-01-14T15:20:00',
+            createdAt: getYesterdayDate('15:20:00').replace(' ', 'T'),
             helpful: 9,
         },
     ],
@@ -99,7 +101,7 @@ export const mockUserReviews: { [userId: number]: Review[] } = {
             reviewerImage: '/overwatch/profile-overwatch-2.png',
             rating: 5,
             comment: '힐 타이밍 완벽하시고 적 딜러 재우는 슬립도 환상적이에요! 최고의 아나',
-            createdAt: '2025-01-17T20:15:00',
+            createdAt: getYesterdayDate('20:15:00').replace(' ', 'T'),
             helpful: 18,
         },
         {
@@ -109,7 +111,7 @@ export const mockUserReviews: { [userId: number]: Review[] } = {
             reviewerImage: '/overwatch/profile-overwatch-3.png',
             rating: 5,
             comment: '나노 타이밍 정말 좋으시고 위치 선정도 완벽! 아나 장인 맞으시네요',
-            createdAt: '2025-01-16T18:30:00',
+            createdAt: getYesterdayDate('18:30:00').replace(' ', 'T'),
             helpful: 22,
         },
         {
@@ -119,7 +121,7 @@ export const mockUserReviews: { [userId: number]: Review[] } = {
             reviewerImage: '/overwatch/profile-overwatch-4.png',
             rating: 5,
             comment: '힐이 끊기지 않아서 안정적으로 딜할 수 있었어요. 감사합니다!',
-            createdAt: '2025-01-15T21:45:00',
+            createdAt: getYesterdayDate('21:45:00').replace(' ', 'T'),
             helpful: 14,
         },
         {
@@ -129,7 +131,7 @@ export const mockUserReviews: { [userId: number]: Review[] } = {
             reviewerImage: '/overwatch/profile-overwatch-5.png',
             rating: 4,
             comment: '커뮤니케이션 잘 되고 팀플 최고입니다. 또 같이 해요!',
-            createdAt: '2025-01-14T17:20:00',
+            createdAt: getYesterdayDate('17:20:00').replace(' ', 'T'),
             helpful: 11,
         },
         {
@@ -139,7 +141,7 @@ export const mockUserReviews: { [userId: number]: Review[] } = {
             reviewerImage: '/overwatch/profile-overwatch-6.png',
             rating: 5,
             comment: '아나 운영 스킬이 정말 대단하세요. 배울 점이 많았습니다!',
-            createdAt: '2025-01-13T19:00:00',
+            createdAt: getYesterdayDate('19:00:00').replace(' ', 'T'),
             helpful: 16,
         },
     ],

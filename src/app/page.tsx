@@ -17,7 +17,7 @@ import CommunityList from '@/app/components/CommunityList';
 import DuoRecommendList from '@/app/components/DuoRecommendList';
 import MentorRecommendList from '@/app/components/MentorRecommendList';
 import RecommendContentList from '@/app/components/RecommendContentList';
-import { mockPosts } from '@/data/communityMockData';
+import { mockPosts, getYesterdayDate } from '@/data/communityMockData';
 import { useDragScroll } from '@/hooks/useDragScroll';
 
 export default function Home() {
@@ -257,7 +257,7 @@ export default function Home() {
                                 type: 'guide' as const,
                                 difficulty: 'beginner' as const,
                                 author: '롤 마스터',
-                                createAt: '2025-09-08 10:00:00',
+                                createAt: getYesterdayDate('10:00:00'),
                                 likes: 1250,
                                 views: 15600,
                                 game: '리그오브레전드',
@@ -271,7 +271,7 @@ export default function Home() {
                                 type: 'strategy' as const,
                                 difficulty: 'intermediate' as const,
                                 author: '옵치 프로',
-                                createAt: '2025-09-07 14:30:00',
+                                createAt: getYesterdayDate('14:30:00'),
                                 likes: 980,
                                 views: 12400,
                                 game: '오버워치2',
@@ -285,7 +285,7 @@ export default function Home() {
                                 type: 'tip' as const,
                                 difficulty: 'advanced' as const,
                                 author: 'TFT 분석가',
-                                createAt: '2025-09-06 16:45:00',
+                                createAt: getYesterdayDate('16:45:00'),
                                 likes: 756,
                                 views: 9800,
                                 game: '전략적 팀 전투',
@@ -299,7 +299,7 @@ export default function Home() {
                                 type: 'tip' as const,
                                 difficulty: 'intermediate' as const,
                                 author: '발로 고수',
-                                createAt: '2025-09-05 11:20:00',
+                                createAt: getYesterdayDate('11:20:00'),
                                 likes: 1120,
                                 views: 14200,
                                 game: '발로란트',

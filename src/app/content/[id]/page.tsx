@@ -10,6 +10,8 @@ import toast from 'react-hot-toast';
 
 import styled from '@emotion/styled';
 
+import { getYesterdayDate } from '@/data/communityMockData';
+
 dayjs.extend(relativeTime);
 dayjs.locale('ko');
 
@@ -48,7 +50,7 @@ const mockContents: ContentData[] = [
         type: 'guide',
         difficulty: 'beginner',
         author: '롤 마스터',
-        createAt: '2025-09-08 10:00:00',
+        createAt: getYesterdayDate('10:00:00'),
         likes: 1250,
         views: 15600,
         game: '리그오브레전드',
@@ -64,7 +66,7 @@ const mockContents: ContentData[] = [
         type: 'strategy',
         difficulty: 'intermediate',
         author: '옵치 프로',
-        createAt: '2025-09-07 14:30:00',
+        createAt: getYesterdayDate('14:30:00'),
         likes: 980,
         views: 12400,
         game: '오버워치2',
@@ -80,7 +82,7 @@ const mockContents: ContentData[] = [
         type: 'tip',
         difficulty: 'advanced',
         author: 'TFT 분석가',
-        createAt: '2025-09-06 16:45:00',
+        createAt: getYesterdayDate('16:45:00'),
         likes: 756,
         views: 9800,
         game: '전략적 팀 전투',
@@ -96,7 +98,7 @@ const mockContents: ContentData[] = [
         type: 'tip',
         difficulty: 'intermediate',
         author: '발로 고수',
-        createAt: '2025-09-05 11:20:00',
+        createAt: getYesterdayDate('11:20:00'),
         likes: 1120,
         views: 14200,
         game: '발로란트',
@@ -116,7 +118,7 @@ const mockComments: { [contentId: number]: Comment[] } = {
             username: '롤초보탈출',
             profileImage: '/lol/profile-lol-1.png',
             content: '정말 도움 많이 됐어요! 이 영상 보고 바로 실전에 적용했는데 승률이 올라갔어요 ㅎㅎ',
-            createAt: '2025-09-08T14:30:00',
+            createAt: getYesterdayDate('14:30:00').replace(' ', 'T'),
             likes: 24,
         },
         {
@@ -125,7 +127,7 @@ const mockComments: { [contentId: number]: Comment[] } = {
             username: '정글러의품격',
             profileImage: '/lol/profile-lol-3.png',
             content: '초보자분들한테 추천하고 싶네요. 설명이 너무 쉽고 명확해요!',
-            createAt: '2025-09-08T16:15:00',
+            createAt: getYesterdayDate('16:15:00').replace(' ', 'T'),
             likes: 18,
         },
         {
@@ -134,7 +136,7 @@ const mockComments: { [contentId: number]: Comment[] } = {
             username: '한성대즐겜러',
             profileImage: '/hsu.png',
             content: '챔피언 추천 부분이 특히 좋았습니다. 감사합니다!',
-            createAt: '2025-09-08T18:45:00',
+            createAt: getYesterdayDate('18:45:00').replace(' ', 'T'),
             likes: 12,
         },
     ],
@@ -145,7 +147,7 @@ const mockComments: { [contentId: number]: Comment[] } = {
             username: '겐지장인',
             profileImage: '/overwatch/profile-overwatch-2.png',
             content: '포지셔닝의 중요성을 다시 한번 깨달았습니다. 맵별 전략 부분 정말 유익했어요!',
-            createAt: '2025-09-07T15:20:00',
+            createAt: getYesterdayDate('15:20:00').replace(' ', 'T'),
             likes: 31,
         },
         {
@@ -154,7 +156,7 @@ const mockComments: { [contentId: number]: Comment[] } = {
             username: '힐러러버',
             profileImage: '/overwatch/profile-overwatch-1.png',
             content: '서포터 입장에서도 배울 점이 많았습니다. 좋은 영상 감사해요',
-            createAt: '2025-09-07T19:30:00',
+            createAt: getYesterdayDate('19:30:00').replace(' ', 'T'),
             likes: 15,
         },
     ],
@@ -165,7 +167,7 @@ const mockComments: { [contentId: number]: Comment[] } = {
             username: '티모',
             profileImage: '/lol/profile-lol-2.png',
             content: '덱 빌딩 전략 너무 좋네요! 바로 플레 찍었습니다 ㄷㄷ',
-            createAt: '2025-09-06T17:00:00',
+            createAt: getYesterdayDate('17:00:00').replace(' ', 'T'),
             likes: 42,
         },
         {
@@ -174,7 +176,7 @@ const mockComments: { [contentId: number]: Comment[] } = {
             username: 'TFT마스터',
             profileImage: '/lol/profile-lol-4.png',
             content: '메타 분석 정말 디테일하네요. 경제 운영 팁도 유용했습니다!',
-            createAt: '2025-09-06T20:15:00',
+            createAt: getYesterdayDate('20:15:00').replace(' ', 'T'),
             likes: 28,
         },
         {
@@ -183,7 +185,7 @@ const mockComments: { [contentId: number]: Comment[] } = {
             username: '롤토체스광',
             profileImage: '/mentor/profile-mentor-3.png',
             content: '고급 전략까지 다뤄주셔서 감사합니다',
-            createAt: '2025-09-07T10:30:00',
+            createAt: getYesterdayDate('10:30:00').replace(' ', 'T'),
             likes: 19,
         },
     ],
@@ -194,7 +196,7 @@ const mockComments: { [contentId: number]: Comment[] } = {
             username: '발로고인물',
             profileImage: '/lol/profile-lol-1.png',
             content: '에임 훈련 루틴 따라하니까 진짜 실력이 늘었어요! 강추합니다',
-            createAt: '2025-09-05T12:40:00',
+            createAt: getYesterdayDate('12:40:00').replace(' ', 'T'),
             likes: 35,
         },
         {
@@ -203,7 +205,7 @@ const mockComments: { [contentId: number]: Comment[] } = {
             username: 'Jett메인',
             profileImage: '/lol/profile-lol-2.png',
             content: '크로스헤어 설정 부분 참고했습니다. 감사합니다 ㅎㅎ',
-            createAt: '2025-09-05T16:20:00',
+            createAt: getYesterdayDate('16:20:00').replace(' ', 'T'),
             likes: 22,
         },
     ],

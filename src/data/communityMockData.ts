@@ -1,5 +1,17 @@
 // 커뮤니티 관련 인터페이스 및 Mock 데이터
 
+// 어제 날짜 + 지정된 시간을 반환하는 유틸리티 함수
+export function getYesterdayDate(time: string): string {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    const year = yesterday.getFullYear();
+    const month = String(yesterday.getMonth() + 1).padStart(2, '0');
+    const day = String(yesterday.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day} ${time}`;
+}
+
 export interface CommunityData {
     id: number;
     image: string;
@@ -47,7 +59,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community1.jpg',
         username: '눈팅하러오는사람',
         title: '롤 첨할 때 생각한 거',
-        createAt: '2025-09-08 08:00:00',
+        createAt: getYesterdayDate('08:00:00'),
         comment: 3,
         game: '리그오브레전드',
         category: '자유',
@@ -59,7 +71,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community2.jpg',
         username: '허나거절한다',
         title: '남탓을 할 순 있다고 생각함',
-        createAt: '2025-09-08 06:21:00',
+        createAt: getYesterdayDate('06:21:00'),
         comment: 2,
         game: '리그오브레전드',
         category: '자유',
@@ -71,7 +83,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community3.jpg',
         username: '천둥군주의호령',
         title: '유미 전설 스킨 내놓는게 이해안감',
-        createAt: '2025-09-08 05:20:30',
+        createAt: getYesterdayDate('05:20:30'),
         comment: 2,
         game: '리그오브레전드',
         category: '자유',
@@ -83,7 +95,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community4.jpg',
         username: '수영하는파이리',
         title: '옵치 망했네',
-        createAt: '2025-09-07 19:20:30',
+        createAt: getYesterdayDate('19:20:30'),
         comment: 2,
         game: '오버워치2',
         category: '자유',
@@ -95,7 +107,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community5.jpg',
         username: '젠장또대상혁이야',
         title: '롤체 아이템 질문',
-        createAt: '2025-09-06 21:53:12',
+        createAt: getYesterdayDate('21:53:12'),
         comment: 2,
         game: '전략적 팀 전투',
         category: '질문',
@@ -107,7 +119,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community6.jpg',
         username: '정글러의품격',
         title: '정글 초보 탈출 꿀팁',
-        createAt: '2025-09-06 18:30:00',
+        createAt: getYesterdayDate('18:30:00'),
         comment: 2,
         game: '리그오브레전드',
         category: '공략',
@@ -119,7 +131,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community7.jpg',
         username: '오버워치마스터',
         title: '탱커 포지셔닝 완벽 가이드',
-        createAt: '2025-09-06 15:45:00',
+        createAt: getYesterdayDate('15:45:00'),
         comment: 3,
         game: '오버워치2',
         category: '공략',
@@ -131,7 +143,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community8.jpg',
         username: '발로란트고수',
         title: '에임 연습 루틴 공유',
-        createAt: '2025-09-06 12:10:00',
+        createAt: getYesterdayDate('12:10:00'),
         comment: 2,
         game: '발로란트',
         category: '팁',
@@ -143,7 +155,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community9.jpg',
         username: '배그킹',
         title: '에란겔 드랍존 추천',
-        createAt: '2025-09-06 09:20:00',
+        createAt: getYesterdayDate('09:20:00'),
         comment: 2,
         game: '배틀그라운드',
         category: '팁',
@@ -155,7 +167,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community10.jpg',
         username: '롤토체스장인',
         title: '시즌2 메타 덱 정리',
-        createAt: '2025-09-05 22:15:00',
+        createAt: getYesterdayDate('22:15:00'),
         comment: 3,
         game: '전략적 팀 전투',
         category: '공략',
@@ -167,7 +179,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community11.jpg',
         username: '브론즈탈출기',
         title: '드디어 실버 됐다ㅠㅠ',
-        createAt: '2025-09-05 19:40:00',
+        createAt: getYesterdayDate('19:40:00'),
         comment: 2,
         game: '리그오브레전드',
         category: '자유',
@@ -179,7 +191,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community12.jpg',
         username: '겐지장인',
         title: '겐지 칼질 타이밍 질문',
-        createAt: '2025-09-05 16:25:00',
+        createAt: getYesterdayDate('16:25:00'),
         comment: 2,
         game: '오버워치2',
         category: '질문',
@@ -191,7 +203,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community13.jpg',
         username: '발로초보',
         title: '스킬 사용 타이밍 모르겠어요',
-        createAt: '2025-09-05 13:50:00',
+        createAt: getYesterdayDate('13:50:00'),
         comment: 2,
         game: '발로란트',
         category: '질문',
@@ -203,7 +215,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community14.jpg',
         username: '배그생존왕',
         title: '최종 안전지대 생존 팁',
-        createAt: '2025-09-05 10:30:00',
+        createAt: getYesterdayDate('10:30:00'),
         comment: 2,
         game: '배틀그라운드',
         category: '공략',
@@ -215,7 +227,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community15.jpg',
         username: '롤체매니아',
         title: '롤토체스 재밌네요',
-        createAt: '2025-09-04 21:00:00',
+        createAt: getYesterdayDate('21:00:00'),
         comment: 2,
         game: '전략적 팀 전투',
         category: '자유',
@@ -227,7 +239,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community16.jpg',
         username: '미드라이너',
         title: '미드 라인전 꿀팁 정리',
-        createAt: '2025-09-04 18:20:00',
+        createAt: getYesterdayDate('18:20:00'),
         comment: 2,
         game: '리그오브레전드',
         category: '공략',
@@ -239,7 +251,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community17.jpg',
         username: '힐러의길',
         title: '서포터 포지션 어떻게 잡나요?',
-        createAt: '2025-09-04 15:10:00',
+        createAt: getYesterdayDate('15:10:00'),
         comment: 2,
         game: '오버워치2',
         category: '질문',
@@ -251,7 +263,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community18.jpg',
         username: '발로고인물',
         title: '랭크 올리는 법',
-        createAt: '2025-09-04 12:00:00',
+        createAt: getYesterdayDate('12:00:00'),
         comment: 2,
         game: '발로란트',
         category: '팁',
@@ -263,7 +275,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community19.jpg',
         username: '배그프로',
         title: '근접전 이기는 방법',
-        createAt: '2025-09-03 20:45:00',
+        createAt: getYesterdayDate('20:45:00'),
         comment: 2,
         game: '배틀그라운드',
         category: '팁',
@@ -275,7 +287,7 @@ export const mockPosts: CommunityData[] = [
         image: '/community/community20.jpg',
         username: '전략가',
         title: '롤토체스 초보 가이드',
-        createAt: '2025-09-03 17:30:00',
+        createAt: getYesterdayDate('17:30:00'),
         comment: 3,
         game: '전략적 팀 전투',
         category: '공략',
@@ -301,7 +313,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 지금은 너무 많이 알게 돼서 오히려 스트레스 받을 때가 많은 것 같네요 ㅋㅋ
 
 여러분은 롤 처음 시작했을 때 어떠셨나요?`,
-        createAt: '2025-09-08 08:00:00',
+        createAt: getYesterdayDate('08:00:00'),
         comment: 3,
         game: '리그오브레전드',
         category: '자유',
@@ -315,7 +327,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '정글러의품격',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '저도 처음엔 그랬어요 ㅋㅋ 지금은 랭크 스트레스가...',
-                createAt: '2025-09-08 09:30:00',
+                createAt: getYesterdayDate('09:30:00'),
                 likes: 12,
             },
             {
@@ -324,7 +336,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '미드라이너',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '공감합니다. 초심을 잃지 말아야죠!',
-                createAt: '2025-09-08 10:15:00',
+                createAt: getYesterdayDate('10:15:00'),
                 likes: 8,
             },
             {
@@ -333,7 +345,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '티 모',
                 profileImage: '/lol/profile-lol-4.png',
                 content: '저는 아직도 재밌어요 ㅎㅎ 즐겜러라서 그런가',
-                createAt: '2025-09-08 11:45:00',
+                createAt: getYesterdayDate('11:45:00'),
                 likes: 5,
             },
         ],
@@ -352,7 +364,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 그렇다고 욕하거나 그러는 건 아니고, 그냥 속으로 '아 저 사람 때문에 졌네' 정도는 생각할 수 있다는 거예요.
 
 어떻게 생각하세요?`,
-        createAt: '2025-09-08 06:21:00',
+        createAt: getYesterdayDate('06:21:00'),
         comment: 2,
         game: '리그오브레전드',
         category: '자유',
@@ -366,7 +378,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '브론즈탈출기',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '맞아요 ㅋㅋ 그래도 말은 안 하는 게 낫죠',
-                createAt: '2025-09-08 07:00:00',
+                createAt: getYesterdayDate('07:00:00'),
                 likes: 15,
             },
             {
@@ -376,7 +388,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 profileImage: '/lol/profile-lol-4.png',
                 content:
                     '내 실수도 있을 수 있으니까 서로 이해하는 게 중요한 듯',
-                createAt: '2025-09-08 08:30:00',
+                createAt: getYesterdayDate('08:30:00'),
                 likes: 22,
             },
         ],
@@ -395,7 +407,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 다른 챔피언들은 몇 년씩 스킨 안 나오는데 말이죠.
 
 라이엇 제발 좀... 형평성 있게 해주세요 ㅠㅠ`,
-        createAt: '2025-09-08 05:20:30',
+        createAt: getYesterdayDate('05:20:30'),
         comment: 2,
         game: '리그오브레전드',
         category: '자유',
@@ -409,7 +421,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '미드라이너',
                 profileImage: '/lol/profile-lol-4.png',
                 content: '돈이 되니까 주는 거겠죠...',
-                createAt: '2025-09-08 06:10:00',
+                createAt: getYesterdayDate('06:10:00'),
                 likes: 18,
             },
             {
@@ -418,7 +430,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '티 모',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '유미 유저인데 미안합니다 ㅋㅋㅋ',
-                createAt: '2025-09-08 07:20:00',
+                createAt: getYesterdayDate('07:20:00'),
                 likes: 9,
             },
         ],
@@ -437,7 +449,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 블리자드가 뭘 잘못한 건지 모르겠지만 확실히 예전보다 재미가 없어진 것 같아요.
 
 여러분 생각은 어떠신가요?`,
-        createAt: '2025-09-07 19:20:30',
+        createAt: getYesterdayDate('19:20:30'),
         comment: 2,
         game: '오버워치2',
         category: '자유',
@@ -451,7 +463,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '오버워치마스터',
                 profileImage: '/overwatch/profile-overwatch-2.png',
                 content: '저는 아직도 재밌게 하고 있는데...',
-                createAt: '2025-09-07 20:00:00',
+                createAt: getYesterdayDate('20:00:00'),
                 likes: 7,
             },
             {
@@ -460,7 +472,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '겐지장인',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '밸런스 패치가 문제인 것 같아요',
-                createAt: '2025-09-07 21:15:00',
+                createAt: getYesterdayDate('21:15:00'),
                 likes: 11,
             },
         ],
@@ -477,7 +489,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 저는 항상 뭘 줘야 할지 모르겠어서 그냥 대충 주는데, 그래서 계속 지는 것 같아요.
 
 아이템 조합 팁 좀 알려주세요!`,
-        createAt: '2025-09-06 21:53:12',
+        createAt: getYesterdayDate('21:53:12'),
         comment: 2,
         game: '전략적 팀 전투',
         category: '질문',
@@ -491,7 +503,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '롤토체스장인',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '메타 덱마다 필수 아이템이 있어요. 검색해보세요!',
-                createAt: '2025-09-06 22:30:00',
+                createAt: getYesterdayDate('22:30:00'),
                 likes: 14,
             },
             {
@@ -500,7 +512,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '전략가',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '제 가이드 글 참고하시면 도움될 거예요',
-                createAt: '2025-09-06 23:00:00',
+                createAt: getYesterdayDate('23:00:00'),
                 likes: 8,
             },
         ],
@@ -520,7 +532,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 4. CS보다 객관적인 판단력이 더 중요
 
 이것만 지켜도 브론즈는 쉽게 탈출하실 수 있습니다!`,
-        createAt: '2025-09-06 18:30:00',
+        createAt: getYesterdayDate('18:30:00'),
         comment: 2,
         game: '리그오브레전드',
         category: '공략',
@@ -534,7 +546,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '브론즈탈출기',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '감사합니다! 도움 많이 됐어요',
-                createAt: '2025-09-06 19:00:00',
+                createAt: getYesterdayDate('19:00:00'),
                 likes: 20,
             },
             {
@@ -543,7 +555,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '눈팅하러오는사람',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '정글 연습해봐야겠네요 ㅎㅎ',
-                createAt: '2025-09-06 20:15:00',
+                createAt: getYesterdayDate('20:15:00'),
                 likes: 12,
             },
         ],
@@ -564,7 +576,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 **후퇴 시**: 팀 뒤에서 엄호
 
 포지셔닝만 잘해도 생존률이 2배는 올라갑니다!`,
-        createAt: '2025-09-06 15:45:00',
+        createAt: getYesterdayDate('15:45:00'),
         comment: 3,
         game: '오버워치2',
         category: '공략',
@@ -578,7 +590,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '겐지장인',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '탱커 유저는 아니지만 도움됐어요',
-                createAt: '2025-09-06 16:20:00',
+                createAt: getYesterdayDate('16:20:00'),
                 likes: 15,
             },
             {
@@ -587,7 +599,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '힐러의길',
                 profileImage: '/overwatch/profile-overwatch-1.png',
                 content: '탱커분들 이것좀 읽어주세요 제발 ㅠㅠ',
-                createAt: '2025-09-06 17:00:00',
+                createAt: getYesterdayDate('17:00:00'),
                 likes: 28,
             },
             {
@@ -596,7 +608,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '수영하는파이리',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '유익한 글 감사합니다!',
-                createAt: '2025-09-06 18:30:00',
+                createAt: getYesterdayDate('18:30:00'),
                 likes: 10,
             },
         ],
@@ -617,7 +629,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 이 루틴을 3개월 지속하니까 확실히 에임이 좋아졌어요.
 
 꾸준함이 중요합니다!`,
-        createAt: '2025-09-06 12:10:00',
+        createAt: getYesterdayDate('12:10:00'),
         comment: 2,
         game: '발로란트',
         category: '팁',
@@ -631,7 +643,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '발로초보',
                 profileImage: '/lol/profile-lol-4.png',
                 content: '저도 해봐야겠네요!',
-                createAt: '2025-09-06 13:00:00',
+                createAt: getYesterdayDate('13:00:00'),
                 likes: 8,
             },
             {
@@ -640,7 +652,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '발로고인물',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '데스매치 3판이 핵심인 것 같아요',
-                createAt: '2025-09-06 14:30:00',
+                createAt: getYesterdayDate('14:30:00'),
                 likes: 12,
             },
         ],
@@ -661,7 +673,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 본인 실력에 맞춰서 선택하시면 됩니다.
 
 저는 주로 포친키 갑니다!`,
-        createAt: '2025-09-06 09:20:00',
+        createAt: getYesterdayDate('09:20:00'),
         comment: 2,
         game: '배틀그라운드',
         category: '팁',
@@ -675,7 +687,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '배그생존왕',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '저는 군기지가 최고예요',
-                createAt: '2025-09-06 10:00:00',
+                createAt: getYesterdayDate('10:00:00'),
                 likes: 9,
             },
             {
@@ -684,7 +696,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '배그프로',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '포친키 물자 진짜 좋죠',
-                createAt: '2025-09-06 11:15:00',
+                createAt: getYesterdayDate('11:15:00'),
                 likes: 7,
             },
         ],
@@ -712,7 +724,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 현재는 요정 기계류가 압도적으로 강합니다.
 
 자세한 공략은 제 블로그에 올려놨으니 참고하세요!`,
-        createAt: '2025-09-05 22:15:00',
+        createAt: getYesterdayDate('22:15:00'),
         comment: 3,
         game: '전략적 팀 전투',
         category: '공략',
@@ -726,7 +738,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '전략가',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '요정 기계류 카운터는 뭔가요?',
-                createAt: '2025-09-05 23:00:00',
+                createAt: getYesterdayDate('23:00:00'),
                 likes: 25,
             },
             {
@@ -735,7 +747,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '롤체매니아',
                 profileImage: '/lol/profile-lol-4.png',
                 content: '정리 잘 해주셨네요!',
-                createAt: '2025-09-05 23:30:00',
+                createAt: getYesterdayDate('23:30:00'),
                 likes: 18,
             },
             {
@@ -744,7 +756,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '젠장또대상혁이야',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '블로그 주소 알 수 있을까요?',
-                createAt: '2025-09-06 00:15:00',
+                createAt: getYesterdayDate('00:15:00'),
                 likes: 12,
             },
         ],
@@ -763,7 +775,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 다음 목표는 골드입니다.
 
 여러분도 포기하지 마세요!`,
-        createAt: '2025-09-05 19:40:00',
+        createAt: getYesterdayDate('19:40:00'),
         comment: 2,
         game: '리그오브레전드',
         category: '자유',
@@ -777,7 +789,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '정글러의품격',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '축하드려요! 골드도 금방 가실 거예요',
-                createAt: '2025-09-05 20:00:00',
+                createAt: getYesterdayDate('20:00:00'),
                 likes: 10,
             },
             {
@@ -786,7 +798,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '미드라이너',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '고생하셨습니다 ㅎㅎ',
-                createAt: '2025-09-05 21:15:00',
+                createAt: getYesterdayDate('21:15:00'),
                 likes: 6,
             },
         ],
@@ -805,7 +817,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 아니면 살짝 딜레이 주고 칼질하는 게 맞나요?
 
 고수분들 조언 부탁드립니다!`,
-        createAt: '2025-09-05 16:25:00',
+        createAt: getYesterdayDate('16:25:00'),
         comment: 2,
         game: '오버워치2',
         category: '질문',
@@ -819,7 +831,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '오버워치마스터',
                 profileImage: '/overwatch/profile-overwatch-2.png',
                 content: '상황마다 다르지만 보통은 질풍참 직후가 좋아요',
-                createAt: '2025-09-05 17:00:00',
+                createAt: getYesterdayDate('17:00:00'),
                 likes: 15,
             },
             {
@@ -828,7 +840,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '힐러의길',
                 profileImage: '/overwatch/profile-overwatch-1.png',
                 content: '연습장에서 타이밍 연습 많이 해보세요!',
-                createAt: '2025-09-05 18:20:00',
+                createAt: getYesterdayDate('18:20:00'),
                 likes: 8,
             },
         ],
@@ -847,7 +859,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 초반에 다 쓰면 나중에 없고, 아끼면 죽고...
 
 스킬 사용 타이밍 팁 좀 알려주세요!`,
-        createAt: '2025-09-05 13:50:00',
+        createAt: getYesterdayDate('13:50:00'),
         comment: 2,
         game: '발로란트',
         category: '질문',
@@ -861,7 +873,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '발로란트고수',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '상황 판단이 중요해요. 영상 많이 보시는 걸 추천',
-                createAt: '2025-09-05 14:30:00',
+                createAt: getYesterdayDate('14:30:00'),
                 likes: 12,
             },
             {
@@ -870,7 +882,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '발로고인물',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '라운드 초반엔 정보 스킬, 중반엔 전투 스킬!',
-                createAt: '2025-09-05 15:15:00',
+                createAt: getYesterdayDate('15:15:00'),
                 likes: 18,
             },
         ],
@@ -892,7 +904,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 특히 4번이 정말 중요합니다.
 
 끝까지 버티는 게 승리의 비결!`,
-        createAt: '2025-09-05 10:30:00',
+        createAt: getYesterdayDate('10:30:00'),
         comment: 2,
         game: '배틀그라운드',
         category: '공략',
@@ -906,7 +918,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '배그킹',
                 profileImage: '/lol/profile-lol-4.png',
                 content: '마지막 팁이 진짜 중요하죠',
-                createAt: '2025-09-05 11:15:00',
+                createAt: getYesterdayDate('11:15:00'),
                 likes: 14,
             },
             {
@@ -915,7 +927,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '배그프로',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '유익한 정보 감사합니다!',
-                createAt: '2025-09-05 12:00:00',
+                createAt: getYesterdayDate('12:00:00'),
                 likes: 10,
             },
         ],
@@ -934,7 +946,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 전략 짜는 재미가 있어서 좋은 것 같아요.
 
 여러분도 한번 해보세요!`,
-        createAt: '2025-09-04 21:00:00',
+        createAt: getYesterdayDate('21:00:00'),
         comment: 2,
         game: '전략적 팀 전투',
         category: '자유',
@@ -948,7 +960,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '롤토체스장인',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '환영합니다! 재밌게 즐기세요',
-                createAt: '2025-09-04 21:30:00',
+                createAt: getYesterdayDate('21:30:00'),
                 likes: 5,
             },
             {
@@ -957,7 +969,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '전략가',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '저도 롤토체스가 본게임보다 재밌어요 ㅎㅎ',
-                createAt: '2025-09-04 22:15:00',
+                createAt: getYesterdayDate('22:15:00'),
                 likes: 7,
             },
         ],
@@ -977,7 +989,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 **시야 장악**: 양쪽 강 부쉬에 와드
 
 이것만 지켜도 라인전은 이깁니다!`,
-        createAt: '2025-09-04 18:20:00',
+        createAt: getYesterdayDate('18:20:00'),
         comment: 2,
         game: '리그오브레전드',
         category: '공략',
@@ -991,7 +1003,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '브론즈탈출기',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '레벨 2 타이밍 몰랐는데 감사합니다!',
-                createAt: '2025-09-04 19:00:00',
+                createAt: getYesterdayDate('19:00:00'),
                 likes: 22,
             },
             {
@@ -1000,7 +1012,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '정글러의품격',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '정글 입장에서도 도움되는 글이네요',
-                createAt: '2025-09-04 20:15:00',
+                createAt: getYesterdayDate('20:15:00'),
                 likes: 16,
             },
         ],
@@ -1019,7 +1031,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 팀이랑 같이 있으면 제가 먼저 죽고...
 
 서포터 포지셔닝 팁 좀 알려주세요!`,
-        createAt: '2025-09-04 15:10:00',
+        createAt: getYesterdayDate('15:10:00'),
         comment: 2,
         game: '오버워치2',
         category: '질문',
@@ -1033,7 +1045,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '오버워치마스터',
                 profileImage: '/overwatch/profile-overwatch-2.png',
                 content: '탱커 뒤에서 팀 전체를 볼 수 있는 위치가 좋아요',
-                createAt: '2025-09-04 16:00:00',
+                createAt: getYesterdayDate('16:00:00'),
                 likes: 18,
             },
             {
@@ -1042,7 +1054,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '겐지장인',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '엄폐물 근처에 계시는 게 중요합니다',
-                createAt: '2025-09-04 17:30:00',
+                createAt: getYesterdayDate('17:30:00'),
                 likes: 12,
             },
         ],
@@ -1064,7 +1076,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 특히 4번 멘탈 관리... 이게 진짜 어렵습니다.
 
 한 판 졌다고 틸트하지 마세요!`,
-        createAt: '2025-09-04 12:00:00',
+        createAt: getYesterdayDate('12:00:00'),
         comment: 2,
         game: '발로란트',
         category: '팁',
@@ -1078,7 +1090,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '발로초보',
                 profileImage: '/lol/profile-lol-4.png',
                 content: '멘탈이 진짜 중요하죠 ㅠㅠ',
-                createAt: '2025-09-04 13:00:00',
+                createAt: getYesterdayDate('13:00:00'),
                 likes: 15,
             },
             {
@@ -1087,7 +1099,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '발로란트고수',
                 profileImage: '/lol/profile-lol-3.png',
                 content: '한 요원 파는 게 정답인 것 같아요',
-                createAt: '2025-09-04 14:30:00',
+                createAt: getYesterdayDate('14:30:00'),
                 likes: 20,
             },
         ],
@@ -1109,7 +1121,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 4. 소리 듣고 위치 파악
 
 근접전은 반응속도가 중요합니다!`,
-        createAt: '2025-09-03 20:45:00',
+        createAt: getYesterdayDate('20:45:00'),
         comment: 2,
         game: '배틀그라운드',
         category: '팁',
@@ -1123,7 +1135,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '배그킹',
                 profileImage: '/lol/profile-lol-4.png',
                 content: '수류탄 먼저 던지는 거 진짜 중요해요',
-                createAt: '2025-09-03 21:30:00',
+                createAt: getYesterdayDate('21:30:00'),
                 likes: 11,
             },
             {
@@ -1132,7 +1144,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '배그생존왕',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '엄폐물 잘 쓰는 게 핵심이죠',
-                createAt: '2025-09-03 22:15:00',
+                createAt: getYesterdayDate('22:15:00'),
                 likes: 8,
             },
         ],
@@ -1161,7 +1173,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
 - 아이템 조합 외우기
 
 천천히 배워가시면 됩니다!`,
-        createAt: '2025-09-03 17:30:00',
+        createAt: getYesterdayDate('17:30:00'),
         comment: 3,
         game: '전략적 팀 전투',
         category: '공략',
@@ -1175,7 +1187,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '롤체매니아',
                 profileImage: '/lol/profile-lol-4.png',
                 content: '초보자한테 딱 필요한 글이네요!',
-                createAt: '2025-09-03 18:15:00',
+                createAt: getYesterdayDate('18:15:00'),
                 likes: 24,
             },
             {
@@ -1184,7 +1196,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '젠장또대상혁이야',
                 profileImage: '/lol/profile-lol-1.png',
                 content: '경제 운영이 진짜 어려워요 ㅠㅠ',
-                createAt: '2025-09-03 19:00:00',
+                createAt: getYesterdayDate('19:00:00'),
                 likes: 16,
             },
             {
@@ -1193,7 +1205,7 @@ export const mockPostDetails: { [key: number]: PostDetail } = {
                 username: '롤토체스장인',
                 profileImage: '/lol/profile-lol-2.png',
                 content: '잘 정리하셨네요. 추천합니다',
-                createAt: '2025-09-03 20:30:00',
+                createAt: getYesterdayDate('20:30:00'),
                 likes: 19,
             },
         ],
