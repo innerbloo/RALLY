@@ -18,6 +18,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     const pathname = usePathname();
     const [isInputFocused, setIsInputFocused] = useState(false);
     const initialScrollYRef = useRef(0);
+    const isBackNavigationRef = useRef(false);
     const [debugInfo, setDebugInfo] = useState({
         scrollY: 0,
         viewportHeight: 0,
@@ -35,6 +36,39 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 
     // 채팅 상세 페이지 체크 (스크롤 락 비활성화 대상)
     const isChatDetailPage = pathname.startsWith('/chat/') && pathname !== '/chat';
+
+    // 뒤로가기 감지
+    useEffect(() => {
+        const handlePopState = () => {
+            isBackNavigationRef.current = true;
+            // 200ms 후 플래그 리셋 (pathname 변경 useEffect 실행 후)
+            setTimeout(() => {
+                isBackNavigationRef.current = false;
+            }, 200);
+        };
+
+        window.addEventListener('popstate', handlePopState);
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, []);
+
+    // 페이지 이동 시 스크롤 최상단 이동 (채팅방 제외, 뒤로가기 제외)
+    useEffect(() => {
+        // 뒤로가기인 경우 스크롤 이동하지 않음
+        if (isBackNavigationRef.current) {
+            return;
+        }
+
+        // 채팅 페이지인 경우 스크롤 이동하지 않음
+        if (pathname.startsWith('/chat')) {
+            return;
+        }
+
+        // 스크롤을 최상단으로 이동
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
     // 모든 input/textarea 포커스 감지
     useEffect(() => {
@@ -66,7 +100,13 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     }, []);
 
     // Visual Viewport 높이 고정 (iOS 툴바 변화 방지)
+    // 채팅 페이지에서는 키보드가 올라올 때 스크롤 문제를 방지하기 위해 비활성화
     useEffect(() => {
+        // 채팅 페이지인 경우 Visual Viewport 높이 고정하지 않음
+        if (isChatDetailPage) {
+            return;
+        }
+
         const initialHeight =
             window.visualViewport?.height || window.innerHeight;
 
@@ -91,7 +131,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
             document.documentElement.style.height = '';
             document.body.style.height = '';
         };
-    }, []);
+    }, [isChatDetailPage]);
 
     // 입력창 포커스 시 스크롤 고정 (모바일 키보드 대응)
     useEffect(() => {

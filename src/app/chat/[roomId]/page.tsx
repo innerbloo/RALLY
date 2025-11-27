@@ -80,13 +80,30 @@ export default function ChatRoomPage() {
     }, [roomId]);
 
     // 자동 스크롤
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
+        messagesEndRef.current?.scrollIntoView({ behavior });
     };
 
     useEffect(() => {
         scrollToBottom();
     }, [messages, isAiTyping]);
+
+    // 모바일 키보드가 올라올 때 스크롤 유지
+    useEffect(() => {
+        const handleResize = () => {
+            // Visual Viewport가 변경되면 (키보드가 올라오면) 스크롤을 맨 아래로 이동
+            // 즉시 스크롤하여 키보드에 가려진 메시지를 보이도록 함
+            setTimeout(() => {
+                scrollToBottom('auto');
+            }, 100);
+        };
+
+        window.visualViewport?.addEventListener('resize', handleResize);
+
+        return () => {
+            window.visualViewport?.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     // 모바일 환경에서는 자동 포커스 하지 않음
     useEffect(() => {
