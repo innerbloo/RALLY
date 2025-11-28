@@ -8,7 +8,7 @@ import styled from '@emotion/styled';
 const SidebarContainer = styled.aside`
     display: none;
 
-    @media (min-width: 768px) {
+    @media (min-width: 1400px) {
         display: flex;
         flex-direction: column;
         align-items: center;
