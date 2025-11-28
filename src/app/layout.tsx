@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 
 import './globals.css';
 
+import AppDownloadBanner from '@/components/AppDownloadBanner';
 import ClientLayout from '@/components/ClientLayout';
 import GNB from '@/components/GNB';
 
@@ -71,6 +72,7 @@ export default function RootLayout({
                 style={{ fontFamily: 'var(--font-pretendard)' }}
             >
                 <ClientLayout>{children}</ClientLayout>
+                <AppDownloadBanner />
                 <Toaster
                     position="top-center"
                     gutter={8}

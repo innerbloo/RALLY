@@ -99,40 +99,6 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         };
     }, []);
 
-    // Visual Viewport 높이 고정 (iOS 툴바 변화 방지)
-    // 채팅 페이지에서는 키보드가 올라올 때 스크롤 문제를 방지하기 위해 비활성화
-    useEffect(() => {
-        // 채팅 페이지인 경우 Visual Viewport 높이 고정하지 않음
-        if (isChatDetailPage) {
-            return;
-        }
-
-        const initialHeight =
-            window.visualViewport?.height || window.innerHeight;
-
-        const lockViewportHeight = () => {
-            if (window.visualViewport) {
-                const currentHeight = window.visualViewport.height;
-                // Visual Viewport가 줄어들면 강제로 원래 높이로 복원
-                if (currentHeight < initialHeight) {
-                    document.documentElement.style.height = `${initialHeight}px`;
-                    document.body.style.height = `${initialHeight}px`;
-                }
-            }
-        };
-
-        window.visualViewport?.addEventListener('resize', lockViewportHeight);
-
-        return () => {
-            window.visualViewport?.removeEventListener(
-                'resize',
-                lockViewportHeight,
-            );
-            document.documentElement.style.height = '';
-            document.body.style.height = '';
-        };
-    }, [isChatDetailPage]);
-
     // 입력창 포커스 시 스크롤 고정 (모바일 키보드 대응)
     useEffect(() => {
         const handleScroll = () => {
