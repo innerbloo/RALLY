@@ -28,8 +28,8 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     // 브라우저 뒤로가기 시 스크롤 위치 복원
     useScrollRestoration();
 
-    // 튜토리얼 페이지에서는 Header와 GNB 숨김
-    const hideNavigation = pathname.startsWith('/tutorial');
+    // 튜토리얼, 디자인 시스템 페이지에서는 Header와 GNB 숨김
+    const hideNavigation = pathname.startsWith('/tutorial') || pathname === '/components';
 
     // 2depth 이상 페이지 체크
     const isDeepPage = pathname.split('/').filter(Boolean).length > 1;

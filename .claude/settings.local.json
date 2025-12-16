@@ -17,7 +17,10 @@
       "Bash(done)",
       "Bash(xargs -I {} sh -c 'echo \"\"\"\"File: {}\"\"\"\"; grep -A10 \"\"\"\"= styled.button\\`\"\"\"\" \"\"\"\"{}\"\"\"\" | grep -c \"\"\"\"cursor: pointer\"\"\"\" || echo \"\"\"\"0\"\"\"\"')",
       "Bash(paste:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(npm run dev:*)",
+      "Bash(lsof:*)",
+      "Bash(xargs:*)"
     ],
     "deny": [],
     "ask": []
